@@ -1,0 +1,405 @@
+images {
+  image: "/assets/enemycoin/coin/coin00.png"
+}
+images {
+  image: "/assets/enemycoin/meteor/meteor.png"
+}
+images {
+  image: "/assets/enemycoin/meteor/meteor_blue.png"
+}
+images {
+  image: "/assets/vfx/shoot.png"
+}
+images {
+  image: "/assets/powerups/powerup_magnet.png"
+}
+images {
+  image: "/assets/powerups/powerup_rocket.png"
+}
+images {
+  image: "/assets/powerups/powerup_shield.png"
+}
+images {
+  image: "/assets/powerups/powerup_extraLife.png"
+}
+images {
+  image: "/assets/enemycoin/heartgui.png"
+}
+images {
+  image: "/assets/enemycoin/meteor/meteor_green.png"
+}
+images {
+  image: "/assets/powerups/movement.png"
+}
+images {
+  image: "/assets/menu/powerupchance.png"
+}
+images {
+  image: "/assets/enemycoin/obstacle/obstacle_1.png"
+}
+images {
+  image: "/assets/enemycoin/obstacle/obstacle_2.png"
+}
+images {
+  image: "/assets/enemycoin/obstacle/obstacle_3.png"
+}
+images {
+  image: "/assets/player/ship/ship1_old.png"
+}
+images {
+  image: "/assets/player/ship/ship3.png"
+}
+images {
+  image: "/assets/player/ship/ship2.png"
+}
+images {
+  image: "/assets/player/car/car2.png"
+}
+images {
+  image: "/assets/player/car/car3.png"
+}
+images {
+  image: "/assets/player/car/car2_big.png"
+}
+images {
+  image: "/assets/player/car/car1.png"
+}
+images {
+  image: "/assets/player/car/car1_big.png"
+}
+images {
+  image: "/assets/player/car/car3_big.png"
+}
+images {
+  image: "/assets/player/ship/ship1.png"
+}
+images {
+  image: "/assets/player/ship/ship4_v2.png"
+}
+images {
+  image: "/assets/player/ship/ship4.png"
+}
+images {
+  image: "/assets/player/car/car4.png"
+}
+images {
+  image: "/assets/player/car/car4_big.png"
+}
+animations {
+  id: "alien"
+  images {
+    image: "/assets/enemycoin/alien/alien00.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien01.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien02.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien03.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien04.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien05.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien06.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien07.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien08.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien/alien09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 16
+  flip_vertical: 1
+}
+animations {
+  id: "coin"
+  images {
+    image: "/assets/enemycoin/coin/coin00.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin01.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin02.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin03.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin04.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin05.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin06.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin07.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin08.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/coin09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 20
+}
+animations {
+  id: "alien_red"
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red00.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red01.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red02.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red03.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red04.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red05.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red06.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red07.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red08.png"
+  }
+  images {
+    image: "/assets/enemycoin/alien_red/alien_red09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 16
+  flip_vertical: 1
+}
+animations {
+  id: "nitro"
+  images {
+    image: "/assets/player/car/effects/Nitro_000.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_001.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_002.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_003.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_004.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_005.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_006.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_007.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_008.png"
+  }
+  images {
+    image: "/assets/player/car/effects/Nitro_009.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 20
+}
+animations {
+  id: "shield"
+  images {
+    image: "/assets/vfx/shieldEffect/shield0.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield1.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield2.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield3.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield4.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield5.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield6.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield7.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield8.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield9.png"
+  }
+  images {
+    image: "/assets/vfx/shieldEffect/shield10.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 20
+}
+animations {
+  id: "magnet"
+  images {
+    image: "/assets/powerups/magnet_seq/magnet00.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet01.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet02.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet03.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet04.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet05.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet06.png"
+  }
+  images {
+    image: "/assets/powerups/magnet_seq/magnet07.png"
+  }
+  playback: PLAYBACK_ONCE_BACKWARD
+  fps: 20
+}
+animations {
+  id: "rocket"
+  images {
+    image: "/assets/player/rocket/rocket_00.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_01.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_02.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_03.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_04.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_05.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_06.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_07.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_08.png"
+  }
+  images {
+    image: "/assets/player/rocket/rocket_09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+}
+animations {
+  id: "shipnitro"
+  images {
+    image: "/assets/player/ship/ex00.png"
+  }
+  images {
+    image: "/assets/player/ship/ex01.png"
+  }
+  images {
+    image: "/assets/player/ship/ex02.png"
+  }
+  images {
+    image: "/assets/player/ship/ex03.png"
+  }
+  images {
+    image: "/assets/player/ship/ex04.png"
+  }
+  images {
+    image: "/assets/player/ship/ex05.png"
+  }
+  images {
+    image: "/assets/player/ship/ex06.png"
+  }
+  images {
+    image: "/assets/player/ship/ex07.png"
+  }
+  images {
+    image: "/assets/player/ship/ex08.png"
+  }
+  images {
+    image: "/assets/player/ship/ex09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 20
+}
+animations {
+  id: "diamondCoin"
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin00.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin01.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin02.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin03.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin04.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin05.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin06.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin07.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin08.png"
+  }
+  images {
+    image: "/assets/enemycoin/coin/diamondCoin09.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 20
+}
+animations {
+  id: "New Animation"
+  playback: PLAYBACK_LOOP_FORWARD
+}
+extrude_borders: 2

@@ -1,0 +1,64 @@
+local upgrades = require "main/game/upgrades"
+go.property("duration", 11)
+go.property("OWNER", hash("car"))
+
+local function activate(self)
+	self.activated = true
+	self.elapsedTime = 0
+	self.duration = upgrades.shield.data[upgrades.shield.level + 1]
+	msg.post("#sprite", "enable")
+	msg.post("#collisionobject", "enable")
+	if self.OWNER == hash("car") then
+		msg.post("game:/car", "shieldUp")
+	else
+		msg.post("game:/ship", "shieldUp")
+	end
+	go.animate("#sprite", "scale.x", go.PLAYBACK_ONCE_FORWARD, 0.9, go.EASING_LINEAR, 0.2)
+	go.animate("#sprite", "scale.y", go.PLAYBACK_ONCE_FORWARD, 0.9, go.EASING_LINEAR, 0.2)
+	go.cancel_animations("#sprite", "tint.w")
+	go.set("#sprite", "tint.w", 1)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 0, go.EASING_LINEAR,1/4, self.duration-3)
+end
+
+local function deactivate(self)
+	self.activated = false
+	if self.OWNER == hash("car") then
+		msg.post("game:/car", "shieldDown")
+	else
+		msg.post("game:/ship", "shieldDown")
+	end
+
+	go.animate("#sprite", "scale.x", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0)
+	go.animate("#sprite", "scale.y", go.PLAYBACK_ONCE_FORWARD, 0.1, go.EASING_LINEAR, 0)
+	
+	msg.post("#sprite", "disable")
+	msg.post("#collisionobject", "disable")
+	
+end
+
+function init(self)
+	msg.post("#sprite", "disable")
+	msg.post("#collisionobject", "disable")
+	self.activated = false
+	self.elapsedTime = 0
+end
+
+function update(self, dt)
+	if self.activated then 
+		self.elapsedTime = self.elapsedTime + dt
+		if self.elapsedTime >= self.duration then
+			deactivate(self)
+		end
+	end
+end
+
+function on_message(self, message_id, message)
+	if message_id == hash("activate_power_up") then
+		activate(self)
+	end
+	if message_id == hash("collision_response") then
+		if message.other_group == hash("enemy") then
+			msg.post("scoreGui#scoreHP", "enemy_destroyed")
+		end
+	end
+end

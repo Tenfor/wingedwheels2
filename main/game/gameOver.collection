@@ -1,0 +1,17 @@
+name: "gameOver"
+instances {
+  id: "soundController"
+  prototype: "/main/game/music/soundController.go"
+}
+scale_along_z: 0
+embedded_instances {
+  id: "gameOverGui"
+  data: "components {\n"
+  "  id: \"gameOverGui\"\n"
+  "  component: \"/main/game/gui/gameOverGui.gui\"\n"
+  "}\n"
+  ""
+  position {
+    z: 0.2
+  }
+}

@@ -1,0 +1,122 @@
+script: "/main/credits/credits.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 456.0
+  }
+  scale {
+    x: 0.45
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/panel"
+  id: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 238.0
+    y: 768.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Credits"
+  font: "game2"
+  id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 242.0
+    y: 56.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 696.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 760.0
+    y: 1060.0
+  }
+  type: TYPE_TEXT
+  text: "Graphich Design By  Viktoria Karadi\n"
+  "\n"
+  "Graphic assets from Craftpix.net\n"
+  "\n"
+  "Sfx and music from \n"
+  "freesounds.org\n"
+  "Eric Skiff \n"
+  "Eric Matyas \n"
+  "\n"
+  "Made by Tenfor\n"
+  "\n"
+  "Follow us"
+  font: "game2"
+  id: "text"
+  pivot: PIVOT_N
+  line_break: true
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 200.0
+    y: 196.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "menu/fblogo"
+  id: "fbBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 280.0
+    y: 197.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "menu/dcLogo"
+  id: "dcBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

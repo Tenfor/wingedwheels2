@@ -1,0 +1,52 @@
+local function registerRightTouch(self)
+	
+end
+
+local function registerLeftTouch(self)
+	
+end
+
+local function is_touch_in_nowhere_area(touch_pos, area_pos, area_size)
+	-- Ha a touch pozíció a nowhereArea box-on belül van, akkor false-t adunk vissza
+	return touch_pos.x >= area_pos.x and touch_pos.x <= area_pos.x + area_size.x and
+	touch_pos.y >= area_pos.y and touch_pos.y <= area_pos.y + area_size.y
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	msg.post(".", "disable")
+	self.touch_zones = {}
+
+--	self.nowhere_area = gui.get_node("nowhereArea")
+--	self.nowhere_area_pos = gui.get_position(self.nowhere_area)
+--	self.nowhere_area_size = gui.get_size(self.nowhere_area)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("multitouch") then
+		for i, touchdata in ipairs(action.touch) do
+			local id = touchdata.id
+			local pos = vmath.vector3(touchdata.x, touchdata.y, 0)
+
+			--if not is_touch_in_nowhere_area(pos, self.nowhere_area_pos, self.nowhere_area_size) then
+				if touchdata.pressed then
+					if pos.x < 240 then
+						self.touch_zones[id] = "left"
+					else
+						self.touch_zones[id] = "right"
+					end
+				end
+
+				if self.touch_zones[id] == "left" then
+					msg.post("ship", "move_from_slider", {value = pos.x})
+				elseif self.touch_zones[id] == "right" then
+					msg.post("car", "move_from_slider", {value = pos.x})
+				end
+
+				if touchdata.released or touchdata.canceled then
+					self.touch_zones[id] = nil
+				end
+			--end
+		end
+	end
+end

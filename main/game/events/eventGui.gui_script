@@ -1,0 +1,64 @@
+local gameModel = require "main/game/gameModel"
+
+local function hideText(self)
+	gui.animate(self.text, gui.PROP_SCALE, vmath.vector4(0.2, 0.2, 0.2, 0), gui.EASING_LINEAR, 0.8, 2)
+	gui.animate(self.text, "color.w", 0, gui.EASING_LINEAR, 0.8, 2)
+end
+
+local function showText(self)
+	gui.animate(self.text, gui.PROP_SCALE, vmath.vector4(.9, .9, .9, 0), gui.EASING_LINEAR, 0.8, 0.0,hideText)
+	gui.animate(self.text, "color.w", 1, gui.EASING_LINEAR, 0.8, 0.0, hideText)
+end
+
+local function scaleDownText(self)
+	gui.animate(self.countDownText, gui.PROP_SCALE, vmath.vector4(1.4, 1.4, 1.4, 1), gui.EASING_OUT, 0.05)
+end
+
+local function scaleUpText(self)
+	gui.animate(self.countDownText, gui.PROP_SCALE, vmath.vector4(1.8, 1.8, 1.8, 1), gui.EASING_OUT, 0.1, 0.0, scaleDownText)
+end
+
+local function showCountDownText(self)
+	gui.set_alpha(self.countDownText, 1)
+end
+
+local function hideCountDownText(self)
+	gui.set_alpha(self.countDownText, 0)
+end
+
+function init(self)
+	self.text = gui.get_node("text")
+	self.countDownText = gui.get_node("countDownText")
+	self.countdownTimer = 0
+	self.countdownCounter = 3;
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("eventStart") then 
+		gui.set_text(self.text, message.eventName)
+		showText(self)
+	end
+end
+
+function update(self, dt)
+	if self.countdownCounter > -1 and gameModel.isStarted then
+		self.countdownTimer = self.countdownTimer + dt
+		if self.countdownTimer >= 1 then
+			if(self.countdownCounter == 3) then
+				showCountDownText(self)
+				msg.post("soundController", "countdownStarted")
+				msg.post("soundController", "playSfx", {url = "#countDown_vo"} )
+			end
+			if(self.countdownCounter == 0) then
+				msg.post("soundController", "countdownFinished")
+				hideCountDownText(self)
+				msg.post("soundController", "playMusic", {url = "#bgMusic"} )
+			end
+			
+			self.countdownTimer = 0
+			gui.set_text(self.countDownText, tostring(self.countdownCounter))
+			scaleUpText(self)
+			self.countdownCounter = self.countdownCounter - 1
+		end
+	end
+end

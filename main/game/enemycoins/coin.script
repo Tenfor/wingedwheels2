@@ -1,0 +1,83 @@
+local gameModel = require "main/game/gameModel"
+
+local baseSpeed = 200
+local speedJump = 40
+local score = 1
+
+go.property("magneticCoin", false)
+go.property("diamondCoin", false)
+
+function init(self)
+	self.alive = true
+	if self.diamondCoin then
+		sprite.play_flipbook("#sprite", "diamondCoin")
+	else 
+		sprite.play_flipbook("#sprite", "coin")
+	end	
+end
+
+local function magnetic(self,dt,speed, vehicle)
+	if gameModel.isOver then 
+		return
+	end
+	local vehicle_pos = go.get_position(vehicle)
+	local coin_pos = go.get_position()
+
+	local direction = vmath.normalize(vehicle_pos - coin_pos)
+
+	local new_pos = coin_pos + direction * speed * dt
+	go.set_position(new_pos)
+end
+
+function update(self, dt)
+
+	local vehicle = "car"
+	if go.get_position().x < 240 then 
+		vehicle = "ship"
+	end
+	local p = go.get_position()
+	local speed = baseSpeed + (gameModel.speedLevel * speedJump)
+	p.y = p.y -  speed * dt
+	p.y = math.floor(p.y + 0.5)
+
+	if (gameModel.magnetActive or self.magneticCoin) and p.y < 480 and not gameModel.isOver then 
+		magnetic(self,dt,speed*3,vehicle)
+	else 
+		go.set_position(p)
+	end
+	
+	if p.y < 15 then 
+		if not gameModel.isOver then
+			
+			msg.post("scoreGui#scoreHP", "deal_dmg", {amount = 1, type = vehicle})
+
+			msg.post(vehicle, "deal_dmg")
+			msg.post("soundController", "playSfx", {url = "#miss"})
+		end
+		if self.diamondCoin then 
+			particlefx.play("#blueExplode")
+		else
+			particlefx.play("#coinExplode")
+		end
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if ((message.other_group == hash("player") or message.other_group == hash("shield")) and self.alive) then
+			if self.diamondCoin then
+				msg.post("scoreGui#scoreHP", "add_score", {amount = score*3})
+			else
+				msg.post("scoreGui#scoreHP", "add_score", {amount = score})
+			end
+			msg.post("soundController", "playSfx", {url = "#coinCollect"})
+			self.alive = false
+			go.delete()
+		end
+	end
+	if message_id == hash("speedLevelChange") then
+		self.level = message.level
+	end
+end

@@ -1,0 +1,10 @@
+name: "upgrades"
+scale_along_z: 0
+embedded_instances {
+  id: "upgrades"
+  data: "components {\n"
+  "  id: \"upgrades\"\n"
+  "  component: \"/main/menu/upgrades/upgrades.gui\"\n"
+  "}\n"
+  ""
+}

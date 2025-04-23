@@ -1,0 +1,177 @@
+local gameModel =require "main/game/gameModel"
+local druid = require("druid.druid")
+local upgrades  = require "main/game/upgrades"
+local garage = require("main/game/garage")
+
+local function darken(self)
+	local blackOverlay = gui.get_node("blackOverlay")
+	gui.animate(blackOverlay, "color.w", 1, gui.EASING_LINEAR, 1)
+	timer.delay(1, false, function()
+		msg.post("main:/loader#loader", "gameOver")
+	end)
+end
+
+local function saveStats(self,dieToAdd)
+	garage.setEnemyDestroyed(garage.enemyDestroyed + self.enemy_destroyed)
+	garage.setEventSurvived(garage.eventSurvived + self.event_survived)
+	garage.setPowerupCollected(garage.powerupCollected + self.powerup_collected)
+	garage.setDied(garage.died + dieToAdd)
+	garage.saveGarage()
+end	
+
+local function load_highscore()
+	local filename = sys.get_save_file("sys_save_load", "highscore")
+	local data = sys.load(filename)
+	return data.highscore or 0
+end
+
+local function save_highscore(highscore)
+	local filename = sys.get_save_file("sys_save_load", "highscore")
+	sys.save(filename, { highscore = highscore })
+end
+
+local function scale_down(self, node)
+	local s = 0.7
+	gui.animate(node, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.05)
+end
+
+local function show(self)
+	msg.post("scoreGui#scoreHP", "enable")
+	
+	local lifeImgNode = gui.get_node("lifeImg")
+	local scoreImgNode = gui.get_node("coinImg")
+	local lifeTextNode = gui.get_node("hpText")
+	local scoreTextNode = gui.get_node("coinText")
+
+	gui.set_alpha(lifeImgNode, 0)
+	gui.set_alpha(scoreImgNode, 0)
+	gui.set_alpha(lifeTextNode, 0)
+	gui.set_alpha(scoreTextNode, 0)
+	
+	gui.animate(lifeImgNode, "color.w", 1, gui.EASING_LINEAR, 1)
+	gui.animate(scoreImgNode, "color.w", 1, gui.EASING_LINEAR, 1)
+	gui.animate(lifeTextNode, "color.w", 1, gui.EASING_LINEAR, 1)
+	gui.animate(scoreTextNode, "color.w", 1, gui.EASING_LINEAR, 1)
+
+	self.hp = upgrades.lives.data[upgrades.lives.level + 1]
+	self.score = 0
+
+	gui.set_text(self.scoreText, tostring(self.score))
+	gui.set_text(self.hpText, tostring(self.hp))
+end
+
+local function hide()
+	msg.post("scoreGui#scoreHP", "disable")	
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.hp = upgrades.lives.data[upgrades.lives.level + 1]
+	self.score = 0
+
+	self.scoreText = gui.get_node("coinText")
+	gui.set_text(self.scoreText, tostring(self.score))
+
+	self.hpText = gui.get_node("hpText")
+	gui.set_text(self.hpText, tostring(self.hp))
+
+	self.carImmuneTime = 0;
+	self.shipImmuneTime = 0;
+
+	self.enemy_destroyed = 0;
+	self.event_survived = 0;
+	self.powerup_collected = 0;
+	
+	self.highscore = load_highscore()
+
+	msg.post(".", "acquire_input_focus")
+	self.active = true
+
+	hide()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+	if self.carImmuneTime > 0 then 
+		self.carImmuneTime = self.carImmuneTime - dt
+	end
+	if self.shipImmuneTime > 0 then 
+		self.shipImmuneTime = self.shipImmuneTime - dt
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	if message_id == hash("add_score") then
+		local s = 1
+		self.score = self.score + message.amount
+		gui.set_text(self.scoreText, tostring(self.score))
+		gui.animate(self.scoreText, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.1, 0.0, scale_down)
+	elseif message_id == hash("deal_dmg") and self.hp > 0 then
+		if (message.type == "ship" and self.shipImmuneTime <= 0) or (message.type == "car" and self.carImmuneTime <= 0) then
+			if(message.type == "ship") then 
+				self.shipImmuneTime = 0.6
+			elseif message.type == "car" then
+				self.carImmuneime = 0.6
+			end
+			local s = 1.2
+			self.hp = self.hp - message.amount
+			gui.set_text(self.hpText, tostring(self.hp))
+			gui.animate(self.hpText, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.1, 0.0, scale_down)
+			if self.hp <= 0 then
+				darken(self)
+				upgrades.setCoins(upgrades.coins + self.score)
+				upgrades.saveUpgrades()
+				msg.post("car", "show_game_over")
+				msg.post("ship", "show_game_over")
+				msg.post("soundController", "show_game_over")
+				msg.post("main:/loader#loader", "hide_pause")
+				if self.score > self.highscore then 
+					self.highscore = self.score
+					save_highscore(self.highscore)
+				end
+				saveStats(self,1)
+				gameModel.setIsOver(true)
+				gameModel.setCurrentScores(self.score)
+			end
+		end
+	elseif message_id == hash("collectPowerup") then
+		self.powerup_collected = self.powerup_collected + 1
+		if message.type == "extraLife" then 
+			self.hp = self.hp + 1
+			gui.set_text(self.hpText, tostring(self.hp))
+		end
+	elseif message_id == hash("show_gui") then
+		show(self)
+	elseif message_id == hash("enemy_destroyed") then
+		self.enemy_destroyed = self.enemy_destroyed + 1
+	elseif message_id == hash("eventEnd") then
+		if self.hp > 0 then 
+			self.event_survived = self.event_survived + 1
+		end
+	elseif message_id == hash("returnMenu") then
+		darken(self)
+		upgrades.setCoins(upgrades.coins + self.score)
+		upgrades.saveUpgrades()
+		msg.post("car", "show_game_over")
+		msg.post("ship", "show_game_over")
+		msg.post("soundController", "show_game_over")
+		msg.post("main:/loader#loader", "hide_pause")
+
+		if self.score > self.highscore then 
+			self.highscore = self.score
+			save_highscore(self.highscore)
+		end
+		saveStats(self,0)
+		gameModel.setIsOver(true)
+		gameModel.setCurrentScores(self.score)
+	end
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+end

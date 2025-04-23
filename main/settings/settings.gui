@@ -1,0 +1,366 @@
+script: "/main/settings/settings.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg"
+  parent: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.3333
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Settings"
+  font: "game2"
+  id: "text"
+  parent: "panelRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 190.0
+    y: 473.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Music_BTN"
+  id: "musicBtn"
+  parent: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 290.0
+    y: 473.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Sound_BTN"
+  id: "soundBtn"
+  parent: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 319.0
+    y: 397.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/onBtn"
+  id: "toggleTutBtn"
+  parent: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 178.0
+    y: 395.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Show Tutorial"
+  font: "game2"
+  id: "text1"
+  parent: "panelRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 238.0
+    y: 329.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "resetDataBtn"
+  parent: "panelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 2.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "ResetData"
+  font: "game2"
+  id: "resetDataBtnText"
+  parent: "resetDataBtn"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "confirmPanelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg1"
+  parent: "confirmPanelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.3333
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Settings"
+  font: "game2"
+  id: "text2"
+  parent: "confirmPanelRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 450.3333
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Delete all your saves?"
+  font: "game2"
+  id: "text3"
+  parent: "confirmPanelRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 170.0
+    y: 371.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Ok_BTN"
+  id: "yesBtn"
+  parent: "confirmPanelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 310.0
+    y: 371.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Close_BTN"
+  id: "noBtn"
+  parent: "confirmPanelRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 227.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "deleteSuccessRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg2"
+  parent: "deleteSuccessRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.3333
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Settings"
+  font: "game2"
+  id: "text4"
+  parent: "deleteSuccessRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 450.3333
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Saves deleted"
+  font: "game2"
+  id: "text5"
+  parent: "deleteSuccessRoot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 371.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "continueBtn"
+  parent: "deleteSuccessRoot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Continue"
+  font: "game2"
+  id: "text6"
+  parent: "continueBtn"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

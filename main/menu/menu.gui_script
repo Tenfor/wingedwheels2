@@ -1,0 +1,161 @@
+local druid = require("druid.druid")
+local gameSettings = require "main/gameSettings"
+local gameModel = require "main/game/gameModel"
+
+local function load_highscore()
+	local filename = sys.get_save_file("sys_save_load", "highscore")
+	local data = sys.load(filename)
+	return data.highscore or 0
+end
+
+local function saveMusicSoundSettings()
+	local filename = sys.get_save_file("sys_save_load", "settings")
+	sys.save(filename, { musicSettings = gameSettings.music, soundSettings = gameSettings.sounds, showTutorial = gameSettings.showTutorial })
+end
+
+local function onUpgradesButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_upgrades")
+	msg.post("main:/loader#loader", "hide_menu")
+end
+
+local function onSettingsButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_settings")
+	msg.post("main:/loader#loader", "hide_menu")
+end
+
+local function onGarageButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_garage")
+	msg.post("main:/loader#loader", "hide_menu")
+end
+
+local function onStartButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("game:/soundController", "stopMusic", {url = "#menuMusic"} )
+	msg.post("#","hide_menu")
+	msg.post("game:/scoreGui#scoreHP", "show_gui")
+	msg.post("game:/car", "enter")
+	msg.post("game:/ship", "enter")
+	msg.post("main:/loader#loader", "show_pause")
+	gameModel.setIsStarted(true)
+end
+
+local function onCreditsButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_credits")
+	msg.post("main:/loader#loader", "hide_menu")
+end
+
+local function onHighscores(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_highscores")
+	msg.post("main:/loader#loader", "hide_menu")
+end
+
+local function onMusicButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	gameSettings.setMusic(not gameSettings.music)
+	msg.post("game:/soundController", "toggle_musics")
+if gameSettings.music then
+	gui.play_flipbook(self.musicButtonNode, "Music_BTN")
+		msg.post("game:/soundController", "stopMusic", {url = "#menuMusic"} )
+		msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+	else
+		gui.play_flipbook(self.musicButtonNode, "Musicoff_BTN")
+	end
+	saveMusicSoundSettings()
+end
+
+local function onSoundButton(self)
+	gameSettings.setSounds(not gameSettings.sounds)
+	msg.post("game:/soundController", "toggle_sounds")
+--	local btnText = gui.get_node("soundText")
+if gameSettings.sounds then
+		msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+		gui.play_flipbook(self.soundButtonNode, "Sound_BTN")
+	else
+		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
+	end
+	saveMusicSoundSettings()
+end
+
+local function initMusicSoundTexts(self)
+--	local musicTextNode = gui.get_node("musicText")
+--	local soundTextNode = gui.get_node("soundText")
+	local filename = sys.get_save_file("sys_save_load", "settings")
+	local data = sys.load(filename)
+	if data.musicSettings ~= nil then 
+		gameSettings.setMusic(data.musicSettings)
+	end
+	if data.soundSettings ~= nil then 
+		gameSettings.setSounds(data.soundSettings)
+	end
+	
+	if not gameSettings.sounds then 
+		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
+	end
+	if not gameSettings.music then 
+		gui.play_flipbook(self.musicButtonNode, "Musicoff_BTN")
+	end
+end
+
+local function onFb()
+	sys.open_url("https://www.facebook.com/tenforgames",{target = "_blank"})
+end
+
+local function onDc()
+	sys.open_url("https://discord.gg/xFszFyuNmT",{target = "_blank"})
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.startButton = self.druid:new_button("start", onStartButton)
+	self.musicButton = self.druid:new_button("music", onMusicButton)
+	self.soundButton = self.druid:new_button("sounds", onSoundButton)
+	self.musicButtonNode = gui.get_node("music")
+	self.soundButtonNode = gui.get_node("sounds")
+
+	self.upgradesButton = self.druid:new_button("upgrades", onUpgradesButton)
+
+	self.garageButton = self.druid:new_button("garage", onGarageButton)
+
+	self.settingsButton = self.druid:new_button("settings", onSettingsButton)
+
+	self.creditsButton = self.druid:new_button("credits", onCreditsButton)
+	self.highscoresButton = self.druid:new_button("highscores", onHighscores)
+
+	self.fbBtn = self.druid:new_button("fbBtn", onFb)
+	self.dcBtn = self.druid:new_button("dcBtn", onDc)
+	
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "show_menu")
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	if message_id == hash("show_menu") then
+		local highscoreText = gui.get_node("highscoreText")
+		self.highscore = load_highscore()
+		gui.set_text(highscoreText, "High Scores: "..tostring(self.highscore))
+		initMusicSoundTexts(self)
+		msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+	end
+	if message_id == hash("hide_menu") then
+		msg.post("main:/loader#loader", "hide_menu")
+		self.active = false
+	end
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+end

@@ -1,0 +1,191 @@
+go.property("VEHICLE_TYPE", hash("car"))
+go.property("MAX_SPEED", 180)
+local device = require "main/device"
+local gameModel = require "main/game/gameModel"
+local upgrades  = require "main/game/upgrades"
+local garage  = require "main/game/garage"
+
+local function alphaAnim(self, amount)
+	if amount > 0 then 
+		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR,1/4, 0, function()
+			alphaAnim(self, amount - 1)
+		end)
+		if self.VEHICLE_TYPE == hash("car") then
+			go.animate("#exhaustSprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR,1/4, 0)
+		else
+			go.animate("exhaust#exhaustSprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR,1/4, 0)
+		end
+	else 
+		self.immuneDmgDelay = false
+	end
+end
+
+local function shoot_rocket(target)
+	local p = go.get_position()
+	factory.create("#rocket_factory",p, nil, {target=target})
+end
+
+local function initVehicle(self)
+	if self.VEHICLE_TYPE == hash("car") then
+		self.startPos = 360
+		self.maxPos = 452
+		self.minPos = 270
+		self.leftInput = "car_left"
+		self.rightInput = "car_right"
+	elseif self.VEHICLE_TYPE == hash("ship") then
+		self.startPos = 120
+		self.maxPos = 200
+		self.minPos = 40
+		self.leftInput = "ship_left"
+		self.rightInput = "ship_right"
+	else
+		error("Invalid VEHICLE_TYPE: " .. tostring(self.VEHICLE_TYPE))
+	end
+
+	self.speed = 0;
+	local p = go.get_position()
+	p.x = self.startPos
+	go.set_position(p)
+end
+
+local function move_desktop(self,dt)
+	if self.speed ~= 0 then
+		local pos = go.get_position()
+		pos.x = pos.x + self.speed * dt
+		pos.x = math.max(self.minPos, pos.x)
+		pos.x = math.min(self.maxPos, pos.x)
+		pos.x = math.floor(pos.x + 0.5)
+		go.set_position(pos)
+	end
+
+	self.speed = 0
+end
+
+local function move_mobile(self,dt)
+	local p = go.get_position()
+	if self.targetPos > p.x then 
+		p.x = p.x + self.MAX_SPEED * dt
+		if p.x > self.targetPos then
+			p.x = self.targetPos
+		end	
+	elseif self.targetPos < p.x then
+		p.x = p.x - self.MAX_SPEED * dt
+		if p.x < self.targetPos then
+			p.x = self.targetPos
+		end	
+	end
+	go.set_position(p)
+end
+
+local function enterGame(self)
+	self.MAX_SPEED = upgrades.movement.data[upgrades.movement.level + 1]
+	local p = go.get_position()
+	if self.VEHICLE_TYPE == hash("ship") then
+		local selectedShip = math.min(garage.selectedShip, 4)
+		sprite.play_flipbook("#sprite", "ship"..tostring(selectedShip))
+
+		local exhaustPositions = {-15,-16,11, -15}
+		local exPos = go.get_position("exhaust")
+		exPos.y = exhaustPositions[selectedShip]
+
+		go.set_position(exPos,"exhaust")
+
+		msg.post("#ship1Collision", "disable")
+		msg.post("#ship2Collision", "disable")
+		msg.post("#ship3Collision", "disable")
+
+		msg.post("#ship"..tostring(selectedShip).."Collision", "enable")
+		--sprite.set_position(exPos,"#exhaust")
+		
+		p.y = 108
+	else 
+		local selectedCar = math.min(garage.selectedCar, 4)
+		sprite.play_flipbook("#sprite", "car"..tostring(selectedCar))
+		p.y = 108
+	end
+	go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, p, go.EASING_LINEAR, 1)
+	timer.delay(1, false, function()
+		if self.VEHICLE_TYPE == hash("car") then
+			msg.post("controlGui#control", "enable")
+			msg.post("carTutorial", "show_tutorial")
+			msg.post("shipTutorial", "show_tutorial")
+		end
+	end)
+	
+end
+
+function init(self)
+	initVehicle(self)	
+	msg.post(".", "acquire_input_focus")
+	self.speed = 0
+	self.immuneDmgDelay = false
+	self.invertedValue = 1;
+
+	--for mobile
+	self.targetPos = self.startPos	
+	
+	
+end
+
+function update(self, dt)	
+	if not gameModel.isStarted then 
+		return
+	end
+	if device.type == "desktop" then
+		move_desktop(self, dt)
+	else 
+		move_mobile(self, dt)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		if message.other_group == hash("enemy") and not self.immuneDmgDelay then
+			self.immuneDmgDelay = true
+			alphaAnim(self, 2)
+		end
+	end
+	if message_id == hash("show_game_over") then
+		go.delete(go.get_id(),true)
+	end
+	if message_id == hash("deal_dmg") then
+		self.immuneDmgDelay = true
+		alphaAnim(self, 2)
+	end
+	if message_id == hash("inverted_controls") then
+		self.invertedValue = -1;
+	end
+	if message_id == hash("controls_restored") then
+		self.invertedValue = 1;
+	end
+	if message_id == hash("shoot_rocket") then
+		shoot_rocket(message.target)
+	end
+	if message_id == hash("move_from_slider") then
+		local centerPos = self.startPos
+		local diff = message.value - go.get_position().x;
+		if diff ~= 0 then 
+			self.targetPos = message.value
+			self.targetPos = math.max(self.minPos, self.targetPos)
+			self.targetPos = math.min(self.maxPos, self.targetPos)
+		end
+	end
+	if message_id == hash("enter") then 
+		enterGame(self)
+	end
+	--if message_id == hash("shieldUp") then
+	--	msg.post("#collisionobject", "disable")
+	--end
+	--if message_id == hash("shieldDown") then
+	--	msg.post("#collisionobject", "enable")
+	--end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash(self.leftInput) then
+		self.speed = -self.MAX_SPEED
+	elseif action_id == hash(self.rightInput) then
+		self.speed = self.MAX_SPEED
+	end
+	
+end

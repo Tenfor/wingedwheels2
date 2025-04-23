@@ -1,0 +1,56 @@
+local upgrades = require "main/game/upgrades"
+local gameModel = require "main/game/gameModel"
+go.property("duration", 11)
+
+local function activate(self)
+	self.activated = true
+	gameModel.magnetActive = true
+	self.elapsedTime = 0
+	self.duration = upgrades.magnet.data[upgrades.magnet.level+1]
+	msg.post("#sprite", "enable")
+	go.cancel_animations("#sprite", "tint.w")
+	go.set("#sprite", "tint.w", 1)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 0, go.EASING_LINEAR,1/4, self.duration-3)
+	msg.post("#sprite", "play_animation", {id = hash("magnet")})
+end
+
+local function deactivate(self)
+	self.activated = false
+	gameModel.magnetActive = false
+	msg.post("#sprite", "enable")
+end
+
+local function randomize_rotation(self)
+	local angle = math.random(0, 360) 
+	local radians = math.rad(angle)
+	local rotation = vmath.quat_rotation_z(radians)
+	go.set_rotation(rotation)
+end
+
+function init(self)
+	msg.post("#sprite", "disable")
+	self.activated = false
+	self.elapsedTime = 0
+	
+end
+
+function update(self, dt)
+	if self.activated then 
+		self.elapsedTime = self.elapsedTime + dt
+		if self.elapsedTime >= self.duration then 
+			deactivate(self)
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("activate_power_up") then
+		activate(self)
+	end
+	if message_id == hash("animation_done") then
+		if self.activated then
+			randomize_rotation(self)
+			msg.post("#sprite", "play_animation", {id = hash("magnet")})
+		end
+	end
+end

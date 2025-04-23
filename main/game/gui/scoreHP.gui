@@ -1,0 +1,145 @@
+script: "/main/game/gui/scoreHP.gui_script"
+fonts {
+  name: "default"
+  font: "/druid/fonts/text_regular.font"
+}
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "sprites"
+  texture: "/main/game/sprites.atlas"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 742.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "life"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -30.0
+    y: -2.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/heartgui"
+  id: "lifeImg"
+  parent: "life"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 15.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 25.0
+    y: 25.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "game2"
+  id: "hpText"
+  pivot: PIVOT_W
+  parent: "life"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 801.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "coin"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -30.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "coinImg"
+  parent: "coin"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 15.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+    z: 2.0
+  }
+  size {
+    x: 25.0
+    y: 25.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "game2"
+  id: "coinText"
+  pivot: PIVOT_W
+  parent: "coin"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 427.0
+  }
+  size {
+    x: 800.0
+    y: 1200.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "blackOverlay"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

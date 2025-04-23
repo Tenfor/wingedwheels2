@@ -1,0 +1,13 @@
+images {
+  image: "/assets/bg/BGSPACE.png"
+}
+images {
+  image: "/assets/bg/largeplanets.png"
+}
+images {
+  image: "/assets/bg/Stars.png"
+}
+images {
+  image: "/assets/bg/road.png"
+}
+extrude_borders: 1

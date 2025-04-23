@@ -1,0 +1,101 @@
+local gameModel = require "main/game/gameModel"
+local upgrades = require "main/game/upgrades"
+
+local function endEvent(self,eventName)
+	msg.post("factories#factories", "eventEnd")
+	msg.post("scoreGui#scoreHP", "eventEnd")
+end
+
+local function extraTrigger(self,eventName)
+	if eventName == "Peaceful Sector" then
+		msg.post("factories#factories", "directPowerupSpawn", {type="extraLife"})
+	end
+end
+
+local function spawnRelevant(self,eventName)
+	if upgrades.powerup.level < 2 then
+		return
+	end
+	local rand = math.random(0,100)
+	if rand >= 90 then 
+		if eventName == "Meteor Shower" or eventName == "Alien Invasion" then 
+			local gunRand = math.random(1,2)
+			if gunRand == 1 then
+				msg.post("factories#factories", "directPowerupSpawn", {type="shield"})
+			else 
+				msg.post("factories#factories", "directPowerupSpawn", {type="rocket"})
+			end
+		elseif eventName == "Coin Shower" then
+			msg.post("factories#factories", "directPowerupSpawn", {type="magnet"})
+		end
+	end
+end
+
+local function initEvent(self,eventName)
+	msg.post("factories#factories", "eventInit", {eventName = eventName})
+	timer.delay(10, false, function()
+		endEvent(self,eventName)
+	end)
+	timer.delay(7, false, function()
+		extraTrigger(self, eventName)
+	end)
+end
+
+local function setupEvents(self) 
+	self.events = {
+		{eventName = "Meteor Shower", vo = "#meteor_vo"},
+		{eventName = "Alien Invasion", vo = "#invasion_vo"},
+		{eventName = "Coin Shower", vo = "#coin_vo"},
+	--	{eventName = "Inverted Controls", vo = "#inverted_vo"},
+--		[4] = {eventName = "Turbo", vo = "#turbo_vo"},
+--		[6] = {eventName = "Mirror World", vo = "#mirror_vo"},
+	}
+end
+
+local function pickRandomEvent(self)
+
+	if #self.events == 0 then 
+		setupEvents(self)
+		return {eventName = "Peaceful Sector", vo = "#peaceful_vo"}
+	else
+		local rand = math.random(1,#self.events)
+		local event = self.events[rand]
+		table.remove(self.events,rand)
+		return event
+	end
+end
+
+local function startEvent(self)
+	if(gameModel.isOver) then 
+		return
+	end
+	local event = pickRandomEvent(self)
+	msg.post("soundController", "playSfx", {url = event.vo})
+	msg.post("eventGui#eventGui", "eventStart", {eventName = event.eventName})
+	msg.post("factories#factories", "eventStart", {eventName = event.eventName})
+
+	timer.delay(1.4, false, function()
+		spawnRelevant(self, event.eventName)
+	end)
+	
+	timer.delay(3, false, function()
+		initEvent(self,event.eventName)
+	end)
+end
+
+function init(self)
+	self.freq = 40		
+	self.elapsedTime = 7
+	setupEvents(self)
+end
+
+function update(self, dt)
+	if not gameModel.isStarted then 
+		return
+	end
+	self.elapsedTime = self.elapsedTime + dt
+	if self.elapsedTime >= self.freq then 
+		self.elapsedTime = 0
+		startEvent(self)
+	end
+end

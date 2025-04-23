@@ -1,0 +1,133 @@
+local gameSettings = require "main/gameSettings"
+local device = require "main/device"
+go.property("VEHICLE_TYPE", hash("car"))
+
+
+local function showSwipeToRight()
+	go.set("#mobile", "tint.w", 1)
+	sprite.play_flipbook("#mobile", "toRight")
+	timer.delay(1.4, false, function()
+		sprite.play_flipbook("#mobile", "toLeft")
+	end)
+	timer.delay(2.8, false, function()
+		go.set("#mobile", "tint.w", 0)
+	end)
+end
+
+local function showSwipeToLeft()
+	go.set("#mobile", "tint.w", 1)
+	sprite.play_flipbook("#mobile", "toLeft")
+	timer.delay(1.4, false, function()
+		sprite.play_flipbook("#mobile", "toRight")
+	end)
+	timer.delay(2.8, false, function()
+		go.set("#mobile", "tint.w", 0)
+	end)
+end
+
+local function showKeyboardTut(self)
+	go.set("#keyLeft", "tint.w", 1)
+	go.set("#keyRight", "tint.w", 1)
+	local leftPrefix = "A"
+	local rightPrefix = "D"
+	if self.VEHICLE_TYPE == hash("car") then
+		leftPrefix="Left"
+		rightPrefix="Right"
+	end
+
+	--first press
+	sprite.play_flipbook("#keyLeft", leftPrefix.."_down")
+	sprite.play_flipbook("#keyRight", rightPrefix.."_stop")
+	timer.delay(0.5, false, function() 
+		sprite.play_flipbook("#keyRight", rightPrefix.."_down")
+	end)
+
+	--second press
+	timer.delay(1.5, false, function() 
+		sprite.play_flipbook("#keyLeft", leftPrefix.."_down")
+	end)
+	timer.delay(2, false, function() 
+		sprite.play_flipbook("#keyRight", rightPrefix.."_down")
+	end)
+
+	--third press
+	timer.delay(3, false, function() 
+		sprite.play_flipbook("#keyLeft", leftPrefix.."_down")
+	end)
+	timer.delay(3.5, false, function() 
+		sprite.play_flipbook("#keyRight", rightPrefix.."_down")
+	end)
+
+	timer.delay(4.2, false, function() 
+		go.set("#keyLeft", "tint.w", 0)
+		go.set("#keyRight", "tint.w", 0)
+	end)
+end
+
+local function showTutorial(self)
+	if device.type == "desktop" then
+		showKeyboardTut(self)
+	else
+		if self.VEHICLE_TYPE == hash("car") then
+			showSwipeToLeft()
+			timer.delay(3, false, showSwipeToLeft)
+		else
+			showSwipeToRight()
+			timer.delay(3, false, showSwipeToRight)
+		end
+	end
+end
+
+function init(self)
+	go.set("#mobile", "tint.w", 0)
+	go.set("#keyLeft", "tint.w", 0)
+	go.set("#keyRight", "tint.w", 0)
+end
+
+function final(self)
+	
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_tutorial") then 
+		if gameSettings.showTutorial then
+			showTutorial(self)
+		end
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

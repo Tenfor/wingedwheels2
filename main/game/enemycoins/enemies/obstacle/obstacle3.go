@@ -1,0 +1,81 @@
+components {
+  id: "explode"
+  component: "/assets/vfx/whiteExplode.particlefx"
+}
+components {
+  id: "obstacle"
+  component: "/main/game/enemycoins/enemies/obstacle/obstacle.script"
+}
+embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "default_animation: \"obstacle_3\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
+  "textures {\n"
+  "  sampler: \"texture_sampler\"\n"
+  "  texture: \"/main/game/sprites.atlas\"\n"
+  "}\n"
+  ""
+  position {
+    z: 0.1
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+}
+embedded_components {
+  id: "collisionobject"
+  type: "collisionobject"
+  data: "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"
+  "mass: 0.0\n"
+  "friction: 0.1\n"
+  "restitution: 0.5\n"
+  "group: \"enemy\"\n"
+  "mask: \"player\"\n"
+  "mask: \"shield\"\n"
+  "mask: \"rocket\"\n"
+  "mask: \"radar\"\n"
+  "embedded_collision_shape {\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      y: 1.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "    }\n"
+  "    index: 0\n"
+  "    count: 3\n"
+  "  }\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: -39.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "    }\n"
+  "    index: 3\n"
+  "    count: 3\n"
+  "  }\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_BOX\n"
+  "    position {\n"
+  "      x: 40.0\n"
+  "    }\n"
+  "    rotation {\n"
+  "    }\n"
+  "    index: 6\n"
+  "    count: 3\n"
+  "  }\n"
+  "  data: 51.90463\n"
+  "  data: 16.33882\n"
+  "  data: 10.0\n"
+  "  data: 6.1537156\n"
+  "  data: 22.631767\n"
+  "  data: 10.0\n"
+  "  data: 6.475691\n"
+  "  data: 22.825392\n"
+  "  data: 10.0\n"
+  "}\n"
+  ""
+}

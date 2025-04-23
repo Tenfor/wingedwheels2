@@ -1,0 +1,90 @@
+go.property("VEHICLE_TYPE", hash("car"))
+go.property("MAX_SPEED", 300)
+
+local function alphaAnim(self, amount)
+	if amount > 0 then 
+		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR,1/4, 0, function()
+			alphaAnim(self, amount - 1)
+		end)
+	else 
+		self.immuneDmgDelay = false
+	end
+end
+
+function init(self)
+	initVehicle(self)	
+	self.moving = false
+	self.targetPos = self.startPos
+	self.immuneDmgDelay = false
+end
+
+function update(self, dt)
+	local p = go.get_position()
+	if self.targetPos > p.x then 
+		p.x = p.x + self.MAX_SPEED * dt
+		if p.x > self.targetPos then
+			p.x = self.targetPos
+		end	
+	elseif self.targetPos < p.x then
+		p.x = p.x - self.MAX_SPEED * dt
+		if p.x < self.targetPos then
+			p.x = self.targetPos
+		end	
+	end
+	go.set_position(p)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		if message.other_group == hash("enemy") and not self.immuneDmgDelay then
+			self.immuneDmgDelay = true
+			alphaAnim(self, 2)
+		end
+	end
+	if message_id == hash("show_game_over") then
+		go.delete()
+	end	
+	if message_id == hash("move_from_slider") then
+		local centerPos = self.startPos
+		local diff = message.value - go.get_position().x;
+		if diff ~= 0 then 
+			self.targetPos = message.value
+			self.targetPos = math.max(self.minPos, self.targetPos)
+			self.targetPos = math.min(self.maxPos, self.targetPos)
+		end
+	end
+
+	if message_id == hash("deal_dmg") then
+		self.immuneDmgDelay = true
+		alphaAnim(self, 2)
+	end
+	--if message_id == hash("shieldUp") then
+	--	msg.post("#collisionobject", "disable")
+	--end
+	--if message_id == hash("shieldDown") then
+	--	msg.post("#collisionobject", "enable")
+	--end
+end
+
+function initVehicle(self)
+	if self.VEHICLE_TYPE == hash("car") then
+		self.startPos = 360
+		self.maxPos = 452
+		self.minPos = 270
+		self.leftInput = "car_left"
+		self.rightInput = "car_right"
+	elseif self.VEHICLE_TYPE == hash("ship") then
+		self.startPos = 120
+		self.maxPos = 197
+		self.minPos = 43
+		self.leftInput = "ship_left"
+		self.rightInput = "ship_right"
+	else
+		error("Invalid VEHICLE_TYPE: " .. tostring(self.VEHICLE_TYPE))
+	end
+
+	self.speed = 0;
+	local p = go.get_position()
+	p.x = self.startPos
+	go.set_position(p)
+end

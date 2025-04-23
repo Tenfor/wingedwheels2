@@ -1,0 +1,90 @@
+local gameModel  = require "main/game/gameModel"
+local dmg = 1
+local baseSpeed = 150
+local speedJump = 20
+local shootFreqJump = 0.08
+
+local function shoot(self)
+	local p = go.get_position()
+	p.y = p.y - 45
+	factory.create("#laserFactory",p)
+	self.timeElapsed = 0
+end
+
+local function zigZag(self, dt)
+	local p = go.get_position()
+	if self.zigZagTarget == 210 then 
+		p.x = p.x + self.zigZagSpeed * dt
+		if p.x >= self.zigZagTarget then
+			self.zigZagTarget = 31
+		end
+	else
+		p.x = p.x - self.zigZagSpeed * dt
+		if p.x <= self.zigZagTarget then
+			self.zigZagTarget = 210
+		end
+	end
+	go.set_position(p)
+end
+
+local function die(crashedObject, self)
+	if self.alive then
+		if crashedObject == "player" or crashedObject == "rocket" then
+			msg.post("soundController", "playSfx", {url = "#crash"})
+		elseif crashedObject == "shield" then
+			msg.post("soundController", "playSfx", {url = "#shieldCrash"})
+		end
+		particlefx.play("#redExplode")
+		self.alive = false
+		go.delete()
+	end
+end
+
+function init(self)
+	self.alive = true
+	self.zigZagTarget = 210
+	self.zigZagSpeed = 60
+	self.shootFreq = 1.4
+	self.timeElapsed = 0.6
+	if go.get_position().x > 128.5 then 
+		self.zigZagTarget = 31
+	end
+end
+
+function update(self, dt)
+	local shootFreq = self.shootFreq - gameModel.speedLevel * shootFreqJump
+	self.timeElapsed = self.timeElapsed + dt
+	if(self.timeElapsed >= self.shootFreq) then 
+		shoot(self)
+	end
+	zigZag(self, dt)	
+	local p = go.get_position()
+	local speed = baseSpeed + speedJump * gameModel.speedLevel
+	p.y = p.y - speed * dt
+	go.set_position(p)
+	if p.y < -100 then 
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if message.other_group == hash("player") then
+			msg.post("scoreGui#scoreHP", "deal_dmg", {amount = dmg, type = "ship"})
+			msg.post("ship", "deal_dmg")
+			die("player",self)
+		end
+		if message.other_group == hash("shield") then
+			die("shield",self)
+		end
+		if message.other_group == hash("rocket") and self.alive then
+			msg.post("factories", "spawnMagneticCoin", {pos = go.get_position()})
+			die("rocket", self)
+			go.delete(message.other_id)
+		end
+	end
+	if message_id == hash("speedLevelChange") then
+		self.level = message.level
+	end
+end

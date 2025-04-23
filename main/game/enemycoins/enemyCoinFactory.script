@@ -1,0 +1,254 @@
+local gameModel = require "main/game/gameModel"
+local upgrades = require "main/game/upgrades"
+local coinBaseSpawnRate = 3.2
+local coinElapsedTime = -2
+local enemyBaseSpawnRate = 3.2
+local enemyElapsedTime = -2
+local coinSpawnRand = math.random() - 0.5
+local coinSpawnExtraDelay = 0
+local enemySpawnRand = math.random() - 0.5
+local enemySpawnExtraDelay = 0
+local spawnRateJump = 0.2
+
+local function getEnemySpawnPos(factoryId)
+	local p = vmath.vector3(math.random(32,205),1080,0.2)
+	if factoryId == "#rockFactory" then 
+		p = vmath.vector3(math.random(24,220),1080,0.2)
+	end
+	return p
+end
+
+local function getCoinSpawnPos(factoryId)
+	local p = vmath.vector3(math.random(270,452),1000,0.2) -- basic coin spqawnpos
+	if factoryId == "#obstacle1Factory" then 
+		p = vmath.vector3(math.random(286,438),1000,0.2)
+	elseif factoryId == "#obstacle2Factory" then 
+		p = vmath.vector3(math.random(290,432),1000,0.2)
+	elseif factoryId == "#obstacle3Factory" then 
+		p = vmath.vector3(math.random(307,416),1000,0.2)
+	end
+	return p
+end
+
+local function spawnMagneticCoin(pos)
+	local factoryId = "#coinFactory"
+	factory.create(factoryId,pos,nil,{magneticCoin = true})
+end
+
+local function getFactoryIdCoinNormal(self)
+	coinSpawnExtraDelay = 0
+	local factoryId = "#coinFactory"
+	local rand = math.random(0,100)
+	if rand > 95 then 
+		local obstacleRand = math.random(1,3)
+		factoryId = "#obstacle"..obstacleRand.."Factory"
+		coinSpawnExtraDelay = 1
+	end
+	return factoryId
+end
+
+local function getFactoryIdCoinEvent(self)
+	coinSpawnExtraDelay = 0
+	local factoryId = "#rockFactory"
+	if self.event.eventName == "Meteor Shower" then 
+		local base = 0.9
+		if gameModel.speedLevel > 12 then
+			base = 0.75
+		end
+		self.event.coinSpawnRate = base + math.random(0,0.15)
+		self.event.enemySpawnRate = base + math.random(0,0.15)
+		factoryId = "#rockFactory"
+	elseif self.event.eventName == "Alien Invasion" then
+		local base = 1.4
+		if gameModel.speedLevel > 12 then
+			base = 1.25
+		end
+		self.event.coinSpawnRate = base
+		self.event.enemySpawnRate = base
+		factoryId = "#alienCarFactory"
+	elseif self.event.eventName == "Coin Shower" then 
+		factoryId = "#coinFactory"
+		local base = 0.8
+		if gameModel.speedLevel > 12 then
+			base = 0.65
+		end
+		self.event.coinSpawnRate = base
+		self.event.enemySpawnRate = base
+	end
+	return factoryId
+end
+
+local function getFactoryIdEnemyEvent(self)
+	enemySpawnExtraDelay = 0
+	local factoryId = "#rockFactory"
+	if self.event.eventName == "Meteor Shower" then 
+		factoryId = "#rockFactory"
+	elseif self.event.eventName == "Alien Invasion" then
+		factoryId = "#alienFactory"
+	elseif self.event.eventName == "Coin Shower" then 
+		factoryId = "#coinFactory"
+	end
+	return factoryId
+end
+
+local function getFactoryIdEnemyNormal(self)
+	local factoryId = "#rockFactory"
+	local powerUpRand = math.random(1,100)
+--	local compensate = math.floor(self.powerUpCompensate / 2)
+--	print(98 - compensate)
+--self.powerUpCompensate = 90
+	local chance = 100-upgrades.powerup.data[upgrades.powerup.level + 1]
+	if upgrades.powerup.level == upgrades.powerup.maxLevel then 
+		chance = chance - self.powerUpCompensate
+	end
+	if powerUpRand >  chance then 
+		factoryId = "#powerupFactory"
+		enemySpawnExtraDelay = 1
+		self.powerUpCompensate = 0
+	else
+		self.powerUpCompensate = self.powerUpCompensate + 1;
+		if gameModel.enemyLevel >= 3 then
+			local rand = math.random(1,10)
+			if rand <= 2 then 
+				factoryId = "#alienRedFactory"
+				enemySpawnExtraDelay = 2
+			elseif rand <= 7 then 
+				factoryId = "#alienFactory"
+				enemySpawnExtraDelay = 1
+			else --rand <= 10
+				factoryId = "#rockFactory"
+				enemySpawnExtraDelay = 0
+			end
+		elseif gameModel.enemyLevel == 2 then 
+			local rand = math.random(1,2) 
+			if rand == 1 then 
+				factoryId = "#alienFactory"
+				enemySpawnExtraDelay = 1
+			else 
+				factoryId = "#rockFactory"
+				enemySpawnExtraDelay = 0
+			end
+		end
+	end
+	return factoryId
+end
+
+local function spawnCoin(self)
+	if (self.pauseSpawn or self.event.started or ( self.event.eventName == "Peaceful Sector") and self.event.inited ) then
+		return
+	end
+	local factoryId = getFactoryIdCoinNormal(self)
+	local p = getCoinSpawnPos(factoryId)
+	if self.event.inited and (self.event.eventName == "Meteor Shower" or self.event.eventName == "Alien Invasion" or self.event.eventName == "Coin Shower") then
+		factoryId = getFactoryIdCoinEvent(self)
+	end
+	local rand = math.random(1,100)
+	local dc = rand >= 98 and factoryId == "#coinFactory"
+	factory.create(factoryId,p,nil,{diamondCoin=dc})
+end
+
+local function spawnEnemy(self)
+	if(self.pauseSpawn or self.event.started or ( self.event.eventName == "Peaceful Sector") and self.event.inited )then
+		return
+	end
+	local factoryId = "#rockFactory"
+	if self.event.inited and (self.event.eventName == "Meteor Shower" or self.event.eventName == "Alien Invasion" or self.event.eventName == "Coin Shower") then
+		factoryId = getFactoryIdEnemyEvent(self)
+	else 
+		factoryId = getFactoryIdEnemyNormal(self)
+	end
+	local p = getEnemySpawnPos(factoryId)
+	local rand = math.random(1,100)
+	local dc = rand >= 98 and factoryId == "#coinFactory"
+	factory.create(factoryId,p,nil,{diamondCoin=dc})
+end
+
+
+function init(self)
+	self.event = {
+		started = false,
+		inited = false,
+		eventName = "",
+		coinSpawnRate = 0,
+		enemySpawnRate = 0
+	}
+	self.powerUpCompensate = 0;
+	self.pauseSpawn = false
+end
+
+function update(self, dt)
+	if not gameModel.isStarted then 
+		return
+	end
+	coinElapsedTime = coinElapsedTime + dt
+	enemyElapsedTime = enemyElapsedTime + dt
+	
+	local coinSpawnRate = coinBaseSpawnRate - spawnRateJump * gameModel.speedLevel + coinSpawnRand
+	if self.event.inited and self.event.coinSpawnRate > 0 then 
+		coinSpawnRate = self.event.coinSpawnRate
+	end
+	
+	coinSpawnRate = math.max(coinSpawnRate, 0.65)
+	if coinSpawnRate == 0.65 and gameModel.speedLevel > 10 then
+		coinSpawnRate = coinSpawnRate - 0.01 * (gameModel.speedLevel - 10)
+	end
+	coinSpawnRate = math.max(coinSpawnRate, 0.55)
+	
+	if coinElapsedTime >= coinSpawnRate + coinSpawnExtraDelay then
+		coinElapsedTime = 0
+		coinSpawnRand = math.random() - 0.5
+		spawnCoin(self)
+	end
+
+	local enemySpawnRate = enemyBaseSpawnRate - spawnRateJump * gameModel.speedLevel + enemySpawnRand
+	if self.event.inited and self.event.enemySpawnRate > 0 then 
+		enemySpawnRate = self.event.enemySpawnRate
+	end
+	enemySpawnRate = math.max(enemySpawnRate, 0.65)
+
+	if enemySpawnRate == 0.65 and gameModel.speedLevel > 10 then
+		enemySpawnRate = enemySpawnRate - 0.01 * (gameModel.speedLevel - 10)
+	end
+	enemySpawnRate = math.max(enemySpawnRate, 0.55)
+	
+	if enemyElapsedTime >= enemySpawnRate + enemySpawnExtraDelay then
+		enemyElapsedTime = 0
+		enemySpawnRand = math.random() - 0.5
+		spawnEnemy(self)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("eventStart") then 
+		self.event.started = true
+		self.event.eventName = message.eventName
+		enemySpawnExtraDelay = 0
+		coinSpawnExtraDelay = 0
+	end
+	if message_id == hash("eventInit") then
+		self.event.started = false
+		self.event.inited = true
+		if self.event.eventName == "Inverted Controls" then
+			self.event.coinSpawnRate = 1.6
+			self.event.enemySpawnRate = 1.6
+		end
+	end
+	if message_id == hash("eventEnd") then
+		self.event.inited = false
+	end
+	if message_id == hash("directPowerupSpawn") then
+		local factoryId = "#powerupFactory"
+		local p = getEnemySpawnPos(factoryId)
+		local obj = factory.create(factoryId,p)
+		msg.post(obj, "setType", {type=message.type})
+	end
+	if message_id == hash("pauseSpawn") then 
+		self.pauseSpawn = true
+		timer.delay(message.time, false, function()
+			self.pauseSpawn = false
+		end)
+	end
+	if message_id == hash("spawnMagneticCoin") then
+		spawnMagneticCoin(message.pos)
+	end
+end

@@ -1,0 +1,7 @@
+script: "/main/game/gui/control.gui_script"
+fonts {
+  name: "text_regular"
+  font: "/druid/fonts/text_regular.font"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

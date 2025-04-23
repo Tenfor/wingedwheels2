@@ -1,0 +1,62 @@
+local gameModel = require "main/game/gameModel"
+
+local baseSpeed = 200
+local speedJump = 40
+local dmg = 1
+
+local function die(crashedObject,self)
+	if self.alive then
+		if crashedObject == "player" or crashedObject == "rocket" then
+			msg.post("soundController", "playSfx", {url = "#crash"})
+		elseif crashedObject == "shield" then
+			msg.post("soundController", "playSfx", {url = "#shieldCrash"})
+		end
+		particlefx.play("#explode")
+		self.alive = false
+		go.delete()
+	end
+end
+
+function init(self)
+	self.alive = true
+end
+
+function update(self, dt)
+	local p = go.get_position()
+	local speed = baseSpeed + (gameModel.speedLevel * speedJump)
+	p.y = p.y -  speed * dt
+	p.y = math.floor(p.y + 0.5)
+
+	go.set_position(p)
+	
+	if p.y < -1000 then 
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if message.other_group == hash("player") then
+			local targetVehicle = "ship" 
+			if go.get_position().x > 240 then 
+				targetVehicle = "car"
+			end
+			msg.post("scoreGui#scoreHP", "deal_dmg", {amount = dmg, type = targetVehicle})
+			msg.post(targetVehicle, "deal_dmg")
+			--msg.post("ship", "deal_dmg")
+			die("player",self)
+		end
+		if message.other_group == hash("shield") then
+			die("shield",self)
+		end
+		if message.other_group == hash("rocket") and self.alive then
+			msg.post("factories", "spawnMagneticCoin", {pos = go.get_position()})
+			die("rocket",self)
+			go.delete(message.other_id)
+		end
+	end
+	if message_id == hash("speedLevelChange") then
+		self.level = message.level
+	end
+end

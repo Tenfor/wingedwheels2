@@ -1,0 +1,260 @@
+local druid = require("druid.druid")
+local garage = require("main/game/garage")
+local upgrades = require("main/game/upgrades")
+
+local shipDotPositions = {-60,-20,20,60}
+local carDotPositions = {-60,-20,20,60}
+
+local function load_highscore()
+	local filename = sys.get_save_file("sys_save_load", "highscore")
+	local data = sys.load(filename)
+	return data.highscore or 0
+end
+
+local function onHomeButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_menu")
+	msg.post("main:/loader#loader", "hide_garage")
+end
+
+local function setButtons(self)
+	for i = 1, 4 do
+		if garage.selectedCar == i then
+			gui.set_text(self.carButtonTextNodes[i], "Selected")
+			gui.set_color(self.carButtonNodes[i], vmath.vector4(0.6,1,0.6,1))
+		else 
+			gui.set_text(self.carButtonTextNodes[i], "Select")
+			gui.set_color(self.carButtonNodes[i], vmath.vector4(1,1,1,1))
+		end
+
+		if garage.selectedShip == i then
+			gui.set_text(self.shipButtonTextNodes[i], "Selected")
+			gui.set_color(self.shipButtonNodes[i], vmath.vector4(0.6,1,0.6,1))
+		else 
+			gui.set_text(self.shipButtonTextNodes[i], "Select")
+			gui.set_color(self.shipButtonNodes[i], vmath.vector4(1,1,1,1))
+		end
+	end
+end
+
+local function onShipSelect(self,index)
+	if garage.selectedShip ~= index then
+		msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+		garage.setSelectedShip(index)
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	setButtons(self)
+	garage.saveGarage()
+end
+
+
+local function onCarSelect(self,index)
+	if garage.selectedCar ~= index then
+		msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+		garage.setSelectedCar(index)
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	setButtons(self)
+	garage.saveGarage()
+end
+
+local function isShipUnlocked(self, index)
+	if index == 1 then 
+		return true
+	elseif index == 2 then
+		return garage.enemyDestroyed >= 100
+	elseif index == 3 then
+		return garage.eventSurvived >= 30
+	elseif index == 4 then
+		return garage.died >= 25
+	end
+end
+
+local function isCarUnlocked(self, index)
+	if index == 1 then 
+		return true
+	elseif index == 2 then
+		return self.highScore >= 100
+	elseif index == 3 then
+		return garage.powerupCollected >= 30
+	elseif index == 4 then
+		return upgrades.isMaxed()
+	end
+end
+
+local function setDescriptions(self)
+	gui.set_text(self.shipDescNodes[2], "Destroy enemies\n"..math.min(100,garage.enemyDestroyed).."/100")
+	gui.set_text(self.shipDescNodes[3], "Survive events\n"..math.min(30,garage.eventSurvived).."/30")
+	gui.set_text(self.shipDescNodes[4], "Play rounds\n"..math.min(25,garage.died).."/25")
+
+	gui.set_text(self.carDescNodes[3], "Collect Powerups\n"..math.min(30,garage.powerupCollected).."/30")
+end
+
+local function initLock(self)
+	for i = 1, 4 do
+		gui.set_enabled(self.shipButtonNodes[i], isShipUnlocked(self, i))
+		gui.set_enabled(self.carButtonNodes[i], isCarUnlocked(self, i))	
+
+		gui.set_enabled(self.shipDescNodes[i], not isShipUnlocked(self, i))
+		gui.set_enabled(self.carDescNodes[i], not isCarUnlocked(self, i))	
+
+		if not isShipUnlocked(self, i) then
+			gui.set_color(self.shipNodes[i], vmath.vector4(0,0,0,1))
+		end
+		if not isCarUnlocked(self, i) then
+			gui.set_color(self.carNodes[i], vmath.vector4(0,0,0,1))
+		end
+	end
+end
+
+local function vehicleFadeIn(node,direction)
+	local pos = vmath.vector3(-240,22.5,0)
+	if direction == "right" then
+		pos.x = 240
+	end
+	gui.set_position(node, pos)
+	gui.set_alpha(node, 0)
+	pos.x = 0
+	gui.animate(node, "position", pos, gui.EASING_OUTQUAD, 0.5)
+	gui.animate(node, "color.w", 1, gui.EASING_OUTQUAD, 0.5)
+end
+
+local function vehicleFadeOut(node,direction)
+	local pos = vmath.vector3(0,22.5,0)
+	gui.set_position(node, pos)
+	gui.set_alpha(node, 1)
+	if direction == "right" then
+		pos.x = pos.x + 240
+	else
+		pos.x = pos.x - 240
+	end
+	gui.animate(node, "position", pos, gui.EASING_OUTQUAD, 0.5)
+	gui.animate(node, "color.w", 0, gui.EASING_OUTQUAD, 0.5)
+end
+
+local function onShipPrev(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	vehicleFadeOut(self.shipNodes[self.selectedShip],"right")
+	self.selectedShip = self.selectedShip - 1
+	if self.selectedShip < 1 then 
+		self.selectedShip = 4
+	end
+	local pos = gui.get_position(self.shipDotNode)
+	gui.set_position(self.shipDotNode, vmath.vector3(shipDotPositions[self.selectedShip],pos.y,pos.z))
+	vehicleFadeIn(self.shipNodes[self.selectedShip],"left")
+end
+
+local function onShipNext(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	vehicleFadeOut(self.shipNodes[self.selectedShip],"left")
+	self.selectedShip = self.selectedShip + 1
+	if self.selectedShip > 4 then 
+		self.selectedShip = 1
+	end
+	local pos = gui.get_position(self.shipDotNode)
+	gui.set_position(self.shipDotNode, vmath.vector3(shipDotPositions[self.selectedShip],pos.y,pos.z))
+	vehicleFadeIn(self.shipNodes[self.selectedShip],"right")
+end
+
+local function onCarPrev(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	vehicleFadeOut(self.carNodes[self.selectedCar],"right")
+	self.selectedCar = self.selectedCar - 1
+	if self.selectedCar < 1 then 
+		self.selectedCar = 4
+	end
+	local pos = gui.get_position(self.carDotNode)
+	gui.set_position(self.carDotNode, vmath.vector3(carDotPositions[self.selectedCar],pos.y,pos.z))
+	vehicleFadeIn(self.carNodes[self.selectedCar],"left")
+end
+
+local function onCarNext(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	vehicleFadeOut(self.carNodes[self.selectedCar],"left")
+
+	self.selectedCar = self.selectedCar + 1
+	if self.selectedCar > 4 then 
+		self.selectedCar = 1
+	end
+	local pos = gui.get_position(self.carDotNode)
+	gui.set_position(self.carDotNode, vmath.vector3(carDotPositions[self.selectedCar],pos.y,pos.z))
+	vehicleFadeIn(self.carNodes[self.selectedCar],"right")
+end
+
+local function initVehicles(self)
+	local pos = vmath.vector3(-240,22.5,0)
+	gui.set_position(self.carNodes[self.selectedCar], pos)
+	gui.set_position(self.shipNodes[self.selectedShip], pos)
+
+	self.selectedCar = garage.selectedCar
+	self.selectedShip = garage.selectedShip
+	pos.x = 0
+	gui.set_position(self.carNodes[self.selectedCar], pos)
+	gui.set_position(self.shipNodes[self.selectedShip], pos)
+
+
+	local carDotPos = gui.get_position(self.carDotNode)
+	local shipDotPos = gui.get_position(self.carDotNode)
+	gui.set_position(self.carDotNode, vmath.vector3(carDotPositions[self.selectedCar],carDotPos.y,carDotPos.z))
+	gui.set_position(self.shipDotNode, vmath.vector3(carDotPositions[self.selectedShip],shipDotPos.y,shipDotPos.z))
+	
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.highScore = load_highscore()
+
+	self.selectedCar = 1
+	self.selectedShip = 1
+	
+	self.homeButton = self.druid:new_button("homeButton", onHomeButton)
+	self.shipPrevButton = self.druid:new_button("shipPrev", onShipPrev)
+	self.shipNextButton = self.druid:new_button("shipNext", onShipNext)
+	self.shipDotNode = gui.get_node("shipDot")
+	self.shipNodes = {gui.get_node("ship1"),gui.get_node("ship2"),gui.get_node("ship3"),gui.get_node("ship4")}
+	self.shipButtonNodes = {gui.get_node("shipSelect1"),gui.get_node("shipSelect2"),gui.get_node("shipSelect3"),gui.get_node("shipSelect4")}
+	self.shipButtonTextNodes = {gui.get_node("shipBtnText1"),gui.get_node("shipBtnText2"),gui.get_node("shipBtnText3"),gui.get_node("shipBtnText4")}		
+	self.shipDescNodes = {gui.get_node("shipDescription1"),gui.get_node("shipDescription2"),gui.get_node("shipDescription3"),gui.get_node("shipDescription4")}
+
+	self.shipButton1 = self.druid:new_button("shipSelect1", onShipSelect, 1)
+	self.shipButton2 = self.druid:new_button("shipSelect2", onShipSelect, 2)
+	self.shipButton3 = self.druid:new_button("shipSelect3", onShipSelect, 3)
+	self.shipButton4 = self.druid:new_button("shipSelect4", onShipSelect, 4)
+
+	self.carPrevButton = self.druid:new_button("carPrev", onCarPrev)
+	self.carNextButton = self.druid:new_button("carNext", onCarNext)
+	self.carDotNode = gui.get_node("carDot")
+	self.carNodes = {gui.get_node("car1"),gui.get_node("car2"),gui.get_node("car3"),gui.get_node("car4")}
+	self.carButtonNodes = {gui.get_node("carSelect1"),gui.get_node("carSelect2"),gui.get_node("carSelect3"),gui.get_node("carSelect4")}			
+	self.carButtonTextNodes = {gui.get_node("carBtnText1"),gui.get_node("carBtnText2"),gui.get_node("carBtnText3"),gui.get_node("carBtnText4")}			
+	self.carDescNodes = {gui.get_node("carDescription1"),gui.get_node("carDescription2"),gui.get_node("carDescription3"),gui.get_node("carDescription4")}
+
+	self.carButton1 = self.druid:new_button("carSelect1", onCarSelect, 1)
+	self.carButton2 = self.druid:new_button("carSelect2", onCarSelect, 2)
+	self.carButton3 = self.druid:new_button("carSelect3", onCarSelect, 3)
+	self.carButton4 = self.druid:new_button("carSelect4", onCarSelect, 4)
+
+	initVehicles(self)
+	setButtons(self)
+	setDescriptions(self)
+	initLock(self)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+end

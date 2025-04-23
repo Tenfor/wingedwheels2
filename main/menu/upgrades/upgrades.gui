@@ -1,0 +1,1090 @@
+script: "/main/menu/upgrades/upgrades.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+textures {
+  name: "sprites"
+  texture: "/main/game/sprites.atlas"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 456.0
+  }
+  scale {
+    x: 0.45
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/panel"
+  id: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 238.0
+    y: 768.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Upgrades"
+  font: "game2"
+  id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+    y: 561.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "movement"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "movement_bg"
+  parent: "movement"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Movement"
+  font: "game2"
+  id: "movement_title"
+  parent: "movement"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "game2"
+  id: "movement_lvl"
+  parent: "movement"
+}
+nodes {
+  position {
+    y: 15.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/movement"
+  id: "movement_icon"
+  parent: "movement"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Speed+"
+  font: "game2"
+  id: "movement_desc"
+  parent: "movement"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "movement_btn"
+  parent: "movement"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "movement_btn_back"
+  parent: "movement_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "movement_btn_price"
+  pivot: PIVOT_W
+  parent: "movement_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "movement_btn_coin"
+  parent: "movement_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 330.0
+    y: 561.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "powerup"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "powerup_bg"
+  parent: "powerup"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Powerup Spawn"
+  font: "game2"
+  id: "powerup_title"
+  parent: "powerup"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "game2"
+  id: "powerup_lvl"
+  parent: "powerup"
+}
+nodes {
+  position {
+    y: 15.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "sprites/powerupchance"
+  id: "powerup_icon"
+  parent: "powerup"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Chance+"
+  font: "game2"
+  id: "powerup_desc"
+  parent: "powerup"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "powerup_btn"
+  parent: "powerup"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "powerup_btn_back"
+  parent: "powerup_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "powerup_btn_price"
+  pivot: PIVOT_W
+  parent: "powerup_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "powerup_btn_coin"
+  parent: "powerup_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 150.0
+    y: 381.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "lives"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "lives_bg"
+  parent: "lives"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Lives"
+  font: "game2"
+  id: "lives_title"
+  parent: "lives"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/3"
+  font: "game2"
+  id: "lives_lvl"
+  parent: "lives"
+}
+nodes {
+  position {
+    y: 14.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/heartgui"
+  id: "lives_icon"
+  parent: "lives"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Starting Lives+"
+  font: "game2"
+  id: "lives_desc"
+  parent: "lives"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "lives_btn"
+  parent: "lives"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "lives_btn_back"
+  parent: "lives_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "lives_btn_price"
+  pivot: PIVOT_W
+  parent: "lives_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "lives_btn_coin"
+  parent: "lives_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 330.0
+    y: 381.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "shield"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "shield_bg"
+  parent: "shield"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Energy Shield"
+  font: "game2"
+  id: "shield_title"
+  parent: "shield"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "game2"
+  id: "shield_lvl"
+  parent: "shield"
+}
+nodes {
+  position {
+    y: 14.0
+  }
+  scale {
+    x: 0.22
+    y: 0.22
+  }
+  type: TYPE_BOX
+  texture: "sprites/powerup_shield"
+  id: "shield_icon"
+  parent: "shield"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Duration+"
+  font: "game2"
+  id: "shield_desc"
+  parent: "shield"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "shield_btn"
+  parent: "shield"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "shield_btn_back"
+  parent: "shield_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "shield_btn_price"
+  pivot: PIVOT_W
+  parent: "shield_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "shield_btn_coin"
+  parent: "shield_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 150.0
+    y: 201.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "magnet"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "magnet_bg"
+  parent: "magnet"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Magnetic Field"
+  font: "game2"
+  id: "magnet_title"
+  parent: "magnet"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "game2"
+  id: "magnet_lvl"
+  parent: "magnet"
+}
+nodes {
+  position {
+    y: 14.0
+  }
+  scale {
+    x: 0.22
+    y: 0.22
+  }
+  type: TYPE_BOX
+  texture: "sprites/powerup_magnet"
+  id: "magnet_icon"
+  parent: "magnet"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Duration+"
+  font: "game2"
+  id: "magnet_desc"
+  parent: "magnet"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "magnet_btn"
+  parent: "magnet"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "magnet_btn_back"
+  parent: "magnet_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "magnet_btn_price"
+  pivot: PIVOT_W
+  parent: "magnet_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "magnet_btn_coin"
+  parent: "magnet_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 330.0
+    y: 201.0
+  }
+  size {
+    x: 169.0
+    y: 169.0
+  }
+  type: TYPE_BOX
+  id: "weapons"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "weapons_bg"
+  parent: "weapons"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 69.0
+  }
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Weapon System"
+  font: "game2"
+  id: "weapons_title"
+  parent: "weapons"
+}
+nodes {
+  position {
+    y: 50.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/5"
+  font: "game2"
+  id: "weapons_lvl"
+  parent: "weapons"
+}
+nodes {
+  position {
+    y: 14.0
+  }
+  scale {
+    x: 0.22
+    y: 0.22
+  }
+  type: TYPE_BOX
+  texture: "sprites/powerup_rocket"
+  id: "weapons_icon"
+  parent: "weapons"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -22.0
+  }
+  scale {
+    x: 0.28
+    y: 0.28
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Ammo+"
+  font: "game2"
+  id: "weapons_desc"
+  parent: "weapons"
+}
+nodes {
+  position {
+    y: -53.0
+  }
+  size {
+    x: 93.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "weapons_btn"
+  parent: "weapons"
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.26
+    y: 0.26
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "weapons_btn_back"
+  parent: "weapons_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -7.0
+    y: -1.0
+  }
+  scale {
+    x: 0.32
+    y: 0.32
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "10"
+  font: "game2"
+  id: "weapons_btn_price"
+  pivot: PIVOT_W
+  parent: "weapons_btn"
+}
+nodes {
+  position {
+    x: -24.0
+    y: -1.0
+  }
+  scale {
+    x: 0.17
+    y: 0.17
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "weapons_btn_coin"
+  parent: "weapons_btn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 243.0
+    y: 686.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/table"
+  id: "box1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+    y: 6.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "game2"
+  id: "coins"
+  pivot: PIVOT_W
+  parent: "box1"
+}
+nodes {
+  position {
+    x: -100.0
+    y: 6.0
+  }
+  scale {
+    x: 0.56
+    y: 0.56
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "btn1_coin7"
+  parent: "box1"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 242.0
+    y: 56.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeButton"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

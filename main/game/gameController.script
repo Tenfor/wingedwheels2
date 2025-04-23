@@ -1,0 +1,65 @@
+local gameModel = require("main/game/gameModel")
+local upgrades = require("main/game/upgrades")
+
+local function loadUpgrades()
+	local filename = sys.get_save_file("sys_save_load", "upgrades")
+	local data = sys.load(filename)
+	upgrades.setCoins(data.coins or 0)
+	upgrades.setMovementLevel(data.movement or 0)
+	upgrades.setPowerupLevel(data.powerup or 0)
+	upgrades.setLivesLevel(data.lives or 0)
+	upgrades.setMagnetLevel(data.magnet or 0)
+	upgrades.setShieldLevel(data.shield or 0)
+	upgrades.setWeaponsLevel(data.weapons or 0)
+end
+
+local function resetUpgrades()
+	upgrades.setCoins(0)
+	upgrades.setMovementLevel(0)
+	upgrades.setPowerupLevel(0)
+	upgrades.setLivesLevel(0)
+	upgrades.setMagnetLevel(0)
+	upgrades.setShieldLevel(0)
+	upgrades.setWeaponsLevel(0)
+	upgrades.saveUpgrades();
+end
+
+function init(self)
+--	msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
+--	math.randomseed(os.clock() * 100000000000)
+	
+	gameModel.reset()	
+	
+	self.speed_timer = -3
+	self.enemy_timer = -3
+	self.event_timer = -3
+
+	self.speed_freq = 12
+	self.enemy_freq = 30
+	self.event_freq = 40
+
+	loadUpgrades()
+	--resetUpgrades()
+end
+
+function update(self, dt)
+	if not gameModel.isOver and gameModel.isStarted then
+		self.speed_timer = self.speed_timer + dt
+		self.enemy_timer = self.enemy_timer + dt
+		self.event_timer = self.event_timer + dt
+	end
+	
+	if self.speed_timer >= self.speed_freq then
+		self.speed_timer = 0
+		gameModel.increaseSpeedLevel()
+	end
+
+	if self.enemy_timer >= self.enemy_freq then
+		self.enemy_timer = 0
+		gameModel.increaseEnemyLevel()
+	end
+
+	if self.event_timer >= self.event_freq then
+		self.event_timer = 0
+	end
+end

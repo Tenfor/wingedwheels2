@@ -1,0 +1,849 @@
+script: "/main/garage/garage.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+textures {
+  name: "sprites"
+  texture: "/main/game/sprites.atlas"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 456.0
+  }
+  scale {
+    x: 0.45
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/panel"
+  id: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 238.0
+    y: 768.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Garage"
+  font: "game2"
+  id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 241.0
+    y: 566.0
+  }
+  size {
+    x: 211.0
+    y: 211.0
+  }
+  type: TYPE_BOX
+  id: "ship"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "shipBg"
+  parent: "ship"
+  clipping_mode: CLIPPING_MODE_STENCIL
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -0.833325
+    y: 7.500001
+  }
+  size {
+    x: 185.0
+    y: 160.0
+  }
+  type: TYPE_BOX
+  id: "box"
+  parent: "shipBg"
+  inherit_alpha: true
+  clipping_mode: CLIPPING_MODE_STENCIL
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/ship1"
+  id: "ship1"
+  parent: "box"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Destroy enemies\n"
+  "0/100"
+  font: "game2"
+  id: "shipDescription1"
+  parent: "ship1"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "shipSelect1"
+  parent: "ship1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "shipBtnText1"
+  parent: "shipSelect1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/ship2"
+  id: "ship2"
+  parent: "box"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Destroy enemies\n"
+  "0/100"
+  font: "game2"
+  id: "shipDescription2"
+  parent: "ship2"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "shipSelect2"
+  parent: "ship2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "shipBtnText2"
+  parent: "shipSelect2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/ship3"
+  id: "ship3"
+  parent: "box"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Survive Events\n"
+  "0/25"
+  font: "game2"
+  id: "shipDescription3"
+  parent: "ship3"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "shipSelect3"
+  parent: "ship3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "shipBtnText3"
+  parent: "shipSelect3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/ship4"
+  id: "ship4"
+  parent: "box"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Die and try again\n"
+  "0/15"
+  font: "game2"
+  id: "shipDescription4"
+  parent: "ship4"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "shipSelect4"
+  parent: "ship4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "shipBtnText4"
+  parent: "shipSelect4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -166.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Backward_BTN"
+  id: "shipPrev"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 166.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Forward_BTN"
+  id: "shipNext"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot1"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -20.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot2"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 20.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot3"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot4"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_03"
+  id: "shipDot"
+  parent: "ship"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 64.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeButton"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 241.0
+    y: 277.0
+  }
+  size {
+    x: 211.0
+    y: 211.0
+  }
+  type: TYPE_BOX
+  id: "car"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  type: TYPE_BOX
+  texture: "menu/table2"
+  id: "carBg"
+  parent: "car"
+  clipping_mode: CLIPPING_MODE_STENCIL
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -0.833325
+    y: 7.500001
+  }
+  size {
+    x: 185.0
+    y: 160.0
+  }
+  type: TYPE_BOX
+  id: "carBox"
+  parent: "carBg"
+  inherit_alpha: true
+  clipping_mode: CLIPPING_MODE_STENCIL
+  alpha: 0.0
+}
+nodes {
+  position {
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/car1_big"
+  id: "car1"
+  parent: "carBox"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Collect 100 coin in a \n"
+  "single round"
+  font: "game2"
+  id: "carDescription1"
+  parent: "car1"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "carSelect1"
+  parent: "car1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "carBtnText1"
+  parent: "carSelect1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "sprites/car2"
+  id: "car2"
+  parent: "carBox"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -100.0
+  }
+  scale {
+    x: 0.375
+    y: 0.375
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Collect 100 coin in a \n"
+  "single round"
+  font: "game2"
+  id: "carDescription2"
+  parent: "car2"
+}
+nodes {
+  position {
+    y: -102.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "carSelect2"
+  parent: "car2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "carBtnText2"
+  parent: "carSelect2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "sprites/car3"
+  id: "car3"
+  parent: "carBox"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -100.0
+  }
+  scale {
+    x: 0.375
+    y: 0.375
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Collect Powerups\n"
+  "0/30"
+  font: "game2"
+  id: "carDescription3"
+  parent: "car3"
+}
+nodes {
+  position {
+    y: -102.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "carSelect3"
+  parent: "car3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "carBtnText3"
+  parent: "carSelect3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 22.5
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "sprites/car4_big"
+  id: "car4"
+  parent: "carBox"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.833333
+    y: -200.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Buy all upgrades"
+  font: "game2"
+  id: "carDescription4"
+  parent: "car4"
+}
+nodes {
+  position {
+    y: -204.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "carSelect4"
+  parent: "car4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "SELECT"
+  font: "game2"
+  id: "carBtnText4"
+  parent: "carSelect4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -166.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Backward_BTN"
+  id: "carPrev"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 166.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Forward_BTN"
+  id: "carNext"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "cdot1"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -20.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "cdot2"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 20.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "cdot3"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "cdot4"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+    y: -84.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_03"
+  id: "carDot"
+  parent: "car"
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

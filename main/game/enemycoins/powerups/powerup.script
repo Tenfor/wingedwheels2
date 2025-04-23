@@ -1,0 +1,83 @@
+local gameModel = require "main/game/gameModel"
+local gameSettings = require "main/gameSettings"
+
+go.property("POWERUP_TYPE", hash("random"))
+
+local baseSpeed = 200
+
+local function setType(self,type)
+	sprite.play_flipbook("#sprite", "powerup_"..type)
+	self.type = type
+end
+
+local function randomize(self)
+	local rand = math.random(1,13)
+	if rand == 13 then 
+		setType(self, "extraLife")
+	elseif rand < 13 and rand >= 8 then 
+		setType(self, "magnet")
+	elseif rand < 8 and rand >= 5 then
+		setType(self, "shield")
+	else 
+		setType(self, "rocket")
+	end
+end
+
+local function collect(self)
+	msg.post("soundController", "playSfx", {url = "#powerupCollect"})
+	msg.post("scoreGui#scoreHP", "collectPowerup", {type = self.type})
+	self.collected = true
+	if self.type == "shield" then 
+		msg.post("car_shield#shield", "activate_power_up")
+		msg.post("ship_shield#shield", "activate_power_up")
+		msg.post("soundController", "playSfx", {url = "#shield_activate"})
+		msg.post("soundController", "playSfx", {url = "#shield_vo"})
+	elseif self.type == "magnet" then
+		msg.post("car_magnet#magnet", "activate_power_up")
+		msg.post("ship_magnet#magnet", "activate_power_up")
+		msg.post("soundController", "playSfx", {url = "#magnet_activate"})
+		msg.post("soundController", "playSfx", {url = "#magnet_vo"})
+	elseif self.type == "rocket" then
+		msg.post("carRadar#radar", "activate_power_up")
+		msg.post("shipRadar#radar", "activate_power_up")
+		msg.post("soundController", "playSfx", {url = "#rocket_vo"})
+	elseif self.type == "extraLife" then
+		msg.post("soundController", "playSfx", {url = "#extralife_vo"})
+	end
+end
+
+function init(self)
+	if self.POWERUP_TYPE == hash("random") then 
+		randomize(self)
+	end
+	self.collected = false
+end
+
+function update(self, dt)
+	local p = go.get_position()
+	local speed = baseSpeed + (gameModel.speedLevel * 20)
+	p.y = p.y -  speed * dt
+	go.set_position(p)
+	if p.y < -500 then 
+		if not gameModel.isOver then
+		--	msg.post("scoreGui#scoreHP", "collectPowerup", {type = self.type})
+		end
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if message.other_group == hash("player") and not self.collected then
+			collect(self)
+			go.delete()
+		end
+	end
+	if message_id == hash("speedLevelChange") then
+		self.level = message.level
+	end
+	if message_id == hash("setType") then
+		setType(self, message.type)
+	end
+end

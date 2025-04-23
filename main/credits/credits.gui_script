@@ -1,0 +1,38 @@
+local druid = require("druid.druid")
+
+local function onHomeButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_menu")
+	msg.post("main:/loader#loader", "hide_credits")
+end
+
+local function onFb()
+	sys.open_url("https://www.facebook.com/tenforgames",{target = "_blank"})
+end
+
+local function onDc()
+	sys.open_url("https://discord.gg/xFszFyuNmT",{target = "_blank"})
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.homeButton = self.druid:new_button("homeBtn", onHomeButton)
+	self.fbBtn = self.druid:new_button("fbBtn", onFb)
+	self.dcBtn = self.druid:new_button("dcBtn", onDc)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+end

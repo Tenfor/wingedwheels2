@@ -1,0 +1,88 @@
+images {
+  image: "/assets/menu/btn.png"
+}
+images {
+  image: "/assets/menu/Info_BTN.png"
+}
+images {
+  image: "/assets/menu/Music_BTN.png"
+}
+images {
+  image: "/assets/menu/Sound_BTN.png"
+}
+images {
+  image: "/assets/menu/logo.png"
+}
+images {
+  image: "/assets/menu/panel.png"
+}
+images {
+  image: "/assets/menu/table.png"
+}
+images {
+  image: "/assets/menu/Replay_BTN.png"
+}
+images {
+  image: "/assets/menu/table2.png"
+}
+images {
+  image: "/assets/menu/upgradebtn.png"
+}
+images {
+  image: "/assets/menu/Musicoff_BTN.png"
+}
+images {
+  image: "/assets/menu/Soundoff_BTN.png"
+}
+images {
+  image: "/assets/menu/Forward_BTN.png"
+}
+images {
+  image: "/assets/menu/Backward_BTN.png"
+}
+images {
+  image: "/assets/menu/Highscores_BTN.png"
+}
+images {
+  image: "/assets/menu/Dot_01.png"
+}
+images {
+  image: "/assets/menu/Dot_03.png"
+}
+images {
+  image: "/assets/menu/input.png"
+}
+images {
+  image: "/assets/menu/Pause_BTN.png"
+}
+images {
+  image: "/assets/menu/Ok_BTN.png"
+}
+images {
+  image: "/assets/menu/Close_BTN.png"
+}
+images {
+  image: "/assets/menu/panel2.png"
+}
+images {
+  image: "/assets/menu/onBtn.png"
+}
+images {
+  image: "/assets/menu/offBtn.png"
+}
+images {
+  image: "/assets/menu/Settings_BTN.png"
+}
+images {
+  image: "/assets/menu/tickIcon.png"
+}
+images {
+  image: "/assets/menu/xIcon.png"
+}
+images {
+  image: "/assets/menu/dcLogo.png"
+}
+images {
+  image: "/assets/menu/fblogo.png"
+}
+extrude_borders: 2

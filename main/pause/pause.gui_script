@@ -1,0 +1,115 @@
+local druid = require("druid.druid")
+local gameSettings = require "main/gameSettings"
+
+local function saveMusicSoundSettings()
+	local filename = sys.get_save_file("sys_save_load", "settings")
+	sys.save(filename, { musicSettings = gameSettings.music, soundSettings = gameSettings.sounds, showTutorial = gameSettings.showTutorial })
+end
+
+local function onNo(self)
+	gui.set_enabled(self.panelRoot, true)
+	gui.set_enabled(self.confirmPanelRoot, false)
+end
+
+local function onYes(self)
+	msg.post("main:/loader#loader", "toggle_pause")
+	msg.post("game:/scoreGui#scoreHP", "returnMenu" )
+end
+
+local function onMusic(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	gameSettings.setMusic(not gameSettings.music)
+	msg.post("game:/soundController", "toggle_musics" )
+	if gameSettings.music then
+		gui.play_flipbook(self.musicButtonNode, "Music_BTN")
+		msg.post("game:/soundController", "stopMusic", {url = "#bgMusic"} )
+		msg.post("game:/soundController", "playMusic", {url = "#bgMusic"} )
+	else
+		gui.play_flipbook(self.musicButtonNode, "Musicoff_BTN")
+		
+	end
+	saveMusicSoundSettings()
+end
+
+local function onSounds(self)
+	gameSettings.setSounds(not gameSettings.sounds)
+	msg.post("game:/soundController", "toggle_sounds" )
+	--	local btnText = gui.get_node("soundText")
+	if gameSettings.sounds then
+		msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+		gui.play_flipbook(self.soundButtonNode, "Sound_BTN")
+	else
+		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
+	end
+	saveMusicSoundSettings()
+end
+
+local function onHome(self)
+	gui.set_enabled(self.panelRoot, false)
+	gui.set_enabled(self.confirmPanelRoot, true)
+end
+
+local function onPauseBtn(self)
+	msg.post("main:/loader#loader", "toggle_pause")
+	if(self.panelHidden) then 
+		gui.set_enabled(self.panelRoot, true)
+		self.panelHidden = false;
+	else 
+		gui.set_enabled(self.panelRoot, false)
+		self.panelHidden = true;
+	end
+end
+
+local function onResume(self)
+	onPauseBtn(self)
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.pauseBtn = self.druid:new_button("pauseBtn", onPauseBtn)
+
+	self.panelRoot = gui.get_node("panelRoot")
+	gui.set_enabled(self.panelRoot, false)
+	self.panelHidden = true;
+
+	self.confirmPanelRoot = gui.get_node("confirmPanelRoot")
+	gui.set_enabled(self.confirmPanelRoot, false)
+	self.confirmPanelHidden = true;
+
+	self.musicBtn = self.druid:new_button("musicBtn", onMusic)
+	self.soundsBtn = self.druid:new_button("soundsBtn", onSounds)
+	self.homeBtn = self.druid:new_button("homeBtn", onHome)
+	self.resumeBtn = self.druid:new_button("resumeBtn", onResume)
+
+	self.yesBtn = self.druid:new_button("yesBtn", onYes)
+	self.noBtn = self.druid:new_button("noBtn", onNo)
+
+	self.musicButtonNode = gui.get_node("musicBtn")
+	self.soundButtonNode = gui.get_node("soundsBtn")
+
+
+	if not gameSettings.sounds then 
+		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
+	end
+	if not gameSettings.music then 
+		gui.play_flipbook(self.musicButtonNode, "Musicoff_BTN")
+	end
+	
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+
+end

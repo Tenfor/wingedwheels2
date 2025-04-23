@@ -1,0 +1,48 @@
+key_trigger {
+  input: KEY_LEFT
+  action: "car_left"
+}
+key_trigger {
+  input: KEY_RIGHT
+  action: "car_right"
+}
+key_trigger {
+  input: KEY_A
+  action: "ship_left"
+}
+key_trigger {
+  input: KEY_D
+  action: "ship_right"
+}
+key_trigger {
+  input: KEY_SPACE
+  action: "space"
+}
+key_trigger {
+  input: KEY_BACKSPACE
+  action: "key_backspace"
+}
+key_trigger {
+  input: KEY_LEFT
+  action: "key_left"
+}
+key_trigger {
+  input: KEY_RIGHT
+  action: "key_right"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "touch"
+}
+touch_trigger {
+  input: TOUCH_MULTI
+  action: "multitouch"
+}
+text_trigger {
+  input: TEXT
+  action: "text"
+}
+text_trigger {
+  input: MARKED_TEXT
+  action: "marked_text"
+}

@@ -1,0 +1,189 @@
+local druid = require("druid.druid")
+local upgrades  = require "main/game/upgrades"
+
+local function onHomeButton(self)
+	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
+	msg.post("main:/loader#loader", "show_menu")
+	msg.post("main:/loader#loader", "hide_upgrades")
+end
+
+local function updateTexts(self)
+	--COINS
+	gui.set_text(self.coins, tostring(upgrades.coins))
+	--MOVEMENT
+	gui.set_text(self.movementLevel, tostring(upgrades.movement.level).."/"..tostring(upgrades.movement.maxLevel))
+	local movementPriceText = tostring(upgrades.movement.prices[upgrades.movement.level+1])
+	if upgrades.movement.level == upgrades.movement.maxLevel then 
+		movementPriceText = "MAX"
+	end
+	gui.set_text(self.movementPrice, movementPriceText)
+
+	--POWERUP
+	gui.set_text(self.powerupLevel, tostring(upgrades.powerup.level).."/"..tostring(upgrades.powerup.maxLevel))
+	local powerupPriceText = tostring(upgrades.powerup.prices[upgrades.powerup.level+1])
+	if upgrades.powerup.level == upgrades.powerup.maxLevel then 
+		powerupPriceText = "MAX"
+	end
+	gui.set_text(self.powerupPrice, powerupPriceText)
+
+	--LIVES
+	gui.set_text(self.livesLevel, tostring(upgrades.lives.level).."/"..tostring(upgrades.lives.maxLevel))
+	local livesPriceText = tostring(upgrades.lives.prices[upgrades.lives.level+1])
+	if upgrades.lives.level == upgrades.lives.maxLevel then 
+		livesPriceText = "MAX"
+	end
+	gui.set_text(self.livesPrice, livesPriceText)
+
+	--SHIELD
+	gui.set_text(self.shieldLevel, tostring(upgrades.shield.level).."/"..tostring(upgrades.shield.maxLevel))
+	local shieldPriceText = tostring(upgrades.shield.prices[upgrades.shield.level+1])
+	if upgrades.shield.level == upgrades.shield.maxLevel then 
+		shieldPriceText = "MAX"
+	end
+	gui.set_text(self.shieldPrice, shieldPriceText)
+
+	--MAGNET
+	gui.set_text(self.magnetLevel, tostring(upgrades.magnet.level).."/"..tostring(upgrades.magnet.maxLevel))
+	local magnetPriceText = tostring(upgrades.magnet.prices[upgrades.magnet.level+1])
+	if upgrades.magnet.level == upgrades.magnet.maxLevel then 
+		magnetPriceText = "MAX"
+	end
+	gui.set_text(self.magnetPrice, magnetPriceText)
+
+	--WEAPONS
+	gui.set_text(self.weaponsLevel, tostring(upgrades.weapons.level).."/"..tostring(upgrades.weapons.maxLevel))
+	local weaponsPriceText = tostring(upgrades.weapons.prices[upgrades.weapons.level+1])
+	if upgrades.weapons.level == upgrades.weapons.maxLevel then 
+		weaponsPriceText = "MAX"
+	end
+	gui.set_text(self.weaponsPrice, weaponsPriceText)
+end
+
+local function onMovementButton(self)
+	local price = upgrades.movement.prices[upgrades.movement.level+1]
+	if upgrades.movement.level < upgrades.movement.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setMovementLevel(upgrades.movement.level + 1)
+		upgrades.saveUpgrades()
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+local function onPowerupButton(self)
+	local price = upgrades.powerup.prices[upgrades.powerup.level+1]
+	if upgrades.powerup.level < upgrades.powerup.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setPowerupLevel(upgrades.powerup.level + 1)
+		upgrades.saveUpgrades()
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+local function onLivesButton(self)
+	local price = upgrades.lives.prices[upgrades.lives.level+1]
+	if upgrades.lives.level < upgrades.lives.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setLivesLevel(upgrades.lives.level + 1)
+		upgrades.saveUpgrades()
+	else 
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+local function onShieldButton(self)
+	local price = upgrades.shield.prices[upgrades.shield.level+1]
+	if upgrades.shield.level < upgrades.shield.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setShieldLevel(upgrades.shield.level + 1)
+		upgrades.saveUpgrades()
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+local function onMagnetButton(self)
+	local price = upgrades.magnet.prices[upgrades.magnet.level+1]
+	if upgrades.magnet.level < upgrades.magnet.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setMagnetLevel(upgrades.magnet.level + 1)
+		upgrades.saveUpgrades()
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+local function onWeaponsButton(self)
+	local price = upgrades.weapons.prices[upgrades.weapons.level+1]
+	if upgrades.weapons.level < upgrades.weapons.maxLevel and upgrades.coins >= price then
+		msg.post("game:/soundController", "playSfx", {url = "#buy"} )
+		upgrades.setCoins(upgrades.coins - price)
+		upgrades.setWeaponsLevel(upgrades.weapons.level + 1)
+		upgrades.saveUpgrades()
+	else
+		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
+	end
+	updateTexts(self)
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.homeButton = self.druid:new_button("homeButton", onHomeButton)
+	self.movementButton = self.druid:new_button("movement_btn", onMovementButton)
+	self.powerupButton = self.druid:new_button("powerup_btn", onPowerupButton)
+	self.livesButton = self.druid:new_button("lives_btn", onLivesButton)
+	self.shieldButton = self.druid:new_button("shield_btn", onShieldButton)
+	self.magnetButton = self.druid:new_button("magnet_btn", onMagnetButton)
+	self.weaponsButton = self.druid:new_button("weapons_btn", onWeaponsButton)
+
+	self.coins = gui.get_node("coins")
+
+	self.movementLevel = gui.get_node("movement_lvl")
+	self.movementPrice = gui.get_node("movement_btn_price")
+
+	self.powerupLevel = gui.get_node("powerup_lvl")
+	self.powerupPrice = gui.get_node("powerup_btn_price")
+	
+	self.livesLevel = gui.get_node("lives_lvl")
+	self.livesPrice = gui.get_node("lives_btn_price")
+
+	self.shieldLevel = gui.get_node("shield_lvl")
+	self.shieldPrice = gui.get_node("shield_btn_price")
+
+	self.magnetLevel = gui.get_node("magnet_lvl")
+	self.magnetPrice = gui.get_node("magnet_btn_price")
+
+	self.weaponsLevel = gui.get_node("weapons_lvl")
+	self.weaponsPrice = gui.get_node("weapons_btn_price")
+
+	msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+
+	updateTexts(self)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function final(self)
+	self.druid:final()
+end

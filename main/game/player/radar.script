@@ -1,0 +1,55 @@
+local upgrades = require "main/game/upgrades"
+go.property("radarType", hash("car"))
+
+local function deactivate(self)
+	msg.post("#collisionobject", "disable")
+end
+
+local function activate(self)
+	msg.post("#collisionobject", "enable")
+	self.ammo = self.ammo + upgrades.weapons.data[upgrades.weapons.level+1]
+end
+
+local function shoot(self, target)
+	if self.ammo > 0 then 
+		self.ammo = self.ammo - 1
+		if self.radarType == hash("ship") then
+			msg.post("ship", "shoot_rocket", {target = target})
+			msg.post("carRadar", "ammo_consumed", {ammo = self.ammo})
+		elseif self.radarType == hash("car") then
+			msg.post("car", "shoot_rocket", {target = target})
+			msg.post("shipRadar", "ammo_consumed", {ammo = self.ammo})
+		end
+		if self.ammo <= 0 then 
+			deactivate(self)
+		end
+	end
+end 
+
+function init(self)
+	self.ammo = 0;
+	deactivate(self)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") then
+		if message.enter and message.other_group == hash("enemy") then
+			shoot(self, message.other_id)
+		end
+	end
+	if message_id == hash("ammo_consumed") then
+		self.ammo = self.ammo - 1
+		if self.ammo <= 0 then 
+			deactivate(self)
+		end
+	end
+	if message_id == hash("activate_power_up") then
+		activate(self)
+	end
+end

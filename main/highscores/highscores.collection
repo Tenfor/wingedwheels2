@@ -1,0 +1,10 @@
+name: "highscores"
+scale_along_z: 0
+embedded_instances {
+  id: "highscores"
+  data: "components {\n"
+  "  id: \"highscores\"\n"
+  "  component: \"/main/highscores/highscores.gui\"\n"
+  "}\n"
+  ""
+}

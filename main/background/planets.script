@@ -1,0 +1,15 @@
+go.property("baseSpeed", 50)
+go.property("speedJump", 0.1)
+local gameModel = require "main/game/gameModel"
+
+
+function update(self, dt)
+	local p = go.get_position()
+	local speed = self.baseSpeed * (1+self.speedJump * gameModel.speedLevel)
+	p.y = p.y - speed * dt
+	--p.y = math.floor(p.y + 0.5) 
+	if p.y <= -1300 then
+		p.y = 2750
+	end
+	go.set_position(p)
+end

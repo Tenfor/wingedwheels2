@@ -1,0 +1,961 @@
+script: "/main/highscores/highscores.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+textures {
+  name: "menu"
+  texture: "/main/menu/menu.atlas"
+}
+nodes {
+  position {
+    x: 240.0
+    y: 456.0
+  }
+  scale {
+    x: 0.45
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/panel"
+  id: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 768.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "High Scores"
+  font: "game2"
+  id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 696.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank1"
+  pivot: PIVOT_W
+  parent: "scoreBox1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name1"
+  pivot: PIVOT_W
+  parent: "scoreBox1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score1"
+  pivot: PIVOT_E
+  parent: "scoreBox1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 646.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank2"
+  pivot: PIVOT_W
+  parent: "scoreBox2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name2"
+  pivot: PIVOT_W
+  parent: "scoreBox2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score2"
+  pivot: PIVOT_E
+  parent: "scoreBox2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 596.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank3"
+  pivot: PIVOT_W
+  parent: "scoreBox3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name3"
+  pivot: PIVOT_W
+  parent: "scoreBox3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score3"
+  pivot: PIVOT_E
+  parent: "scoreBox3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 546.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank4"
+  pivot: PIVOT_W
+  parent: "scoreBox4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name4"
+  pivot: PIVOT_W
+  parent: "scoreBox4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score4"
+  pivot: PIVOT_E
+  parent: "scoreBox4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 496.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank5"
+  pivot: PIVOT_W
+  parent: "scoreBox5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name5"
+  pivot: PIVOT_W
+  parent: "scoreBox5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score5"
+  pivot: PIVOT_E
+  parent: "scoreBox5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 446.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox6"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank6"
+  pivot: PIVOT_W
+  parent: "scoreBox6"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name6"
+  pivot: PIVOT_W
+  parent: "scoreBox6"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score6"
+  pivot: PIVOT_E
+  parent: "scoreBox6"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 396.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox7"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank7"
+  pivot: PIVOT_W
+  parent: "scoreBox7"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name7"
+  pivot: PIVOT_W
+  parent: "scoreBox7"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score7"
+  pivot: PIVOT_E
+  parent: "scoreBox7"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 346.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox8"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank8"
+  pivot: PIVOT_W
+  parent: "scoreBox8"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name8"
+  pivot: PIVOT_W
+  parent: "scoreBox8"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score8"
+  pivot: PIVOT_E
+  parent: "scoreBox8"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 296.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox9"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank9"
+  pivot: PIVOT_W
+  parent: "scoreBox9"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name9"
+  pivot: PIVOT_W
+  parent: "scoreBox9"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score9"
+  pivot: PIVOT_E
+  parent: "scoreBox9"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 246.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "scoreBox10"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1."
+  font: "game2"
+  id: "rank10"
+  pivot: PIVOT_W
+  parent: "scoreBox10"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 300.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Player1"
+  font: "game2"
+  id: "name10"
+  pivot: PIVOT_W
+  parent: "scoreBox10"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 150.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "game2"
+  id: "score10"
+  pivot: PIVOT_E
+  parent: "scoreBox10"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 64.0
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeButton"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 173.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "dots"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -80.0
+    y: -5.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot1"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -40.0
+    y: -5.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot2"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot3"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 40.0
+    y: -5.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot4"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 80.0
+    y: -5.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_01"
+  id: "dot5"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -80.0
+    y: -5.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/Dot_03"
+  id: "activeDot"
+  parent: "dots"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 90.0
+    y: 171.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Backward_BTN"
+  id: "prevPage"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 390.0
+    y: 171.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Forward_BTN"
+  id: "nextPage"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 490.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Fetching Highscores"
+  font: "game2"
+  id: "loadingText"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

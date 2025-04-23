@@ -1,0 +1,77 @@
+local gameModel  = require "main/game/gameModel"
+
+local dmg = 1
+local baseSpeed = 230
+local speedJump = 30
+
+local function zigZag(self, dt)
+	local p = go.get_position()
+	if self.zigZagTarget == 442 then 
+		p.x = p.x + self.zigZagSpeed * dt
+		if p.x >= self.zigZagTarget then
+			self.zigZagTarget = 281
+		end
+	else
+		p.x = p.x - self.zigZagSpeed * dt
+		if p.x <= self.zigZagTarget then
+			self.zigZagTarget = 442
+		end
+	end
+
+	go.set_position(p)
+end
+
+local function die(crashedObject, self)
+	if self.alive then
+		if crashedObject == "player" or crashedObject == "rocket" then
+			msg.post("soundController", "playSfx", {url = "#crash"})
+		elseif crashedObject == "shield" then
+			msg.post("soundController", "playSfx", {url = "#shieldCrash"})
+		end
+		particlefx.play("#greenExplode")
+		self.alive = false
+		go.delete()
+	end
+end
+
+function init(self)
+	self.alive = true
+	self.zigZagTarget = 442
+	self.zigZagSpeed = 60
+	if go.get_position().x > 361.5 then 
+		self.zigZagTarget = 281
+	end
+end
+
+function update(self, dt)
+	zigZag(self, dt)	
+	local p = go.get_position()
+	local speed = baseSpeed + speedJump * gameModel.speedLevel
+	p.y = p.y - speed * dt
+	go.set_position(p)
+	if p.y < -1000 then 
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if message.other_group == hash("player") then
+			msg.post("scoreGui#scoreHP", "deal_dmg", {amount = dmg, type = "car"})
+			msg.post("car", "deal_dmg")
+			die("player",self)
+		end
+		if message.other_group == hash("shield") then
+			die("shield",self)
+		end
+		if message.other_group == hash("rocket") and self.alive then
+			msg.post("factories", "spawnMagneticCoin", {pos = go.get_position()})
+			die("rocket", self)
+			go.delete(message.other_id)
+		end
+	end
+	if message_id == hash("speedLevelChange") then
+		self.level = message.level
+	end
+end

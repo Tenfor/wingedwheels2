@@ -1,0 +1,196 @@
+animations {
+  id: "toLeft"
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_00.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_01.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_02.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_03.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_04.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_05.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_06.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_07.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_08.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_09.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_10.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_11.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_12.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_13.png"
+  }
+  images {
+    image: "/assets/tutorial/to left/Animated Tutorial Cursor-Tap Slide to Left_14.png"
+  }
+  fps: 15
+}
+animations {
+  id: "toRight"
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_00.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_01.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_02.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_03.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_04.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_05.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_06.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_07.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_08.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_09.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_10.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_11.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_12.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_13.png"
+  }
+  images {
+    image: "/assets/tutorial/to right/Animated Tutorial Cursor-Tap Slide to Right_14.png"
+  }
+  fps: 15
+}
+animations {
+  id: "A_down"
+  images {
+    image: "/assets/tutorial/A/A0.png"
+  }
+  images {
+    image: "/assets/tutorial/A/A1.png"
+  }
+  images {
+    image: "/assets/tutorial/A/A2.png"
+  }
+  images {
+    image: "/assets/tutorial/A/A3.png"
+  }
+  playback: PLAYBACK_ONCE_PINGPONG
+  fps: 12
+}
+animations {
+  id: "A_stop"
+  images {
+    image: "/assets/tutorial/A/A0.png"
+  }
+}
+animations {
+  id: "D_down"
+  images {
+    image: "/assets/tutorial/D/D0.png"
+  }
+  images {
+    image: "/assets/tutorial/D/D1.png"
+  }
+  images {
+    image: "/assets/tutorial/D/D2.png"
+  }
+  images {
+    image: "/assets/tutorial/D/D3.png"
+  }
+  playback: PLAYBACK_ONCE_PINGPONG
+  fps: 12
+}
+animations {
+  id: "D_stop"
+  images {
+    image: "/assets/tutorial/D/D0.png"
+  }
+  fps: 12
+}
+animations {
+  id: "Left_down"
+  images {
+    image: "/assets/tutorial/left/B0.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B1.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B2.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B3.png"
+  }
+  playback: PLAYBACK_ONCE_PINGPONG
+  fps: 12
+}
+animations {
+  id: "Left_stop"
+  images {
+    image: "/assets/tutorial/left/B0.png"
+  }
+  fps: 12
+}
+animations {
+  id: "Right_down"
+  images {
+    image: "/assets/tutorial/left/B0.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B1.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B2.png"
+  }
+  images {
+    image: "/assets/tutorial/left/B3.png"
+  }
+  playback: PLAYBACK_ONCE_PINGPONG
+  fps: 12
+  flip_horizontal: 1
+}
+animations {
+  id: "Right_stop"
+  images {
+    image: "/assets/tutorial/left/B0.png"
+  }
+  fps: 12
+  flip_horizontal: 1
+}
+extrude_borders: 2

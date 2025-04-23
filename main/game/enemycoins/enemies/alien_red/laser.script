@@ -1,0 +1,52 @@
+
+local function die(crashedObject,self)
+	if self.alive then
+		if crashedObject == "player" then
+			msg.post("soundController", "playSfx", {url = "#crash"})
+		elseif crashedObject == "shield" then
+			msg.post("soundController", "playSfx", {url = "#shieldCrash"})
+		end
+		self.alive = false
+		particlefx.play("#greenExplode")
+		go.delete()
+	end
+end
+
+function init(self)
+	self.speed = 850
+	self.alive = true
+	go.animate("#sprite", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(.2,.2,.2), go.EASING_LINEAR, 0.3)
+	msg.post("soundController", "playSfx", {url = "#laser"})
+end
+
+function update(self, dt)
+	local rot = go.get_rotation()
+	local angle_rad = math.rad(-90 * dt)
+	local rotation_delta = vmath.quat_rotation_z(angle_rad)
+	--local rotation_delta = vmath.quat_rotation_z(math.rad(-10))
+	go.set_rotation(rot * rotation_delta)
+	
+	local p = go.get_position()
+	p.y = p.y - self.speed * dt
+	go.set_position(p)
+	if p.y < -1000 then 
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		local other_id = message.other_id
+		if message.other_group == hash("player") then
+			msg.post("scoreGui#scoreHP", "deal_dmg", {amount = 1, type = "ship"})
+			msg.post("ship", "deal_dmg")
+			die("player",self)
+		end
+		if message.other_group == hash("shield") then
+			die("shield",self)
+		end
+		if message.other_group == hash("rocket") then
+			die("rocket", self)
+		end
+	end
+end

@@ -1,0 +1,10 @@
+name: "credits"
+scale_along_z: 0
+embedded_instances {
+  id: "credits"
+  data: "components {\n"
+  "  id: \"credits\"\n"
+  "  component: \"/main/credits/credits.gui\"\n"
+  "}\n"
+  ""
+}

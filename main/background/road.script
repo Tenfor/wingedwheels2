@@ -1,0 +1,39 @@
+local gameModel = require "main/game/gameModel"
+
+function init(self)
+	self.height = 854
+	self.edge = 0 - self.height / 2 - 200
+	self.speed = 200
+end
+
+function update(self, dt)
+	road1Pos = go.get_position("road1")
+	road2Pos = go.get_position("road2")
+	road3Pos = go.get_position("road3")
+
+	local speed = self.speed + gameModel.speedLevel * 40
+
+	road1Pos.y = road1Pos.y - speed * dt
+	road2Pos.y = road2Pos.y - speed * dt
+	road3Pos.y = road3Pos.y - speed * dt
+
+	road1Pos.y = math.floor(road1Pos.y + 0.5)
+	road2Pos.y = math.floor(road2Pos.y + 0.5)
+	road3Pos.y = math.floor(road3Pos.y + 0.5)
+
+	if road2Pos.y < self.edge then
+		road2Pos.y = road1Pos.y + self.height
+	end
+
+	if road1Pos.y < self.edge then
+		road1Pos.y = road3Pos.y + self.height
+	end
+
+	if road3Pos.y < self.edge then
+		road3Pos.y = road2Pos.y + self.height
+	end
+
+	go.set_position(road1Pos, "road1")
+	go.set_position(road2Pos, "road2")
+	go.set_position(road3Pos, "road3")
+end
