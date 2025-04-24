@@ -87,7 +87,6 @@ function init(self)
 	self.musicButtonNode = gui.get_node("musicBtn")
 	self.soundButtonNode = gui.get_node("soundsBtn")
 
-
 	if not gameSettings.sounds then 
 		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
 	end
@@ -106,6 +105,10 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
+	if action_id == hash("space") and action.pressed then
+		onPauseBtn(self)
+	end
+
 	return self.druid:on_input(action_id, action)
 end
 

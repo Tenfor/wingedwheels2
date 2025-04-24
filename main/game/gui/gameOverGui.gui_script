@@ -123,7 +123,7 @@ local function onSubmit(self)
 		}
 		--local body = '{"playerName":"Test"}'
 		local body = json.encode({playerName=self.rich_input:get_text(),scores=gameModel.currentScores})
-		http.request("https://tgapi-8re5.onrender.com/scores", "POST", handle_post_response, headers, body)
+		http.request("https://tgapi-zhv2.onrender.com/scores", "POST", handle_post_response, headers, body)
 		--http.request("http://localhost:3000", "POST", handle_response, headers, body2)
 	else
 		msg.post("soundController", "playSfx", {url="#lock"})
@@ -140,7 +140,7 @@ local function fetchHighScores(self)
 	self.isFetching = true
 	hideInput(self)	hideDescriptionText(self)
 	gui.animate(self.loadingTextNode, "color.w", 0, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
-	http.request("https://tgapi-8re5.onrender.com/scores", "GET", handle_fetch_response)
+	http.request("https://tgapi-zhv2.onrender.com/scores", "GET", handle_fetch_response)
 	setLoadingText(self, "Checking Highscores...")
 end
 

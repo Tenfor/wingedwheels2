@@ -1,0 +1,22 @@
+local device = require "main/device"
+
+local function showTutorial(self)
+	if device.type == "desktop" then
+		gui.animate(self.pauseTutText, "color.w", 1, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
+		timer.delay(4.2, false, function()
+			gui.cancel_animation(self.pauseTutText, "color.w")
+			gui.set_alpha(self.pauseTutText, 0)
+		end)
+	end
+end
+
+function init(self)
+	self.pauseTutText = gui.get_node("pauseTutText")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_tutorial") then 
+		showTutorial(self)
+	end
+	
+end

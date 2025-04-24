@@ -45,7 +45,7 @@ end
 local function fetchHighScores(self)
 	gui.animate(self.loadingTextNode, "color.w", 0, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
 	self.isFetching = true
-	http.request("https://tgapi-8re5.onrender.com/scores", "GET", handle_response)
+	http.request("https://tgapi-zhv2.onrender.com/scores", "GET", handle_response)
 end
 
 local function onHomeButton(self)

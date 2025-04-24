@@ -1,0 +1,27 @@
+script: "/main/tutorial/pause_tutorial.gui_script"
+fonts {
+  name: "game2"
+  font: "/assets/font/game2.font"
+}
+nodes {
+  position {
+    x: 437.0
+    y: 770.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Space"
+  font: "game2"
+  id: "pauseTutText"
+  inherit_alpha: true
+  alpha: 0.0
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

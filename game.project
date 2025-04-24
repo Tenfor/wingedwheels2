@@ -18,8 +18,8 @@ input_method = HiddenInputField
 immersive_mode = 1
 package = com.tenforgames.wingedwheels
 minimum_sdk_version = 22
-app_icon_48x48 = /assets/logo/app_logo48_48.png
-app_icon_96x96 = /assets/logo/app_logo.png
+app_icon_48x48 = /assets/logo/app_logo48_48v2.png
+app_icon_96x96 = /assets/logo/app_logov2.png
 
 [html5]
 scale_mode = fit

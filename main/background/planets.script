@@ -1,7 +1,7 @@
 go.property("baseSpeed", 50)
 go.property("speedJump", 0.1)
 local gameModel = require "main/game/gameModel"
-
+--
 
 function update(self, dt)
 	local p = go.get_position()

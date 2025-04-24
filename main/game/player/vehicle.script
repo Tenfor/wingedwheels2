@@ -109,6 +109,7 @@ local function enterGame(self)
 			msg.post("controlGui#control", "enable")
 			msg.post("carTutorial", "show_tutorial")
 			msg.post("shipTutorial", "show_tutorial")
+			msg.post("pauseTut#pauseTutorial", "show_tutorial")
 		end
 	end)
 	
