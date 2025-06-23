@@ -27,6 +27,17 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "basePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
   position {
     x: 240.0
     y: 456.0
@@ -38,28 +49,47 @@ nodes {
   type: TYPE_BOX
   texture: "menu/panel"
   id: "panel"
+  parent: "basePanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
     x: 240.0
-    y: 769.0
-    z: 0.2
+    y: 240.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Game Over"
+  text: "You can do it!"
   font: "default"
-  id: "title"
+  id: "cheering"
+  parent: "basePanel"
   inherit_alpha: true
+  alpha: 0.0
+}
+nodes {
+  position {
+    x: 240.0
+    y: 418.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/xIcon"
+  id: "successIcon"
+  parent: "basePanel"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
@@ -79,6 +109,7 @@ nodes {
   text: "Your Scores:"
   font: "default"
   id: "title1"
+  parent: "basePanel"
   inherit_alpha: true
 }
 nodes {
@@ -98,7 +129,38 @@ nodes {
   text: "999"
   font: "default"
   id: "scores"
+  parent: "basePanel"
   inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 55.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "continue"
+  parent: "basePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  size {
+    x: 200.0
+    y: 50.0
+  }
+  type: TYPE_TEXT
+  text: "Continue"
+  font: "default"
+  id: "text1"
+  parent: "continue"
 }
 nodes {
   position {
@@ -117,48 +179,30 @@ nodes {
   text: "Sumbitting Score..."
   font: "default"
   id: "loadingText"
+  parent: "basePanel"
   inherit_alpha: true
   alpha: 0.0
 }
 nodes {
   position {
     x: 240.0
-    y: 240.0
+    y: 769.0
+    z: 0.2
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 0.7
+    y: 0.7
   }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Congratulation! \n"
-  "New Highscore!"
+  text: "Game Over"
   font: "default"
-  id: "description"
+  id: "title"
+  parent: "basePanel"
   inherit_alpha: true
-}
-nodes {
-  position {
-    x: 240.0
-    y: 240.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "You can do it!"
-  font: "default"
-  id: "cheering"
-  inherit_alpha: true
-  alpha: 0.0
 }
 nodes {
   position {
@@ -172,6 +216,7 @@ nodes {
   type: TYPE_BOX
   texture: "menu/btn"
   id: "submit"
+  parent: "basePanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -197,6 +242,7 @@ nodes {
   }
   type: TYPE_BOX
   id: "rich_input_parent"
+  parent: "basePanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -259,47 +305,377 @@ nodes {
 nodes {
   position {
     x: 240.0
-    y: 55.0
+    y: 240.0
   }
   scale {
     x: 0.6
     y: 0.6
   }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Congratulation! \n"
+  "New Highscore!"
+  font: "default"
+  id: "description"
+  parent: "basePanel"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
   type: TYPE_BOX
-  texture: "menu/btn"
-  id: "continue"
+  id: "adPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg"
+  parent: "adPanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    y: 2.0
+    x: 240.0
+    y: 552.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
   }
   size {
     x: 200.0
-    y: 50.0
+    y: 100.0
   }
   type: TYPE_TEXT
-  text: "Continue"
+  text: "Congratulations"
   font: "default"
-  id: "text1"
-  parent: "continue"
+  id: "text2"
+  parent: "adPanel"
+  inherit_alpha: true
 }
 nodes {
   position {
     x: 240.0
-    y: 418.0
+    y: 478.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "You have collected 100 coins"
+  font: "default"
+  id: "text3"
+  parent: "adPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 445.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Watch ad for 50 extra coins?"
+  font: "default"
+  id: "text4"
+  parent: "adPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 170.0
+    y: 371.0
   }
   scale {
     x: 0.3
     y: 0.3
   }
   type: TYPE_BOX
-  texture: "menu/xIcon"
-  id: "successIcon"
+  texture: "menu/Ok_BTN"
+  id: "yesBtn"
+  parent: "adPanel"
   inherit_alpha: true
-  alpha: 0.0
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 310.0
+    y: 371.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/Close_BTN"
+  id: "noBtn"
+  parent: "adPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg1"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Ad Blocker Detected"
+  font: "default"
+  id: "text5"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 442.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 900.0
+    y: 500.0
+  }
+  type: TYPE_TEXT
+  text: "Your ad blocker is active. Please disable it or whitelist the website then refresh to recieve the award. "
+  font: "default"
+  id: "text6"
+  line_break: true
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 239.0
+    y: 314.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "ignoreBtn"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Ignore Reward"
+  font: "default"
+  id: "text7"
+  parent: "ignoreBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 239.0
+    y: 359.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "whiteListedBtn"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Whitelisted"
+  font: "default"
+  id: "text8"
+  parent: "whiteListedBtn"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg2"
+  parent: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Failed to load the ad"
+  font: "default"
+  id: "text9"
+  parent: "failedPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 442.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 900.0
+    y: 500.0
+  }
+  type: TYPE_TEXT
+  text: "There was an error while loading the ad. "
+  font: "default"
+  id: "text10"
+  line_break: true
+  parent: "failedPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 239.0
+    y: 360.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "failedContinueBtn"
+  parent: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Continue"
+  font: "default"
+  id: "text11"
+  parent: "failedContinueBtn"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

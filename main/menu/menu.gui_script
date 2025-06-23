@@ -40,6 +40,7 @@ local function onStartButton(self)
 	msg.post("game:/ship", "enter")
 	msg.post("main:/loader#loader", "show_pause")
 	gameModel.setIsStarted(true)
+	bridge.platform.send_message("gameplay_started");
 end
 
 local function onCreditsButton(self)
@@ -101,14 +102,6 @@ local function initMusicSoundTexts(self)
 	end
 end
 
-local function onFb()
-	sys.open_url("https://www.facebook.com/tenforgames",{target = "_blank"})
-end
-
-local function onDc()
-	sys.open_url("https://discord.gg/xFszFyuNmT",{target = "_blank"})
-end
-
 function init(self)
 	self.druid = druid.new(self)
 	self.startButton = self.druid:new_button("start", onStartButton)
@@ -125,9 +118,6 @@ function init(self)
 
 	self.creditsButton = self.druid:new_button("credits", onCreditsButton)
 	self.highscoresButton = self.druid:new_button("highscores", onHighscores)
-
-	self.fbBtn = self.druid:new_button("fbBtn", onFb)
-	self.dcBtn = self.druid:new_button("dcBtn", onDc)
 	
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "show_menu")

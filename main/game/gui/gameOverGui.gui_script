@@ -3,6 +3,8 @@ local rich_input = require("druid.custom.rich_input.rich_input")
 local const  = require("druid.const")
 local gameModel =require "main/game/gameModel"
 local json = require("main/json")
+local upgrades  = require "main/game/upgrades"
+local bridge = require("bridge.bridge")
 
 local function hideSuccessIcon(self)
 	gui.set_alpha(self.successIcon, 0)
@@ -130,9 +132,49 @@ local function onSubmit(self)
 	end
 end
 
+local function showAdPanel(self)
+	gui.set_enabled(self.basePanel, false)
+	gui.set_enabled(self.adPanel, true)
+end
+
+local function showFailedPanel(self)
+	gui.set_enabled(self.adPanel, false)
+	gui.set_enabled(self.failedPanel, true)
+end
+
+
+local function showAdBlockPanel(self)
+	gui.set_enabled(self.basePanel, false)
+	gui.set_enabled(self.adPanel, false)
+	gui.set_enabled(self.adBlockerPanel, true)
+end
+
+local function onNoBtn(self)
+	msg.post("main:/loader#loader", "restartGame")
+end
+
+local function onYesBtn(self)
+	if self.adBlocked then
+		showAdBlockPanel(self)
+	else
+		local placement = "test_placement" -- optional
+		bridge.advertisement.show_rewarded(placement)
+
+		--crazygames.show_rewarded_ad(function(self, result)
+		--	if result then
+		--		upgrades.setCoins(upgrades.coins + 50)
+		--		upgrades.saveUpgrades()
+		--		msg.post("main:/loader#loader", "restartGame")
+		--	else
+		--		msg.post("main:/loader#loader", "restartGame")
+		--	end
+	--	end)
+end
+end
+
 local function onContinue(self)
 	if not self.submitting then 
-		msg.post("main:/loader#loader", "restartGame")
+		showAdPanel(self)
 	end
 end
 
@@ -144,9 +186,51 @@ local function fetchHighScores(self)
 	setLoadingText(self, "Checking Highscores...")
 end
 
+local function check_ad_block(self)
+	self.adBlocked = false
+	bridge.advertisement.check_ad_block(function (_, data)
+		self.adBlocked = data
+	end, 
+	function ()
+		-- error
+	end)
+end
+
 
 function init(self)
 	self.druid = druid.new(self)
+
+	bridge.platform.send_message("gameplay_stopped");
+
+	bridge.advertisement.on("rewarded_state_changed", function (_, state)
+		if state == "rewarded" then 
+			upgrades.setCoins(upgrades.coins + 50)
+			upgrades.saveUpgrades()
+			msg.post("main:/loader#loader", "restartGame")
+		elseif state == "failed" then 
+			showFailedPanel(self)
+		elseif state == "closed" then 
+			msg.post("main:/loader#loader", "restartGame")
+		end
+			
+		print("Rewarded state changed: ", state)
+	end)
+
+	check_ad_block(self)
+
+	self.basePanel = gui.get_node("basePanel")
+	self.adPanel = gui.get_node("adPanel")
+	self.adBlockerPanel = gui.get_node("adBlockerPanel")
+	self.failedPanel = gui.get_node("failedPanel")
+	self.yesBtn = self.druid:new_button("yesBtn", onYesBtn)
+	self.noBtn = self.druid:new_button("noBtn", onNoBtn)
+	self.failedContinueBtn = self.druid:new_button("failedContinueBtn", onNoBtn)
+
+	self.ignoreBtn = self.druid:new_button("ignoreBtn", onNoBtn)
+	self.whiteListedBtn = self.druid:new_button("whiteListedBtn", onNoBtn)
+	
+	self.collectedCoinsText = gui.get_node("text3")
+	gui.set_text(self.collectedCoinsText, "You have collected ".. tostring(gameModel.currentScores) .." coins")
 	
 	self.submitting = false
 
@@ -167,7 +251,6 @@ function init(self)
 	self.loadingTextNode = gui.get_node("loadingText")
 	self.descriptionTextNode = gui.get_node("description")
 	self.cheeringTextNode = gui.get_node("cheering")
-
 	self.isFetching = false
 
 	fetchHighScores(self)

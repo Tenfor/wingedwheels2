@@ -1,5 +1,6 @@
 local garage = require("main/game/garage")
 local gameModel = require("main/game/gameModel")
+local bridge = require("bridge.bridge")
 
 local function loadGarage()
 	local filename = sys.get_save_file("sys_save_load", "garage")
@@ -31,6 +32,8 @@ function init(self)
 	--	msg.post(self.garageProxy, "load")
 	msg.post(self.menuProxy, "load")
 	msg.post(self.gameProxy, "load")
+
+	bridge.platform.send_message("game_ready");
 end
 
 function final(self)
@@ -134,8 +137,10 @@ function on_message(self, message_id, message, sender)
 		gameModel.togglePause()
 		msg.post("game:/soundController", "toggle_pause")
 		if(gameModel.isPaused) then 
+			bridge.platform.send_message("gameplay_stopped");
 			msg.post(self.gameProxy, "set_time_step", {factor = 0, mode = 1})
 		else
+			bridge.platform.send_message("gameplay_started");
 			msg.post(self.gameProxy, "set_time_step", {factor = 1, mode = 1})
 		end
 	end

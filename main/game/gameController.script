@@ -38,6 +38,10 @@ function init(self)
 	self.enemy_freq = 30
 	self.event_freq = 40
 
+	--if crazygames then
+	--	crazygames.loading_start()
+	--end
+	
 	loadUpgrades()
 	--resetUpgrades()
 end

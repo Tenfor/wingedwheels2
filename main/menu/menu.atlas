@@ -79,10 +79,4 @@ images {
 images {
   image: "/assets/menu/xIcon.png"
 }
-images {
-  image: "/assets/menu/dcLogo.png"
-}
-images {
-  image: "/assets/menu/fblogo.png"
-}
 extrude_borders: 2

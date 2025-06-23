@@ -26,13 +26,15 @@ scale_mode = fit
 show_fullscreen_button = 0
 show_made_with_defold = 0
 cssfile = /builtins/manifests/web/dark_theme.css
-htmlfile = /builtins/manifests/web/engine_template.html
+htmlfile = /bridge/engine_template.html
 show_console_banner = 1
 splash_image = /assets/menu/splash.png
 
 [project]
 title = WingedWheels2
+bundle_resources = /res
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.0.zip
+dependencies#1 = https://github.com/Playgama/bridge-defold/archive/refs/tags/v1.22.0.zip
 
 [sound]
 max_sound_buffers = 64
@@ -40,4 +42,7 @@ max_component_count = 64
 
 [collection_proxy]
 max_count = 12
+
+[library]
+include_dirs = crazygames
 

@@ -10,7 +10,7 @@ local M = {
 		level = 0, 
 		maxLevel = 3,
 		prices = {10,35,90},
-		data = {1,2,3,4}
+		data = {1,3,5,6}
 	},
 	lives = {
 		level = 0, 
