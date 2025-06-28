@@ -7,6 +7,10 @@ fonts {
   name: "game2"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 nodes {
   position {
     x: 240.0

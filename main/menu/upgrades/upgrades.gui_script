@@ -1,5 +1,65 @@
 local druid = require("druid.druid")
 local upgrades  = require "main/game/upgrades"
+local bridge = require("bridge.bridge")
+local gameSettings = require "main/gameSettings"
+
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Улучшения")
+
+	local watchAdText = gui.get_node("watchAdText")
+	gui.set_font(watchAdText, "rufont")
+	gui.set_text(watchAdText, "Реклама")
+
+	local movement_title = gui.get_node("movement_title")
+	gui.set_font(movement_title, "rufont")
+	gui.set_text(movement_title, "Движение")
+
+	local movement_desc = gui.get_node("movement_desc")
+	gui.set_font(movement_desc, "rufont")
+	gui.set_text(movement_desc, "Скорость+")	
+
+	local powerup_title = gui.get_node("powerup_title")
+	gui.set_font(powerup_title, "rufont")
+	gui.set_text(powerup_title, "Спавн усиления")
+
+	local powerup_desc = gui.get_node("powerup_desc")
+	gui.set_font(powerup_desc, "rufont")
+	gui.set_text(powerup_desc, "Шанс+")
+
+	local lives_title = gui.get_node("lives_title")
+	gui.set_font(lives_title, "rufont")
+	gui.set_text(lives_title, "Жизни")
+
+	local lives_desc = gui.get_node("lives_desc")
+	gui.set_font(lives_desc, "rufont")
+	gui.set_text(lives_desc, "Начальные жизни+")
+
+	local shield_title = gui.get_node("shield_title")
+	gui.set_font(shield_title, "rufont")
+	gui.set_text(shield_title, "Щит")
+
+	local shield_desc = gui.get_node("shield_desc")
+	gui.set_font(shield_desc, "rufont")
+	gui.set_text(shield_desc, "Длительность+")
+
+	local magnet_title = gui.get_node("magnet_title")
+	gui.set_font(magnet_title, "rufont")
+	gui.set_text(magnet_title, "Магнитное поле")
+
+	local magnet_desc = gui.get_node("magnet_desc")
+	gui.set_font(magnet_desc, "rufont")
+	gui.set_text(magnet_desc, "Длительность+")
+
+	local weapons_title = gui.get_node("weapons_title")
+	gui.set_font(weapons_title, "rufont")
+	gui.set_text(weapons_title, "Оружейная система")
+
+	local weapons_desc = gui.get_node("weapons_desc")
+	gui.set_font(weapons_desc, "rufont")
+	gui.set_text(weapons_desc, "Боеприпасы+")
+end
 
 local function onHomeButton(self)
 	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
@@ -57,6 +117,9 @@ local function updateTexts(self)
 		weaponsPriceText = "MAX"
 	end
 	gui.set_text(self.weaponsPrice, weaponsPriceText)
+
+	--AD BUTTON 
+	gui.set_enabled(self.adButtonNode, upgrades.rewardingAdReady)
 end
 
 local function onMovementButton(self)
@@ -70,6 +133,41 @@ local function onMovementButton(self)
 		msg.post("game:/soundController", "playSfx", {url = "#lock"} )
 	end
 	updateTexts(self)
+end
+
+local function showMainPanel(self)
+	gui.set_enabled(self.mainPanel, true)
+	gui.set_enabled(self.adBlockerPanel, false)
+	gui.set_enabled(self.failedPanel, false)
+end
+
+local function showAdBlockerPanel(self)
+	gui.set_enabled(self.mainPanel, false)
+	gui.set_enabled(self.adBlockerPanel, true)
+	gui.set_enabled(self.failedPanel, false)
+end
+
+local function showFailedPanel(self)
+	gui.set_enabled(self.mainPanel, false)
+	gui.set_enabled(self.adBlockerPanel, false)
+	gui.set_enabled(self.failedPanel, true)
+end
+
+local function check_ad_block(self)
+	bridge.advertisement.check_ad_block(function (_, data)
+		if data then
+			showAdBlockerPanel(self)
+		else 
+			bridge.advertisement.show_rewarded()
+		end
+	end, 
+	function ()
+		showFailedPanel(self)
+	end)
+end
+
+local function onAdButton(self)
+	check_ad_block(self)
 end
 
 local function onPowerupButton(self)
@@ -137,6 +235,10 @@ local function onWeaponsButton(self)
 	updateTexts(self)
 end
 
+local function onFailedContinueBtn(self)
+	showMainPanel(self)
+end
+
 function init(self)
 	self.druid = druid.new(self)
 	self.homeButton = self.druid:new_button("homeButton", onHomeButton)
@@ -146,6 +248,8 @@ function init(self)
 	self.shieldButton = self.druid:new_button("shield_btn", onShieldButton)
 	self.magnetButton = self.druid:new_button("magnet_btn", onMagnetButton)
 	self.weaponsButton = self.druid:new_button("weapons_btn", onWeaponsButton)
+	self.adButton = self.druid:new_button("adBtn", onAdButton)
+	self.adButtonNode = gui.get_node("adBtn")
 
 	self.coins = gui.get_node("coins")
 
@@ -167,9 +271,38 @@ function init(self)
 	self.weaponsLevel = gui.get_node("weapons_lvl")
 	self.weaponsPrice = gui.get_node("weapons_btn_price")
 
+	self.mainPanel = gui.get_node("mainPanel")
+	self.adBlockerPanel = gui.get_node("adBlockerPanel")
+	self.failedPanel = gui.get_node("failedPanel")
+
+	self.failedContinueBtn = self.druid:new_button("failedContinueBtn", onFailedContinueBtn)
+	self.ignoreBtn = self.druid:new_button("ignoreBtn", onFailedContinueBtn)
+	self.whiteListedBtn = self.druid:new_button("whiteListedBtn", onFailedContinueBtn)
+
 	msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
 
 	updateTexts(self)
+
+	bridge.advertisement.on("rewarded_state_changed", function (_, state)
+		if state == "opened" then 
+			gui.set_enabled(self.mainPanel, false)
+			msg.post("game:/soundController", "stopMusic", {url = "#menuMusic"} )
+		elseif state == "rewarded" then 
+			upgrades.setCoins(upgrades.coins + 50)
+			upgrades.saveUpgrades()
+			upgrades.setRewardingAdReady(false)
+			updateTexts(self)
+			gui.set_enabled(self.mainPanel, true)
+		elseif state == "failed" then 
+			showFailedPanel(self)
+		elseif state == "closed" then 
+			msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+		end
+	end)
+
+	if(gameSettings.lang == "ru") then
+		translateToRussian(self)
+	end
 end
 
 function update(self, dt)

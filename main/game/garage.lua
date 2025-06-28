@@ -1,3 +1,5 @@
+local bridge = require("bridge.bridge")
+
 local M = {
 	enemyDestroyed = 0,
 	eventSurvived = 0,
@@ -33,8 +35,7 @@ end
 
 
 function M.saveGarage()
-	local filename = sys.get_save_file("sys_save_load", "garage")
-	sys.save(filename, { 
+	bridge.storage.set ({ 
 		enemyDestroyed = M.enemyDestroyed,
 		eventSurvived = M.eventSurvived,
 		died = M.died,

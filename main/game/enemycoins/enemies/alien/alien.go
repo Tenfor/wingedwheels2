@@ -17,7 +17,7 @@ embedded_components {
   "}\n"
   ""
   scale {
-    x: 0.4
+    x: 0.36
     y: 0.3
   }
 }
@@ -37,7 +37,7 @@ embedded_components {
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
-  "      x: 21.0\n"
+  "      x: 20.0\n"
   "      y: -31.0\n"
   "    }\n"
   "    rotation {\n"
@@ -51,7 +51,7 @@ embedded_components {
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
-  "      x: -22.0\n"
+  "      x: -20.0\n"
   "      y: -31.0\n"
   "    }\n"
   "    rotation {\n"
@@ -112,10 +112,10 @@ embedded_components {
   "    count: 3\n"
   "    id: \"wing\"\n"
   "  }\n"
-  "  data: 2.911572\n"
+  "  data: 2.305276\n"
   "  data: 7.070112\n"
   "  data: 10.0\n"
-  "  data: 2.7368774\n"
+  "  data: 2.3465705\n"
   "  data: 6.986989\n"
   "  data: 9.4\n"
   "  data: 1.686\n"
@@ -124,11 +124,11 @@ embedded_components {
   "  data: 1.686\n"
   "  data: 6.631595\n"
   "  data: 9.4\n"
-  "  data: 15.056635\n"
+  "  data: 13.759474\n"
   "  data: 33.123627\n"
   "  data: 10.0\n"
-  "  data: 31.842094\n"
-  "  data: 6.3901453\n"
+  "  data: 28.557583\n"
+  "  data: 5.715658\n"
   "  data: 10.0\n"
   "}\n"
   ""

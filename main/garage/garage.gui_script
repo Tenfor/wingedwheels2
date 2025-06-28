@@ -1,14 +1,24 @@
 local druid = require("druid.druid")
 local garage = require("main/game/garage")
 local upgrades = require("main/game/upgrades")
+local gameSettings = require("main/gameSettings")
+local bridge = require("bridge.bridge")
 
 local shipDotPositions = {-60,-20,20,60}
 local carDotPositions = {-60,-20,20,60}
 
-local function load_highscore()
-	local filename = sys.get_save_file("sys_save_load", "highscore")
-	local data = sys.load(filename)
-	return data.highscore or 0
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Гараж")
+
+	local carDescription2 = gui.get_node("carDescription2")
+	gui.set_font(carDescription2, "rufont")
+	gui.set_text(carDescription2, "100 монет всего за один раунд")
+
+	local carDescription4 = gui.get_node("carDescription4")
+	gui.set_font(carDescription4, "rufont")
+	gui.set_text(carDescription4, "Купить все улучшения")
 end
 
 local function onHomeButton(self)
@@ -21,17 +31,33 @@ local function setButtons(self)
 	for i = 1, 4 do
 		if garage.selectedCar == i then
 			gui.set_text(self.carButtonTextNodes[i], "Selected")
+			if(gameSettings.lang == "ru") then 
+				gui.set_font(self.carButtonTextNodes[i], "rufont")
+				gui.set_text(self.carButtonTextNodes[i], "Выбрано")
+			end
 			gui.set_color(self.carButtonNodes[i], vmath.vector4(0.6,1,0.6,1))
 		else 
 			gui.set_text(self.carButtonTextNodes[i], "Select")
+			if(gameSettings.lang == "ru") then 
+				gui.set_font(self.carButtonTextNodes[i], "rufont")
+				gui.set_text(self.carButtonTextNodes[i], "Выбрать")
+			end
 			gui.set_color(self.carButtonNodes[i], vmath.vector4(1,1,1,1))
 		end
 
 		if garage.selectedShip == i then
 			gui.set_text(self.shipButtonTextNodes[i], "Selected")
 			gui.set_color(self.shipButtonNodes[i], vmath.vector4(0.6,1,0.6,1))
+			if(gameSettings.lang == "ru") then 
+				gui.set_font(self.shipButtonTextNodes[i], "rufont")
+				gui.set_text(self.shipButtonTextNodes[i], "Выбрано")
+			end
 		else 
 			gui.set_text(self.shipButtonTextNodes[i], "Select")
+			if(gameSettings.lang == "ru") then 
+				gui.set_font(self.shipButtonTextNodes[i], "rufont")
+				gui.set_text(self.shipButtonTextNodes[i], "Выбрать")
+			end
 			gui.set_color(self.shipButtonNodes[i], vmath.vector4(1,1,1,1))
 		end
 	end
@@ -76,7 +102,7 @@ local function isCarUnlocked(self, index)
 	if index == 1 then 
 		return true
 	elseif index == 2 then
-		return self.highScore >= 100
+		return gameSettings.highscore >= 100
 	elseif index == 3 then
 		return garage.powerupCollected >= 30
 	elseif index == 4 then
@@ -88,8 +114,17 @@ local function setDescriptions(self)
 	gui.set_text(self.shipDescNodes[2], "Destroy enemies\n"..math.min(100,garage.enemyDestroyed).."/100")
 	gui.set_text(self.shipDescNodes[3], "Survive events\n"..math.min(30,garage.eventSurvived).."/30")
 	gui.set_text(self.shipDescNodes[4], "Play rounds\n"..math.min(25,garage.died).."/25")
-
 	gui.set_text(self.carDescNodes[3], "Collect Powerups\n"..math.min(30,garage.powerupCollected).."/30")
+	if(gameSettings.lang == "ru") then
+		gui.set_font(self.shipDescNodes[2],"rufont")
+		gui.set_font(self.shipDescNodes[3],"rufont")
+		gui.set_font(self.shipDescNodes[4],"rufont")
+		gui.set_font(self.carDescNodes[3],"rufont")
+		gui.set_text(self.shipDescNodes[2], "Уничтожь врагов\n"..math.min(100,garage.enemyDestroyed).."/100")
+		gui.set_text(self.shipDescNodes[3], "Выжить в событиях\n"..math.min(30,garage.eventSurvived).."/30")
+		gui.set_text(self.shipDescNodes[4], "Играть раунды\n"..math.min(25,garage.died).."/25")
+		gui.set_text(self.carDescNodes[3], "Собирай усиления\n"..math.min(30,garage.powerupCollected).."/30")
+	end
 end
 
 local function initLock(self)
@@ -205,8 +240,6 @@ end
 function init(self)
 	self.druid = druid.new(self)
 
-	self.highScore = load_highscore()
-
 	self.selectedCar = 1
 	self.selectedShip = 1
 	
@@ -236,11 +269,14 @@ function init(self)
 	self.carButton2 = self.druid:new_button("carSelect2", onCarSelect, 2)
 	self.carButton3 = self.druid:new_button("carSelect3", onCarSelect, 3)
 	self.carButton4 = self.druid:new_button("carSelect4", onCarSelect, 4)
-
+	
 	initVehicles(self)
 	setButtons(self)
 	setDescriptions(self)
 	initLock(self)
+	if gameSettings.lang == "ru" then
+		translateToRussian(self)
+	end
 end
 
 function update(self, dt)

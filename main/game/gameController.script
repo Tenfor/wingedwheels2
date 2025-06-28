@@ -1,28 +1,4 @@
 local gameModel = require("main/game/gameModel")
-local upgrades = require("main/game/upgrades")
-
-local function loadUpgrades()
-	local filename = sys.get_save_file("sys_save_load", "upgrades")
-	local data = sys.load(filename)
-	upgrades.setCoins(data.coins or 0)
-	upgrades.setMovementLevel(data.movement or 0)
-	upgrades.setPowerupLevel(data.powerup or 0)
-	upgrades.setLivesLevel(data.lives or 0)
-	upgrades.setMagnetLevel(data.magnet or 0)
-	upgrades.setShieldLevel(data.shield or 0)
-	upgrades.setWeaponsLevel(data.weapons or 0)
-end
-
-local function resetUpgrades()
-	upgrades.setCoins(0)
-	upgrades.setMovementLevel(0)
-	upgrades.setPowerupLevel(0)
-	upgrades.setLivesLevel(0)
-	upgrades.setMagnetLevel(0)
-	upgrades.setShieldLevel(0)
-	upgrades.setWeaponsLevel(0)
-	upgrades.saveUpgrades();
-end
 
 function init(self)
 --	msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
@@ -42,7 +18,7 @@ function init(self)
 	--	crazygames.loading_start()
 	--end
 	
-	loadUpgrades()
+	--loadUpgrades()
 	--resetUpgrades()
 end
 

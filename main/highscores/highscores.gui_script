@@ -1,7 +1,19 @@
 local druid = require("druid.druid")
 local json = require("main/json")
+local gameSettings = require("main/gameSettings")
 
 local dotPositions = {-80, -40, 0, 40, 80}
+
+
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Рекорды")
+
+	local loadingText = gui.get_node("loadingText")
+	gui.set_font(loadingText, "rufont")
+	gui.set_text(loadingText, "Получение рекордов")
+end
 
 local function hideScores(self)
 	for i = 1, 10, 1 do
@@ -38,6 +50,10 @@ local function handle_response(self, id, response)
 		self.isFailed = true
 		gui.set_alpha(self.loadingTextNode, 1)
 		gui.set_text(self.loadingTextNode, "Connection Error")
+		if gameSettings.lang == "ru" then 
+			gui.set_font(self.loadingTextNode, "rufont")
+			gui.set_text(self.loadingTextNode, "Ошибка сети")
+		end
 	end
 end
 
@@ -118,6 +134,9 @@ function init(self)
 	--showScores(self)
 	hideScores(self)
 	fetchHighScores(self)
+	if gameSettings.lang == "ru" then
+		translateToRussian(self)
+	end
 end
 
 function update(self, dt)

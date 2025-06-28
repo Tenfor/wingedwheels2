@@ -1,4 +1,5 @@
 local gameModel = require "main/game/gameModel"
+local gameSettings = require("main/gameSettings")
 
 local function hideText(self)
 	gui.animate(self.text, gui.PROP_SCALE, vmath.vector4(0.2, 0.2, 0.2, 0), gui.EASING_LINEAR, 0.8, 2)
@@ -36,6 +37,10 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("eventStart") then 
 		gui.set_text(self.text, message.eventName)
+		if gameSettings.lang == "ru" then
+			gui.set_font(self.text, "rufont")
+			gui.set_text(self.text, message.ruEventName)
+		end
 		showText(self)
 	end
 end

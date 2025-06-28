@@ -41,6 +41,7 @@ local function collect(self)
 		msg.post("carRadar#radar", "activate_power_up")
 		msg.post("shipRadar#radar", "activate_power_up")
 		msg.post("soundController", "playSfx", {url = "#rocket_vo"})
+		msg.post("scoreGui#scoreHP", "ammo_collected")
 	elseif self.type == "extraLife" then
 		msg.post("soundController", "playSfx", {url = "#extralife_vo"})
 	end

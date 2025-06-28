@@ -3,6 +3,10 @@ fonts {
   name: "game2"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 textures {
   name: "menu"
   texture: "/main/menu/menu.atlas"
@@ -59,7 +63,7 @@ nodes {
 nodes {
   position {
     x: 240.0
-    y: 696.0
+    y: 639.0
   }
   scale {
     x: 0.5
@@ -67,7 +71,7 @@ nodes {
   }
   size {
     x: 760.0
-    y: 1060.0
+    y: 840.0
   }
   type: TYPE_TEXT
   text: "Graphich Design By  Viktoria Karadi\n"
@@ -79,44 +83,12 @@ nodes {
   "Eric Skiff \n"
   "Eric Matyas \n"
   "\n"
-  "Made by Tenfor\n"
-  "\n"
-  "Follow us"
+  "Made by Tenfor"
   font: "game2"
   id: "text"
   pivot: PIVOT_N
   line_break: true
   inherit_alpha: true
-}
-nodes {
-  position {
-    x: 200.0
-    y: 196.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  type: TYPE_BOX
-  texture: "menu/fblogo"
-  id: "fbBtn"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 280.0
-    y: 197.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  type: TYPE_BOX
-  texture: "menu/dcLogo"
-  id: "dcBtn"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

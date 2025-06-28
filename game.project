@@ -43,6 +43,9 @@ max_component_count = 64
 [collection_proxy]
 max_count = 12
 
-[library]
-include_dirs = crazygames
+[engine]
+max_time_step = 0.167
+
+[resource]
+http_cache = 0
 

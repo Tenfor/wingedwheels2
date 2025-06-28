@@ -10,4 +10,7 @@ images {
 images {
   image: "/assets/bg/road.png"
 }
+images {
+  image: "/assets/menu/splash.png"
+}
 extrude_borders: 1

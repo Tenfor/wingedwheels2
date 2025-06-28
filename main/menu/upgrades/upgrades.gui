@@ -3,6 +3,10 @@ fonts {
   name: "game2"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 textures {
   name: "menu"
   texture: "/main/menu/menu.atlas"
@@ -10,6 +14,17 @@ textures {
 textures {
   name: "sprites"
   texture: "/main/game/sprites.atlas"
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "mainPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
 }
 nodes {
   position {
@@ -23,39 +38,38 @@ nodes {
   type: TYPE_BOX
   texture: "menu/panel"
   id: "panel"
+  parent: "mainPanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 238.0
-    y: 768.0
+    x: 242.0
+    y: 56.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.35
+    y: 0.35
   }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Upgrades"
-  font: "game2"
-  id: "title"
+  type: TYPE_BOX
+  texture: "menu/Replay_BTN"
+  id: "homeButton"
+  parent: "mainPanel"
   inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 150.0
-    y: 561.0
+    x: 330.0
+    y: 201.0
   }
   size {
     x: 169.0
     y: 169.0
   }
   type: TYPE_BOX
-  id: "movement"
+  id: "weapons"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -67,8 +81,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/table2"
-  id: "movement_bg"
-  parent: "movement"
+  id: "weapons_bg"
+  parent: "weapons"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -88,10 +102,10 @@ nodes {
     z: 0.0
   }
   type: TYPE_TEXT
-  text: "Movement"
+  text: "Weapon System"
   font: "game2"
-  id: "movement_title"
-  parent: "movement"
+  id: "weapons_title"
+  parent: "weapons"
 }
 nodes {
   position {
@@ -108,21 +122,21 @@ nodes {
   type: TYPE_TEXT
   text: "1/5"
   font: "game2"
-  id: "movement_lvl"
-  parent: "movement"
+  id: "weapons_lvl"
+  parent: "weapons"
 }
 nodes {
   position {
-    y: 15.0
+    y: 14.0
   }
   scale {
-    x: 0.3
-    y: 0.3
+    x: 0.22
+    y: 0.22
   }
   type: TYPE_BOX
-  texture: "sprites/movement"
-  id: "movement_icon"
-  parent: "movement"
+  texture: "sprites/powerup_rocket"
+  id: "weapons_icon"
+  parent: "weapons"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -138,10 +152,10 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Speed+"
+  text: "Ammo+"
   font: "game2"
-  id: "movement_desc"
-  parent: "movement"
+  id: "weapons_desc"
+  parent: "weapons"
 }
 nodes {
   position {
@@ -152,8 +166,8 @@ nodes {
     y: 30.0
   }
   type: TYPE_BOX
-  id: "movement_btn"
-  parent: "movement"
+  id: "weapons_btn"
+  parent: "weapons"
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
 }
@@ -164,8 +178,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/upgradebtn"
-  id: "movement_btn_back"
-  parent: "movement_btn"
+  id: "weapons_btn_back"
+  parent: "weapons_btn"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -188,9 +202,9 @@ nodes {
   type: TYPE_TEXT
   text: "10"
   font: "game2"
-  id: "movement_btn_price"
+  id: "weapons_btn_price"
   pivot: PIVOT_W
-  parent: "movement_btn"
+  parent: "weapons_btn"
 }
 nodes {
   position {
@@ -203,9 +217,160 @@ nodes {
   }
   type: TYPE_BOX
   texture: "sprites/coin00"
-  id: "movement_btn_coin"
-  parent: "movement_btn"
+  id: "weapons_btn_coin"
+  parent: "weapons_btn"
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 390.0
+    y: 688.0
+  }
+  scale {
+    x: 0.23
+    y: 0.23
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "adBtn"
+  parent: "mainPanel"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  type: TYPE_BOX
+  texture: "menu/upgradebtn"
+  id: "adBtnBack"
+  parent: "adBtn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 65.347824
+    y: -20.304348
+  }
+  scale {
+    x: 0.35
+    y: 0.35
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "adCoin"
+  parent: "adBtn"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -31.652174
+    y: -24.652174
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+50"
+  font: "game2"
+  id: "plusText"
+  parent: "adBtn"
+}
+nodes {
+  position {
+    y: 23.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Watch Ad\n"
+  ""
+  font: "game2"
+  id: "watchAdText"
+  parent: "adBtn"
+}
+nodes {
+  position {
+    x: 243.0
+    y: 686.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "menu/table"
+  id: "box1"
+  parent: "mainPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -62.0
+    y: 6.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "game2"
+  id: "coins"
+  pivot: PIVOT_W
+  parent: "box1"
+}
+nodes {
+  position {
+    x: -100.0
+    y: 6.0
+  }
+  scale {
+    x: 0.56
+    y: 0.56
+  }
+  type: TYPE_BOX
+  texture: "sprites/coin00"
+  id: "btn1_coin7"
+  parent: "box1"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 238.0
+    y: 768.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Upgrades"
+  font: "game2"
+  id: "title"
+  parent: "mainPanel"
+  inherit_alpha: true
 }
 nodes {
   position {
@@ -218,6 +383,7 @@ nodes {
   }
   type: TYPE_BOX
   id: "powerup"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -372,14 +538,15 @@ nodes {
 nodes {
   position {
     x: 150.0
-    y: 381.0
+    y: 561.0
   }
   size {
     x: 169.0
     y: 169.0
   }
   type: TYPE_BOX
-  id: "lives"
+  id: "movement"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -391,8 +558,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/table2"
-  id: "lives_bg"
-  parent: "lives"
+  id: "movement_bg"
+  parent: "movement"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -412,10 +579,10 @@ nodes {
     z: 0.0
   }
   type: TYPE_TEXT
-  text: "Lives"
+  text: "Movement"
   font: "game2"
-  id: "lives_title"
-  parent: "lives"
+  id: "movement_title"
+  parent: "movement"
 }
 nodes {
   position {
@@ -430,23 +597,23 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "1/3"
+  text: "1/5"
   font: "game2"
-  id: "lives_lvl"
-  parent: "lives"
+  id: "movement_lvl"
+  parent: "movement"
 }
 nodes {
   position {
-    y: 14.0
+    y: 15.0
   }
   scale {
     x: 0.3
     y: 0.3
   }
   type: TYPE_BOX
-  texture: "sprites/heartgui"
-  id: "lives_icon"
-  parent: "lives"
+  texture: "sprites/movement"
+  id: "movement_icon"
+  parent: "movement"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -462,10 +629,10 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Starting Lives+"
+  text: "Speed+"
   font: "game2"
-  id: "lives_desc"
-  parent: "lives"
+  id: "movement_desc"
+  parent: "movement"
 }
 nodes {
   position {
@@ -476,8 +643,8 @@ nodes {
     y: 30.0
   }
   type: TYPE_BOX
-  id: "lives_btn"
-  parent: "lives"
+  id: "movement_btn"
+  parent: "movement"
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
 }
@@ -488,8 +655,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/upgradebtn"
-  id: "lives_btn_back"
-  parent: "lives_btn"
+  id: "movement_btn_back"
+  parent: "movement_btn"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -512,9 +679,9 @@ nodes {
   type: TYPE_TEXT
   text: "10"
   font: "game2"
-  id: "lives_btn_price"
+  id: "movement_btn_price"
   pivot: PIVOT_W
-  parent: "lives_btn"
+  parent: "movement_btn"
 }
 nodes {
   position {
@@ -527,8 +694,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "sprites/coin00"
-  id: "lives_btn_coin"
-  parent: "lives_btn"
+  id: "movement_btn_coin"
+  parent: "movement_btn"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -542,6 +709,7 @@ nodes {
   }
   type: TYPE_BOX
   id: "shield"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -704,6 +872,7 @@ nodes {
   }
   type: TYPE_BOX
   id: "magnet"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -857,15 +1026,16 @@ nodes {
 }
 nodes {
   position {
-    x: 330.0
-    y: 201.0
+    x: 150.0
+    y: 381.0
   }
   size {
     x: 169.0
     y: 169.0
   }
   type: TYPE_BOX
-  id: "weapons"
+  id: "lives"
+  parent: "mainPanel"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
@@ -877,8 +1047,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/table2"
-  id: "weapons_bg"
-  parent: "weapons"
+  id: "lives_bg"
+  parent: "lives"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -898,10 +1068,10 @@ nodes {
     z: 0.0
   }
   type: TYPE_TEXT
-  text: "Weapon System"
+  text: "Lives"
   font: "game2"
-  id: "weapons_title"
-  parent: "weapons"
+  id: "lives_title"
+  parent: "lives"
 }
 nodes {
   position {
@@ -916,23 +1086,23 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "1/5"
+  text: "1/3"
   font: "game2"
-  id: "weapons_lvl"
-  parent: "weapons"
+  id: "lives_lvl"
+  parent: "lives"
 }
 nodes {
   position {
     y: 14.0
   }
   scale {
-    x: 0.22
-    y: 0.22
+    x: 0.3
+    y: 0.3
   }
   type: TYPE_BOX
-  texture: "sprites/powerup_rocket"
-  id: "weapons_icon"
-  parent: "weapons"
+  texture: "sprites/heartgui"
+  id: "lives_icon"
+  parent: "lives"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -948,10 +1118,10 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Ammo+"
+  text: "Starting Lives+"
   font: "game2"
-  id: "weapons_desc"
-  parent: "weapons"
+  id: "lives_desc"
+  parent: "lives"
 }
 nodes {
   position {
@@ -962,8 +1132,8 @@ nodes {
     y: 30.0
   }
   type: TYPE_BOX
-  id: "weapons_btn"
-  parent: "weapons"
+  id: "lives_btn"
+  parent: "lives"
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
 }
@@ -974,8 +1144,8 @@ nodes {
   }
   type: TYPE_BOX
   texture: "menu/upgradebtn"
-  id: "weapons_btn_back"
-  parent: "weapons_btn"
+  id: "lives_btn_back"
+  parent: "lives_btn"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
@@ -998,9 +1168,9 @@ nodes {
   type: TYPE_TEXT
   text: "10"
   font: "game2"
-  id: "weapons_btn_price"
+  id: "lives_btn_price"
   pivot: PIVOT_W
-  parent: "weapons_btn"
+  parent: "lives_btn"
 }
 nodes {
   position {
@@ -1013,30 +1183,96 @@ nodes {
   }
   type: TYPE_BOX
   texture: "sprites/coin00"
-  id: "weapons_btn_coin"
-  parent: "weapons_btn"
+  id: "lives_btn_coin"
+  parent: "lives_btn"
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
-  position {
-    x: 243.0
-    y: 686.0
-  }
-  scale {
-    x: 0.5
-    y: 0.5
+  size {
+    x: 200.0
+    y: 100.0
   }
   type: TYPE_BOX
-  texture: "menu/table"
-  id: "box1"
+  id: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg1"
+  parent: "adBlockerPanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: -60.0
-    y: 6.0
+    x: 240.0
+    y: 552.0
   }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Ad Blocker Detected"
+  font: "game2"
+  id: "text5"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 442.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 900.0
+    y: 500.0
+  }
+  type: TYPE_TEXT
+  text: "Your ad blocker is active. Please disable it or whitelist the website then refresh to recieve the award. "
+  font: "game2"
+  id: "text6"
+  line_break: true
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 239.0
+    y: 314.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "ignoreBtn"
+  parent: "adBlockerPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
   scale {
     x: 0.8
     y: 0.8
@@ -1045,46 +1281,145 @@ nodes {
     x: 200.0
     y: 100.0
   }
-  color {
-    x: 0.0
-    z: 0.0
-  }
   type: TYPE_TEXT
-  text: "0"
+  text: "Ignore Reward"
   font: "game2"
-  id: "coins"
-  pivot: PIVOT_W
-  parent: "box1"
+  id: "text7"
+  parent: "ignoreBtn"
+  inherit_alpha: true
 }
 nodes {
   position {
-    x: -100.0
-    y: 6.0
+    x: 239.0
+    y: 359.0
   }
   scale {
-    x: 0.56
-    y: 0.56
+    x: 0.3
+    y: 0.3
   }
   type: TYPE_BOX
-  texture: "sprites/coin00"
-  id: "btn1_coin7"
-  parent: "box1"
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 242.0
-    y: 56.0
-  }
-  scale {
-    x: 0.35
-    y: 0.35
-  }
-  type: TYPE_BOX
-  texture: "menu/Replay_BTN"
-  id: "homeButton"
+  texture: "menu/btn"
+  id: "whiteListedBtn"
+  parent: "adBlockerPanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Whitelisted"
+  font: "game2"
+  id: "text8"
+  parent: "whiteListedBtn"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 240.0
+    y: 426.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/panel2"
+  id: "bg2"
+  parent: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 240.0
+    y: 552.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Failed to load the ad"
+  font: "game2"
+  id: "text9"
+  parent: "failedPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 240.0
+    y: 442.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 900.0
+    y: 500.0
+  }
+  type: TYPE_TEXT
+  text: "There was an error while loading the ad. "
+  font: "game2"
+  id: "text10"
+  line_break: true
+  parent: "failedPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 239.0
+    y: 360.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "failedContinueBtn"
+  parent: "failedPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Continue"
+  font: "game2"
+  id: "text11"
+  parent: "failedContinueBtn"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

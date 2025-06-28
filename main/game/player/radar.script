@@ -16,9 +16,11 @@ local function shoot(self, target)
 		if self.radarType == hash("ship") then
 			msg.post("ship", "shoot_rocket", {target = target})
 			msg.post("carRadar", "ammo_consumed", {ammo = self.ammo})
+			msg.post("scoreGui#scoreHP", "ammo_consumed")
 		elseif self.radarType == hash("car") then
 			msg.post("car", "shoot_rocket", {target = target})
 			msg.post("shipRadar", "ammo_consumed", {ammo = self.ammo})
+			msg.post("scoreGui#scoreHP", "ammo_consumed")
 		end
 		if self.ammo <= 0 then 
 			deactivate(self)

@@ -2,6 +2,10 @@ fonts {
   name: "game"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 textures {
   name: "menu"
   texture: "/main/menu/menu.atlas"
@@ -55,7 +59,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Placeholder"
-  font: "game"
+  font: "rufont"
   id: "placeholder_text"
   outline {
     x: 0.4
@@ -87,7 +91,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "User input"
-  font: "game"
+  font: "rufont"
   id: "input_text"
   shadow {
     x: 1.0

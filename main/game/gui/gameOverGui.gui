@@ -3,6 +3,10 @@ fonts {
   name: "default"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 textures {
   name: "menu"
   texture: "/main/menu/menu.atlas"

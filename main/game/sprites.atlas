@@ -85,6 +85,9 @@ images {
 images {
   image: "/assets/player/car/car4_big.png"
 }
+images {
+  image: "/assets/enemycoin/ammo.png"
+}
 animations {
   id: "alien"
   images {

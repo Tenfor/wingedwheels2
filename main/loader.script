@@ -1,24 +1,78 @@
 local garage = require("main/game/garage")
+local upgrades = require("main/game/upgrades")
 local gameModel = require("main/game/gameModel")
+local gameSettings = require("main/gameSettings")
 local bridge = require("bridge.bridge")
 
-local function loadGarage()
-	local filename = sys.get_save_file("sys_save_load", "garage")
-	local data = sys.load(filename)
-	garage.setEnemyDestroyed(data.enemyDestroyed or 0)
-	garage.setEventSurvived(data.eventSurvived or 0)
-	garage.setDied(data.died or 0)
-	garage.setPowerupCollected(data.powerupCollected or 0)
-	garage.setSelectedCar(data.selectedCar or 1)
-	garage.setSelectedShip(data.selectedShip or 1)
+local function loadStorage(onComplete)
+	bridge.storage.get(
+	{"enemyDestroyed","eventSurvived","died","powerupCollected", "selectedCar","selectedShip", 
+	"highscore", "playerName", "musicOff", "soundOff", "showTutorialOff", "lang", 
+	"coins", "movement", "powerup", "lives", "magnet", "shield", "weapons"},
+	function (_, data)		
+		garage.setEnemyDestroyed(data.enemyDestroyed or 0)
+		garage.setEventSurvived(data.eventSurvived or 0)
+		garage.setDied(data.died or 0)
+		garage.setPowerupCollected(data.powerupCollected or 0)
+		garage.setSelectedCar(data.selectedCar or 1)
+		garage.setSelectedShip(data.selectedShip or 1)
+
+		gameSettings.setHighScore(data.highscore or 0)
+		gameSettings.setPlayerName(data.playerName or "")
+		if data.musicOff ~= nil and data.musicOff then 
+			gameSettings.setMusic(false)
+		end
+		if data.soundOff ~= nil and data.soundOff then 
+			gameSettings.setSounds(false)
+		end
+		if data.showTutorialOff ~= nil and data.showTutorialOff then 
+			gameSettings.setShowTutorial(false)
+		end
+		if data.lang ~= nil then 
+			gameSettings.setLang(data.lang)
+		else 
+			if bridge.platform.language() == "ru" then 
+				gameSettings.setLang(data.lang or "ru")
+			else 
+				gameSettings.setLang(data.lang or "eng")
+			end
+		end
+
+		upgrades.setCoins(data.coins or 0)
+		upgrades.setMovementLevel(data.movement or 0)
+		upgrades.setPowerupLevel(data.powerup or 0)
+		upgrades.setLivesLevel(data.lives or 0)
+		upgrades.setMagnetLevel(data.magnet or 0)
+		upgrades.setShieldLevel(data.shield or 0)
+		upgrades.setWeaponsLevel(data.weapons or 0)
+
+		onComplete()		
+	end,
+	function (_,data)
+		onComplete()
+	end)
+end
+
+local function onLoadComplete(self)
+	msg.post(self.menuProxy, "load")
+	msg.post(self.gameProxy, "load")
+	bridge.platform.send_message("game_ready");
+end
+
+local function handle_response(self, id, response)
+	print(response.status)
+	if response.status == 200 then 
+		gameSettings.leaderBoardAvaible = true
+	else
+		gameSettings.leaderBoardAvaible = false
+	end
+	onLoadComplete(self)
 end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
 	math.randomseed(os.clock() * 100000000000)
-
-	loadGarage()
 	
 	self.garageProxy = "#garageProxy"
 	self.gameProxy = "#gameProxy"
@@ -30,10 +84,14 @@ function init(self)
 	self.settingsProxy = "#settingsProxy"
 	self.creditsProxy = "#creditsProxy"
 	--	msg.post(self.garageProxy, "load")
-	msg.post(self.menuProxy, "load")
-	msg.post(self.gameProxy, "load")
 
-	bridge.platform.send_message("game_ready");
+	bridge.advertisement.set_minimum_delay_between_interstitial(300)
+
+	loadStorage(
+	function() 
+			onLoadComplete(self)
+			--http.request("https://tgapi-zhv2.onrender.com/ping", "GET", handle_response)
+		end)
 end
 
 function final(self)
@@ -62,6 +120,7 @@ function on_message(self, message_id, message, sender)
 		msg.post(sender, "enable")
 	end
 	if message_id == hash("gameOver") then
+		upgrades.setRewardingAdReady(true)
 		msg.post(self.gameProxy, "disable")
 		msg.post(self.gameProxy, "final")
 		msg.post(self.gameProxy, "unload")

@@ -4,7 +4,35 @@ local const  = require("druid.const")
 local gameModel =require "main/game/gameModel"
 local json = require("main/json")
 local upgrades  = require "main/game/upgrades"
+local gameSettings = require("main/gameSettings")
 local bridge = require("bridge.bridge")
+
+
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Игра окончена")
+
+	local yourScoresText = gui.get_node("title1")
+	gui.set_font(yourScoresText, "rufont")
+	gui.set_text(yourScoresText, "Твои результаты:")
+
+	local cheering = gui.get_node("cheering")
+	gui.set_font(cheering, "rufont")
+	gui.set_text(cheering, "Ты справишься!")
+
+	local collectedCoinsText = gui.get_node("text3")
+	gui.set_font(collectedCoinsText, "rufont")
+	gui.set_text(collectedCoinsText, "Вы собрали ".. tostring(gameModel.currentScores) .." монет")
+
+	local continueText = gui.get_node("text1")
+	gui.set_font(continueText, "rufont")
+	gui.set_text(continueText, "Далее")
+
+	local submitText = gui.get_node("text")
+	gui.set_font(submitText, "rufont")
+	gui.set_text(submitText, "Отправить")
+end
 
 local function hideSuccessIcon(self)
 	gui.set_alpha(self.successIcon, 0)
@@ -23,7 +51,7 @@ local function hideDescriptionText(self)
 	gui.set_alpha(self.descriptionTextNode, 0)
 end
 
-local function setDescriptionText(self,text,center)
+local function setDescriptionText(self,text,center,ruText)
 
 	local pos = gui.get_position(self.descriptionTextNode)
 	if(center) then
@@ -37,11 +65,21 @@ local function setDescriptionText(self,text,center)
 	
 	gui.set_alpha(self.descriptionTextNode, 1)
 	gui.set_text(self.descriptionTextNode, text)
+
+	if gameSettings.lang == "ru" then 
+		gui.set_font(self.descriptionTextNode, "rufont")
+		gui.set_text(self.descriptionTextNode, ruText)
+	end
 end
 
-local function setLoadingText(self, text)
+local function setLoadingText(self, text, ruText)
 	gui.set_text(self.loadingTextNode, text)
 	gui.animate(self.loadingTextNode, "color.w", 1, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
+
+	if gameSettings.lang == "ru" then 
+		gui.set_font(self.loadingTextNode, "rufont")
+		gui.set_text(self.loadingTextNode, ruText)
+	end
 
 end
 
@@ -71,24 +109,24 @@ local function handle_fetch_response(self,id,response)
 			minScore = decodedResponse[50].scores
 		end
 		if gameModel.currentScores > minScore then
-			setDescriptionText(self, "Congratulation!\nNew Highscore!",false)
+			setDescriptionText(self, "Congratulation!\nNew Highscore!",false, "Поздравляем!\nНовый рекорд!")
 			self.rich_input:set_placeholder("Enter Your Name")
+			if gameSettings.lang == "ru" then 
+				self.rich_input:set_placeholder("Ваше имя")
+			end
 
-			--set playername if its saved in localstorage
-			local filename = sys.get_save_file("sys_save_load", "playerName")
-			local data = sys.load(filename)
-			if data.playerName then 
+			if gameSettings.playerName ~= "" then
 				self.rich_input:set_placeholder("")
-				self.rich_input.input:set_text(data.playerName)
+				self.rich_input.input:set_text(gameSettings.playerName)
 			end
 			
 			showInput(self)
 		else
-			setDescriptionText(self, "Reach "..tostring(minScore+1).."\nfor a new Highscore", true)
+			setDescriptionText(self, "Reach "..tostring(minScore+1).."\nfor a new Highscore", true, "Нужно "..tostring(minScore+1).."\nдля рекорда" )
 		end
 	else
 		showSuccessIcon(self,false)
-		setDescriptionText(self, "Connection Error",false)
+		setDescriptionText(self, "Connection Error",false,"Ошибка сети")
 	end
 end
 
@@ -96,13 +134,13 @@ local function handle_post_response(self, id, response)
 	hideLoadingText(self)
 	if response.status == 200 then 
 		showSuccessIcon(self,true)
-		setDescriptionText(self, "Scores submitted!\nCongratulations!")
+		setDescriptionText(self, "Scores submitted!\nCongratulations!", false, "Рекорд Отправлено!\nПоздравления!")
 	else
 		showSuccessIcon(self,false)
-		setDescriptionText(self, "Connection error!")
+		setDescriptionText(self, "Connection error!", false, "Ошибка сети")
 		timer.delay(3, false, function()
 			hideSuccessIcon(self)
-			setDescriptionText(self, "Congratulation!\nNew Highscore!")
+			setDescriptionText(self, "Congratulation!\nNew Highscore!", false, "Поздравления!\nНовый рекорд!")
 			--hideDescriptionText(self)
 			showInput(self)
 		end)
@@ -113,12 +151,17 @@ local function onSubmit(self)
 	local playerName = self.rich_input:get_text()
 	if #playerName > 0 then
 		msg.post("soundController", "playSfx", {url="#tick"})
-		setLoadingText(self,"Submitting score...")
+		setLoadingText(self,"Submitting score...", "Отправка рекорда...")
 		hideInput(self)
 		hideDescriptionText(self)
 
-		local filename = sys.get_save_file("sys_save_load", "playerName")
-		sys.save(filename,{playerName=playerName})
+		bridge.storage.set ({ 
+			playerName = playerName
+		},
+		function ()
+			gameSettings.setPlayerName(playerName)
+		end
+		)
 
 		local headers = {
 			["Content-Type"] = "application/json"
@@ -157,8 +200,11 @@ local function onYesBtn(self)
 	if self.adBlocked then
 		showAdBlockPanel(self)
 	else
-		local placement = "test_placement" -- optional
-		bridge.advertisement.show_rewarded(placement)
+		--local placement = "test_placement" -- optional
+		bridge.advertisement.show_rewarded()
+		
+		
+		--bridge.advertisement.show_interstitial()
 
 		--crazygames.show_rewarded_ad(function(self, result)
 		--	if result then
@@ -174,7 +220,7 @@ end
 
 local function onContinue(self)
 	if not self.submitting then 
-		showAdPanel(self)
+		bridge.advertisement.show_interstitial()
 	end
 end
 
@@ -183,7 +229,7 @@ local function fetchHighScores(self)
 	hideInput(self)	hideDescriptionText(self)
 	gui.animate(self.loadingTextNode, "color.w", 0, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
 	http.request("https://tgapi-zhv2.onrender.com/scores", "GET", handle_fetch_response)
-	setLoadingText(self, "Checking Highscores...")
+	setLoadingText(self, "Checking Highscores...", "Проверка рекордов...")
 end
 
 local function check_ad_block(self)
@@ -212,8 +258,14 @@ function init(self)
 		elseif state == "closed" then 
 			msg.post("main:/loader#loader", "restartGame")
 		end
-			
-		print("Rewarded state changed: ", state)
+	end)
+
+	bridge.advertisement.on("interstitial_state_changed", function (_, state)
+		if state == "failed" then 
+			msg.post("main:/loader#loader", "restartGame")
+		elseif state == "closed" then 
+			msg.post("main:/loader#loader", "restartGame")
+		end
 	end)
 
 	check_ad_block(self)
@@ -238,8 +290,8 @@ function init(self)
 	self.rich_input_parent = gui.get_node("rich_input_parent")
 	self.rich_input:set_placeholder("Enter Your Name")
 	self.rich_input.input:set_max_length(11)
-	self.rich_input.input:set_allowed_characters("[A-Za-z0-9]")
---	self.rich_input:set_max_length(self,11)
+	self.rich_input.input:set_allowed_characters("[A-Za-z0-9А-Яа-я]")
+	--	self.rich_input:set_max_length(self,11)
 
 	self.submitButton = self.druid:new_button("submit", onSubmit)
 	self.continueButton = self.druid:new_button("continue", onContinue)
@@ -254,6 +306,10 @@ function init(self)
 	self.isFetching = false
 
 	fetchHighScores(self)
+
+	if gameSettings.lang == "ru" then
+		translateToRussian(self)
+	end
 end
 
 function on_input(self, action_id, action)

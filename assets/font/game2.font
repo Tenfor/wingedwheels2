@@ -4,4 +4,5 @@ size: 52
 outline_alpha: 1.0
 outline_width: 2.0
 shadow_blur: 64
+all_chars: true
 characters: " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\303\251\303\241\305\261\305\221\303\272\303\266\303\274\303\263\303\211\303\201\305\260\305\220\303\232\303\226\303\234\303\223\303\255\303\215"

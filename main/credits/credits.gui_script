@@ -1,4 +1,15 @@
 local druid = require("druid.druid")
+local gameSettings = require("main/gameSettings")
+
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Авторы")
+
+	local desc = gui.get_node("text")
+	gui.set_font(desc, "rufont")
+	gui.set_text(desc, "Графический дизайн: Виктория Каради\n\nГрафические ресурсы: Craftpix.net\n\nЗвуковые эффекты и музыка:\nfreesounds.org\nЭрик Скифф\nЭрик Матиас\n\nСоздано студией Tenfor")
+end
 
 local function onHomeButton(self)
 	msg.post("game:/soundController", "playSfx", {url = "#tick"} )
@@ -6,19 +17,12 @@ local function onHomeButton(self)
 	msg.post("main:/loader#loader", "hide_credits")
 end
 
-local function onFb()
-	sys.open_url("https://www.facebook.com/tenforgames",{target = "_blank"})
-end
-
-local function onDc()
-	sys.open_url("https://discord.gg/xFszFyuNmT",{target = "_blank"})
-end
-
 function init(self)
 	self.druid = druid.new(self)
 	self.homeButton = self.druid:new_button("homeBtn", onHomeButton)
-	self.fbBtn = self.druid:new_button("fbBtn", onFb)
-	self.dcBtn = self.druid:new_button("dcBtn", onDc)
+	if gameSettings.lang == "ru" then 
+		translateToRussian(self)
+	end
 end
 
 function update(self, dt)

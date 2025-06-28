@@ -3,6 +3,10 @@ fonts {
   name: "game2"
   font: "/assets/font/game2.font"
 }
+fonts {
+  name: "rufont"
+  font: "/assets/font/rufont.font"
+}
 textures {
   name: "menu"
   texture: "/main/menu/menu.atlas"
@@ -70,7 +74,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank1"
   pivot: PIVOT_W
   parent: "scoreBox1"
@@ -90,7 +94,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name1"
   pivot: PIVOT_W
   parent: "scoreBox1"
@@ -110,7 +114,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score1"
   pivot: PIVOT_E
   parent: "scoreBox1"
@@ -145,7 +149,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank2"
   pivot: PIVOT_W
   parent: "scoreBox2"
@@ -165,7 +169,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name2"
   pivot: PIVOT_W
   parent: "scoreBox2"
@@ -185,7 +189,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score2"
   pivot: PIVOT_E
   parent: "scoreBox2"
@@ -220,7 +224,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank3"
   pivot: PIVOT_W
   parent: "scoreBox3"
@@ -240,7 +244,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name3"
   pivot: PIVOT_W
   parent: "scoreBox3"
@@ -260,7 +264,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score3"
   pivot: PIVOT_E
   parent: "scoreBox3"
@@ -295,7 +299,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank4"
   pivot: PIVOT_W
   parent: "scoreBox4"
@@ -315,7 +319,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name4"
   pivot: PIVOT_W
   parent: "scoreBox4"
@@ -335,7 +339,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score4"
   pivot: PIVOT_E
   parent: "scoreBox4"
@@ -370,7 +374,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank5"
   pivot: PIVOT_W
   parent: "scoreBox5"
@@ -390,7 +394,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name5"
   pivot: PIVOT_W
   parent: "scoreBox5"
@@ -410,7 +414,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score5"
   pivot: PIVOT_E
   parent: "scoreBox5"
@@ -445,7 +449,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank6"
   pivot: PIVOT_W
   parent: "scoreBox6"
@@ -465,7 +469,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name6"
   pivot: PIVOT_W
   parent: "scoreBox6"
@@ -485,7 +489,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score6"
   pivot: PIVOT_E
   parent: "scoreBox6"
@@ -520,7 +524,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank7"
   pivot: PIVOT_W
   parent: "scoreBox7"
@@ -540,7 +544,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name7"
   pivot: PIVOT_W
   parent: "scoreBox7"
@@ -560,7 +564,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score7"
   pivot: PIVOT_E
   parent: "scoreBox7"
@@ -595,7 +599,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank8"
   pivot: PIVOT_W
   parent: "scoreBox8"
@@ -615,7 +619,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name8"
   pivot: PIVOT_W
   parent: "scoreBox8"
@@ -635,7 +639,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score8"
   pivot: PIVOT_E
   parent: "scoreBox8"
@@ -670,7 +674,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank9"
   pivot: PIVOT_W
   parent: "scoreBox9"
@@ -690,7 +694,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name9"
   pivot: PIVOT_W
   parent: "scoreBox9"
@@ -710,7 +714,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score9"
   pivot: PIVOT_E
   parent: "scoreBox9"
@@ -745,7 +749,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "1."
-  font: "game2"
+  font: "rufont"
   id: "rank10"
   pivot: PIVOT_W
   parent: "scoreBox10"
@@ -765,7 +769,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "Player1"
-  font: "game2"
+  font: "rufont"
   id: "name10"
   pivot: PIVOT_W
   parent: "scoreBox10"
@@ -785,7 +789,7 @@ nodes {
   }
   type: TYPE_TEXT
   text: "999"
-  font: "game2"
+  font: "rufont"
   id: "score10"
   pivot: PIVOT_E
   parent: "scoreBox10"

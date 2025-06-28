@@ -2,6 +2,8 @@ local gameModel =require "main/game/gameModel"
 local druid = require("druid.druid")
 local upgrades  = require "main/game/upgrades"
 local garage = require("main/game/garage")
+local gameSettings = require("main/gameSettings")
+local bridge = require("bridge.bridge")
 
 local function darken(self)
 	local blackOverlay = gui.get_node("blackOverlay")
@@ -19,15 +21,14 @@ local function saveStats(self,dieToAdd)
 	garage.saveGarage()
 end	
 
-local function load_highscore()
-	local filename = sys.get_save_file("sys_save_load", "highscore")
-	local data = sys.load(filename)
-	return data.highscore or 0
-end
-
 local function save_highscore(highscore)
-	local filename = sys.get_save_file("sys_save_load", "highscore")
-	sys.save(filename, { highscore = highscore })
+	bridge.storage.set ({ 
+		highscore = highscore
+	},
+	function ()
+		gameSettings.setHighScore(highscore)
+	end
+)
 end
 
 local function scale_down(self, node)
@@ -69,11 +70,19 @@ function init(self)
 	self.hp = upgrades.lives.data[upgrades.lives.level + 1]
 	self.score = 0
 
+	self.ammo = 0;
+
 	self.scoreText = gui.get_node("coinText")
 	gui.set_text(self.scoreText, tostring(self.score))
 
 	self.hpText = gui.get_node("hpText")
 	gui.set_text(self.hpText, tostring(self.hp))
+
+	self.ammoText = gui.get_node("ammoText")
+	gui.set_text(self.ammoText, tostring(self.ammo))
+
+	self.ammoNode = gui.get_node("ammo")
+	gui.set_enabled(self.ammoNode, false)
 
 	self.carImmuneTime = 0;
 	self.shipImmuneTime = 0;
@@ -82,7 +91,7 @@ function init(self)
 	self.event_survived = 0;
 	self.powerup_collected = 0;
 	
-	self.highscore = load_highscore()
+	self.highscore = gameSettings.highscore
 
 	msg.post(".", "acquire_input_focus")
 	self.active = true
@@ -107,6 +116,19 @@ function on_message(self, message_id, message, sender)
 		self.score = self.score + message.amount
 		gui.set_text(self.scoreText, tostring(self.score))
 		gui.animate(self.scoreText, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.1, 0.0, scale_down)
+	elseif message_id == hash("ammo_consumed") then
+		self.ammo = self.ammo - 1
+		if self.ammo < 0 then 
+			self.ammo = 0
+		end
+		if self.ammo == 0 then 
+			gui.set_enabled(self.ammoNode, false)
+		end
+		gui.set_text(self.ammoText, tostring(self.ammo))
+	elseif message_id == hash("ammo_collected") then
+		self.ammo = self.ammo + upgrades.weapons.data[upgrades.weapons.level+1]
+		gui.set_text(self.ammoText, tostring(self.ammo))
+		gui.set_enabled(self.ammoNode, true)
 	elseif message_id == hash("deal_dmg") and self.hp > 0 then
 		if (message.type == "ship" and self.shipImmuneTime <= 0) or (message.type == "car" and self.carImmuneTime <= 0) then
 			if(message.type == "ship") then 

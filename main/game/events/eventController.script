@@ -43,9 +43,9 @@ end
 
 local function setupEvents(self) 
 	self.events = {
-		{eventName = "Meteor Shower", vo = "#meteor_vo"},
-		{eventName = "Alien Invasion", vo = "#invasion_vo"},
-		{eventName = "Coin Shower", vo = "#coin_vo"},
+		{ruEventName = "Метеор дождь",eventName = "Meteor Shower", vo = "#meteor_vo"},
+		{ruEventName = "Вторжение", eventName = "Alien Invasion", vo = "#invasion_vo"},
+		{ruEventName = "Дождь из монет", eventName = "Coin Shower", vo = "#coin_vo"},
 	--	{eventName = "Inverted Controls", vo = "#inverted_vo"},
 --		[4] = {eventName = "Turbo", vo = "#turbo_vo"},
 --		[6] = {eventName = "Mirror World", vo = "#mirror_vo"},
@@ -56,7 +56,7 @@ local function pickRandomEvent(self)
 
 	if #self.events == 0 then 
 		setupEvents(self)
-		return {eventName = "Peaceful Sector", vo = "#peaceful_vo"}
+		return {ruEventName = "Мирный сектор", eventName = "Peaceful Sector", vo = "#peaceful_vo"}
 	else
 		local rand = math.random(1,#self.events)
 		local event = self.events[rand]
@@ -71,8 +71,8 @@ local function startEvent(self)
 	end
 	local event = pickRandomEvent(self)
 	msg.post("soundController", "playSfx", {url = event.vo})
-	msg.post("eventGui#eventGui", "eventStart", {eventName = event.eventName})
-	msg.post("factories#factories", "eventStart", {eventName = event.eventName})
+	msg.post("eventGui#eventGui", "eventStart", {eventName = event.eventName, ruEventName = event.ruEventName})
+	msg.post("factories#factories", "eventStart", {eventName = event.eventName, ruEventName = event.ruEventName})
 
 	timer.delay(1.4, false, function()
 		spawnRelevant(self, event.eventName)

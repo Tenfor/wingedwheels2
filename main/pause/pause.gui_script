@@ -1,9 +1,30 @@
 local druid = require("druid.druid")
 local gameSettings = require "main/gameSettings"
+local bridge = require("bridge.bridge")
 
-local function saveMusicSoundSettings()
-	local filename = sys.get_save_file("sys_save_load", "settings")
-	sys.save(filename, { musicSettings = gameSettings.music, soundSettings = gameSettings.sounds, showTutorial = gameSettings.showTutorial })
+local function translateToRussian(self)
+	local titleText = gui.get_node("text")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Пауза")
+
+	local titleText2 = gui.get_node("text2")
+	gui.set_font(titleText2, "rufont")
+	gui.set_text(titleText2, "Пауза")
+
+	local backToMenuText = gui.get_node("text3")
+	gui.set_font(backToMenuText, "rufont")
+	gui.set_text(backToMenuText, "Назад в меню")
+
+	local resumeText = gui.get_node("text1")
+	gui.set_font(resumeText, "rufont")
+	gui.set_text(resumeText, "Продолжить")
+end
+
+local function saveMusicSoundSettings()	
+	bridge.storage.set ({ 
+		musicOff = not gameSettings.music,
+		soundOff = not gameSettings.sounds
+	})
 end
 
 local function onNo(self)
@@ -92,6 +113,10 @@ function init(self)
 	end
 	if not gameSettings.music then 
 		gui.play_flipbook(self.musicButtonNode, "Musicoff_BTN")
+	end
+
+	if(gameSettings.lang == "ru") then 
+		translateToRussian(self)
 	end
 	
 end

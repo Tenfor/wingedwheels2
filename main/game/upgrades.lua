@@ -1,4 +1,7 @@
+local bridge = require("bridge.bridge")
+
 local M = {
+	rewardingAdReady = true,
 	coins = 0,
 	movement = {
 		level = 0,
@@ -14,9 +17,9 @@ local M = {
 	},
 	lives = {
 		level = 0, 
-		maxLevel = 3,
-		prices = {30,70,150},
-		data = {1,2,3,4}
+		maxLevel = 4,
+		prices = {10,20,70,150},
+		data = {1,2,3,4,5}
 	},
 	shield = {
 		level = 0, 
@@ -80,9 +83,12 @@ function M.setWeaponsLevel(val)
 	end
 end
 
+function M.setRewardingAdReady(val)
+	M.rewardingAdReady = val
+end
+
 function M.saveUpgrades()
-	local filename = sys.get_save_file("sys_save_load", "upgrades")
-	sys.save(filename, { 
+	bridge.storage.set ({ 
 		coins = M.coins,
 		movement = M.movement.level,
 		powerup = M.powerup.level,

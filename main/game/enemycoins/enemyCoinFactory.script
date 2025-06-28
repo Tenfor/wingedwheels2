@@ -95,7 +95,6 @@ local function getFactoryIdEnemyNormal(self)
 	local factoryId = "#rockFactory"
 	local powerUpRand = math.random(1,100)
 --	local compensate = math.floor(self.powerUpCompensate / 2)
---	print(98 - compensate)
 --self.powerUpCompensate = 90
 	local chance = 100-upgrades.powerup.data[upgrades.powerup.level + 1]
 	if upgrades.powerup.level == upgrades.powerup.maxLevel then 

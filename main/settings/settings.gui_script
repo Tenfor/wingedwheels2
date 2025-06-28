@@ -2,20 +2,77 @@ local druid = require("druid.druid")
 local gameSettings = require "main/gameSettings"
 local garage = require "main/game/garage"
 local upgrades = require "main/game/upgrades"
+local bridge = require("bridge.bridge")
+
+local function translateToRussian(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "rufont")
+	gui.set_text(titleText, "Настройки")
+
+	local titleText2 = gui.get_node("text4")
+	gui.set_font(titleText2, "rufont")
+	gui.set_text(titleText2, "Настройки")
+
+	local titleText3 = gui.get_node("text2")
+	gui.set_font(titleText3, "rufont")
+	gui.set_text(titleText3, "Настройки")
+
+	local tutText = gui.get_node("text1")
+	gui.set_font(tutText, "rufont")
+	gui.set_text(tutText, "Показ обучения")
+
+	local resetDataText = gui.get_node("resetDataBtnText")
+	gui.set_font(resetDataText, "rufont")
+	gui.set_text(resetDataText, "Сброс данных")
+
+	local savesDeleted = gui.get_node("text5")
+	gui.set_font(savesDeleted, "rufont")
+	gui.set_text(savesDeleted, "Сохранения стерты")
+
+	local confirmDelete = gui.get_node("text3")
+	gui.set_font(confirmDelete, "rufont")
+	gui.set_text(confirmDelete, "Удалить все сохранения?")
+
+	local continue = gui.get_node("text6")
+	gui.set_font(continue, "rufont")
+	gui.set_text(continue, "Продолжить")
+end
+
+local function translateToEnglish(self)
+	local titleText = gui.get_node("title")
+	gui.set_font(titleText, "game2")
+	gui.set_text(titleText, "Settings")
+
+	local titleText2 = gui.get_node("text4")
+	gui.set_font(titleText2, "game2")
+	gui.set_text(titleText2, "Settings")
+
+	local titleText3 = gui.get_node("text2")
+	gui.set_font(titleText3, "game2")
+	gui.set_text(titleText3, "Settings")
+
+	local tutText = gui.get_node("text1")
+	gui.set_font(tutText, "game2")
+	gui.set_text(tutText, "Show Tutorial")
+
+	local resetDataText = gui.get_node("resetDataBtnText")
+	gui.set_font(resetDataText, "game2")
+	gui.set_text(resetDataText, "Reset Data")
+
+	local savesDeleted = gui.get_node("text5")
+	gui.set_font(savesDeleted, "game2")
+	gui.set_text(savesDeleted, "Saves deleted")
+
+	local confirmDelete = gui.get_node("text3")
+	gui.set_font(confirmDelete, "game2")
+	gui.set_text(confirmDelete, "Delete all your saves?")
+
+	local continue = gui.get_node("text6")
+	gui.set_font(continue, "game2")
+	gui.set_text(continue, "Continue")
+end
 
 local function initToggleButtons(self)
-	local filename = sys.get_save_file("sys_save_load", "settings")
-	local data = sys.load(filename)
-	if data.musicSettings ~= nil then 
-		gameSettings.setMusic(data.musicSettings)
-	end
-	if data.soundSettings ~= nil then 
-		gameSettings.setSounds(data.soundSettings)
-	end
-	if data.showTutorial ~= nil then 
-		gameSettings.setShowTutorial(data.showTutorial)
-	end
-
 	if not gameSettings.sounds then 
 		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
 	end
@@ -28,8 +85,12 @@ local function initToggleButtons(self)
 end
 
 local function saveSettings()
-	local filename = sys.get_save_file("sys_save_load", "settings")
-	sys.save(filename, { musicSettings = gameSettings.music, soundSettings = gameSettings.sounds, showTutorial = gameSettings.showTutorial })
+	bridge.storage.set ({ 
+		musicOff = not gameSettings.music,
+		soundOff = not gameSettings.sounds,
+		showTutorialOff = not gameSettings.showTutorial,
+		lang = gameSettings.lang
+	})
 end
 
 local function onMusicButton(self)
@@ -83,8 +144,10 @@ local function onYes(self)
 	upgrades.resetData();
 	garage.saveGarage();
 	upgrades.saveUpgrades();
-	local filename = sys.get_save_file("sys_save_load", "highscore")
-	sys.save(filename, { highscore = 0 })
+	
+	bridge.storage.set ({ 
+		highscore = 0
+	})
 	
 	gui.set_enabled(self.panelRoot, false)
 	gui.set_enabled(self.confirmPanelRoot, false)
@@ -112,6 +175,24 @@ local function onHomeButton(self)
 	msg.post("main:/loader#loader", "hide_settings")
 end
 
+local function onEngBtn(self)
+	if gameSettings.lang ~= "eng" then
+		gameSettings.setLang("eng")
+		gui.set_color(self.engBtnNode, vmath.vector4(0.6,1,0.6,1))
+		gui.set_color(self.ruBtnNode, vmath.vector4(1,1,1,1))
+		translateToEnglish(self)
+	end
+end
+
+local function onRuBtn(self)
+	if gameSettings.lang ~= "ru" then
+		gameSettings.setLang("ru")
+		gui.set_color(self.ruBtnNode, vmath.vector4(0.6,1,0.6,1))
+		gui.set_color(self.engBtnNode, vmath.vector4(1,1,1,1))
+		translateToRussian(self)
+	end
+end
+
 function init(self)
 	self.druid = druid.new(self)
 
@@ -133,11 +214,25 @@ function init(self)
 	self.noBtn = self.druid:new_button("noBtn", onNo)
 	self.cuntinueBtn = self.druid:new_button("continueBtn", onContinue)
 
+	self.engBtn = self.druid:new_button("eng_btn", onEngBtn)
+	self.ruBtn = self.druid:new_button("ru_btn", onRuBtn)
+	self.engBtnNode = gui.get_node("eng_btn_back")
+	self.ruBtnNode = gui.get_node("ru_btn_back")
+
 	gui.set_enabled(self.panelRoot, true)
 	gui.set_enabled(self.confirmPanelRoot, false)
 	gui.set_enabled(self.deleteSuccessRoot, false)
 
 	msg.post("#", "show_settings")
+
+	gui.set_color(self.ruBtnNode, vmath.vector4(1,1,1,1))
+	gui.set_color(self.engBtnNode, vmath.vector4(0.6,1,0.6,1))
+
+	if gameSettings.lang == "ru" then 
+		translateToRussian(self)
+		gui.set_color(self.ruBtnNode, vmath.vector4(0.6,1,0.6,1))
+		gui.set_color(self.engBtnNode, vmath.vector4(1,1,1,1))
+	end
 end
 
 function update(self, dt)

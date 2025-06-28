@@ -1,16 +1,32 @@
 local druid = require("druid.druid")
 local gameSettings = require "main/gameSettings"
 local gameModel = require "main/game/gameModel"
+local bridge = require("bridge.bridge")
 
-local function load_highscore()
-	local filename = sys.get_save_file("sys_save_load", "highscore")
-	local data = sys.load(filename)
-	return data.highscore or 0
+local function translateToRussian(self)
+	local hsText = gui.get_node("highscoreText")
+	gui.set_font(hsText, "rufont")
+	gui.set_text(hsText, "Личный рекорд")
+
+	local startText = gui.get_node("text")
+	gui.set_font(startText, "rufont")
+	gui.set_text(startText, "Играть")
+
+	local upgradesText = gui.get_node("upgradesText")
+	gui.set_font(upgradesText, "rufont")
+	gui.set_text(upgradesText, "Улучшения")
+
+	local garageText = gui.get_node("garageText")
+	gui.set_font(garageText, "rufont")
+	gui.set_text(garageText, "Гараж")
+	
 end
 
-local function saveMusicSoundSettings()
-	local filename = sys.get_save_file("sys_save_load", "settings")
-	sys.save(filename, { musicSettings = gameSettings.music, soundSettings = gameSettings.sounds, showTutorial = gameSettings.showTutorial })
+local function saveMusicSoundSettings()	
+	bridge.storage.set ({ 
+		musicOff = not gameSettings.music,
+		soundOff = not gameSettings.sounds
+	})
 end
 
 local function onUpgradesButton(self)
@@ -84,16 +100,7 @@ end
 
 local function initMusicSoundTexts(self)
 --	local musicTextNode = gui.get_node("musicText")
---	local soundTextNode = gui.get_node("soundText")
-	local filename = sys.get_save_file("sys_save_load", "settings")
-	local data = sys.load(filename)
-	if data.musicSettings ~= nil then 
-		gameSettings.setMusic(data.musicSettings)
-	end
-	if data.soundSettings ~= nil then 
-		gameSettings.setSounds(data.soundSettings)
-	end
-	
+--	local soundTextNode = gui.get_node("soundText")	
 	if not gameSettings.sounds then 
 		gui.play_flipbook(self.soundButtonNode, "Soundoff_BTN")
 	end
@@ -118,6 +125,10 @@ function init(self)
 
 	self.creditsButton = self.druid:new_button("credits", onCreditsButton)
 	self.highscoresButton = self.druid:new_button("highscores", onHighscores)
+
+	if(gameSettings.lang == "ru") then
+		translateToRussian(self)
+	end
 	
 	msg.post(".", "acquire_input_focus")
 	msg.post("#", "show_menu")
@@ -131,8 +142,11 @@ function on_message(self, message_id, message, sender)
 	self.druid:on_message(message_id, message, sender)
 	if message_id == hash("show_menu") then
 		local highscoreText = gui.get_node("highscoreText")
-		self.highscore = load_highscore()
-		gui.set_text(highscoreText, "High Scores: "..tostring(self.highscore))
+		if gameSettings.lang == "eng" then 
+			gui.set_text(highscoreText, "Personal Best: "..tostring(gameSettings.highscore))
+		else
+			gui.set_text(highscoreText, "Личный рекорд: "..tostring(gameSettings.highscore))
+		end
 		initMusicSoundTexts(self)
 		msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
 	end
