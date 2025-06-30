@@ -5,8 +5,13 @@ local M = {
 	magnetActive = false,
 	isStarted = false,
 	currentScores = 0,
-	isPaused = false
+	isPaused = false,
+	newHighscore = false
 }
+
+function M.setNewHighscore(val)
+	M.newHighscore = val
+end
 
 function M.setIsStarted(val)
 	M.isStarted = val
@@ -48,6 +53,7 @@ function M.reset()
 	M.isStarted = false;
 	M.currentScores = 0;
 	M.isPaused = false;
+	M.newHighscore = false;
 end
 
 function M.togglePause()

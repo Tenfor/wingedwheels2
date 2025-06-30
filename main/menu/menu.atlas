@@ -11,9 +11,6 @@ images {
   image: "/assets/menu/Sound_BTN.png"
 }
 images {
-  image: "/assets/menu/logo.png"
-}
-images {
   image: "/assets/menu/panel.png"
 }
 images {

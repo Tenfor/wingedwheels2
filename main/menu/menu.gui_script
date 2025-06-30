@@ -19,7 +19,13 @@ local function translateToRussian(self)
 	local garageText = gui.get_node("garageText")
 	gui.set_font(garageText, "rufont")
 	gui.set_text(garageText, "Гараж")
-	
+
+	local logoNode = gui.get_node("logo")
+	gui.play_flipbook(logoNode, "russian_logo")
+	gui.set_scale(logoNode, vmath.vector3(0.43,0.43,1))
+	pos = gui.get_position(logoNode)
+	pos.x = pos.x+5
+	gui.set_position(logoNode, pos)
 end
 
 local function saveMusicSoundSettings()	
@@ -109,6 +115,26 @@ local function initMusicSoundTexts(self)
 	end
 end
 
+local function hideHighScores(self)
+	gui.set_enabled(self.highscoresButtonNode, false)
+
+	local musicButtonPos = gui.get_position(self.musicButtonNode)
+	musicButtonPos.x = 108
+	gui.set_position(self.musicButtonNode, musicButtonPos)
+
+	local soundButtonPos = gui.get_position(self.soundButtonNode)
+	soundButtonPos.x = 198
+	gui.set_position(self.soundButtonNode, soundButtonPos)
+
+	local settingsButtonPos = gui.get_position(self.settingsButtonNode)
+	settingsButtonPos.x = 288
+	gui.set_position(self.settingsButtonNode, settingsButtonPos)
+
+	local creditsButtonPos = gui.get_position(self.creditsButtonNode)
+	creditsButtonPos.x = 378
+	gui.set_position(self.creditsButtonNode, creditsButtonPos)
+end
+
 function init(self)
 	self.druid = druid.new(self)
 	self.startButton = self.druid:new_button("start", onStartButton)
@@ -122,12 +148,19 @@ function init(self)
 	self.garageButton = self.druid:new_button("garage", onGarageButton)
 
 	self.settingsButton = self.druid:new_button("settings", onSettingsButton)
+	self.settingsButtonNode = gui.get_node("settings")
 
 	self.creditsButton = self.druid:new_button("credits", onCreditsButton)
+	self.creditsButtonNode = gui.get_node("credits")
 	self.highscoresButton = self.druid:new_button("highscores", onHighscores)
+	self.highscoresButtonNode = gui.get_node("highscores")
 
 	if(gameSettings.lang == "ru") then
 		translateToRussian(self)
+	end
+
+	if not gameSettings.leaderBoardAvaible then
+		hideHighScores(self)
 	end
 	
 	msg.post(".", "acquire_input_focus")

@@ -1,7 +1,8 @@
 local device = require "main/device"
+local gameSettings = require "main/gameSettings"
 
 local function showTutorial(self)
-	if device.type == "desktop" then
+	if device.type == "desktop"  then
 		gui.animate(self.pauseTutText, "color.w", 1, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
 		timer.delay(4.2, false, function()
 			gui.cancel_animation(self.pauseTutText, "color.w")
@@ -15,7 +16,7 @@ function init(self)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("show_tutorial") then 
+	if message_id == hash("show_tutorial") and gameSettings.showTutorial then 
 		showTutorial(self)
 	end
 	

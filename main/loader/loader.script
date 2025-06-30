@@ -45,7 +45,6 @@ local function loadStorage(onComplete)
 		upgrades.setMagnetLevel(data.magnet or 0)
 		upgrades.setShieldLevel(data.shield or 0)
 		upgrades.setWeaponsLevel(data.weapons or 0)
-
 		onComplete()		
 	end,
 	function (_,data)
@@ -54,15 +53,25 @@ local function loadStorage(onComplete)
 end
 
 local function onLoadComplete(self)
+	msg.post(self.fakeLoaderProxy, "disable")
+	msg.post(self.fakeLoaderProxy, "final")
+	msg.post(self.fakeLoaderProxy, "unload")
+	
 	msg.post(self.menuProxy, "load")
 	msg.post(self.gameProxy, "load")
+	--msg.post(self.gameOverProxy, "load")
 	bridge.platform.send_message("game_ready");
+
+
 end
 
 local function handle_response(self, id, response)
-	print(response.status)
 	if response.status == 200 then 
-		gameSettings.leaderBoardAvaible = true
+		if bridge.player.is_authorization_supported() then 
+			gameSettings.leaderBoardAvaible = true
+		else 
+			gameSettings.leaderBoardAvaible = false
+		end
 	else
 		gameSettings.leaderBoardAvaible = false
 	end
@@ -83,14 +92,16 @@ function init(self)
 	self.pauseProxy = "#pauseProxy"
 	self.settingsProxy = "#settingsProxy"
 	self.creditsProxy = "#creditsProxy"
+	self.fakeLoaderProxy = "#fakeLoaderProxy"
 	--	msg.post(self.garageProxy, "load")
+
+	msg.post(self.fakeLoaderProxy, "load")
 
 	bridge.advertisement.set_minimum_delay_between_interstitial(300)
 
 	loadStorage(
 	function() 
-			onLoadComplete(self)
-			--http.request("https://tgapi-zhv2.onrender.com/ping", "GET", handle_response)
+			http.request("https://tgapi-zhv2.onrender.com/ping", "GET", handle_response)
 		end)
 end
 

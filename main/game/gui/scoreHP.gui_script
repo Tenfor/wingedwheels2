@@ -150,6 +150,7 @@ function on_message(self, message_id, message, sender)
 				msg.post("main:/loader#loader", "hide_pause")
 				if self.score > self.highscore then 
 					self.highscore = self.score
+					gameModel.setNewHighscore(true)
 					save_highscore(self.highscore)
 				end
 				saveStats(self,1)

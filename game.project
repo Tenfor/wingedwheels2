@@ -44,8 +44,11 @@ max_component_count = 64
 max_count = 12
 
 [engine]
-max_time_step = 0.167
+max_time_step = 0.1667
 
 [resource]
 http_cache = 0
+
+[network]
+http_timeout = 4.0
 

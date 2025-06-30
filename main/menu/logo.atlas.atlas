@@ -1,0 +1,13 @@
+images {
+  image: "/assets/menu/logo.png"
+}
+images {
+  image: "/assets/menu/splash.png"
+}
+images {
+  image: "/assets/menu/russian_logo.png"
+}
+images {
+  image: "/assets/menu/ru_splash.png"
+}
+extrude_borders: 2

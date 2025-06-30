@@ -1,12 +1,9 @@
 local druid = require("druid.druid")
-local rich_input = require("druid.custom.rich_input.rich_input")
-local const  = require("druid.const")
 local gameModel =require "main/game/gameModel"
 local json = require("main/json")
 local upgrades  = require "main/game/upgrades"
 local gameSettings = require("main/gameSettings")
 local bridge = require("bridge.bridge")
-
 
 local function translateToRussian(self)
 	local titleText = gui.get_node("title")
@@ -17,10 +14,6 @@ local function translateToRussian(self)
 	gui.set_font(yourScoresText, "rufont")
 	gui.set_text(yourScoresText, "Твои результаты:")
 
-	local cheering = gui.get_node("cheering")
-	gui.set_font(cheering, "rufont")
-	gui.set_text(cheering, "Ты справишься!")
-
 	local collectedCoinsText = gui.get_node("text3")
 	gui.set_font(collectedCoinsText, "rufont")
 	gui.set_text(collectedCoinsText, "Вы собрали ".. tostring(gameModel.currentScores) .." монет")
@@ -29,13 +22,11 @@ local function translateToRussian(self)
 	gui.set_font(continueText, "rufont")
 	gui.set_text(continueText, "Далее")
 
-	local submitText = gui.get_node("text")
-	gui.set_font(submitText, "rufont")
-	gui.set_text(submitText, "Отправить")
-end
+	local loginText = gui.get_node("loginBtnText")
+	gui.set_font(loginText, "rufont")
+	gui.set_text(loginText, "Войдите")
 
-local function hideSuccessIcon(self)
-	gui.set_alpha(self.successIcon, 0)
+	
 end
 
 local function showSuccessIcon(self,success)
@@ -51,14 +42,22 @@ local function hideDescriptionText(self)
 	gui.set_alpha(self.descriptionTextNode, 0)
 end
 
-local function setDescriptionText(self,text,center,ruText)
+local function setCheeringText(self,text,ruText)
+	gui.set_alpha(self.cheeringTextNode, 1)
+	gui.set_text(self.cheeringTextNode, text)
 
+	if gameSettings.lang == "ru" then 
+		gui.set_font(self.cheeringTextNode, "rufont")
+		gui.set_text(self.cheeringTextNode, ruText)
+	end
+end
+
+
+local function setDescriptionText(self,text,center,ruText)
 	local pos = gui.get_position(self.descriptionTextNode)
 	if(center) then
-		gui.set_alpha(self.cheeringTextNode, 1)
 		pos.y = 426
 	else
-		gui.set_alpha(self.cheeringTextNode, 0)
 		pos.y = 240
 	end
 	gui.set_position(self.descriptionTextNode, pos)
@@ -88,16 +87,37 @@ local function hideLoadingText(self)
 	gui.set_alpha(self.loadingTextNode, 0)
 end
 
-local function hideInput(self)
-	gui.set_enabled(self.rich_input_parent, false)
-	gui.set_alpha(self.rich_input_parent, 0)
-	gui.set_enabled(self.submitButtonNode, false)
+local function handle_post_response(self, id, response)
+	hideLoadingText(self)
+	if response.status == 200 then 
+		showSuccessIcon(self,true)
+		setDescriptionText(self, "Scores submitted!\nCongratulations!", false, "Рекорд Отправлено!\nПоздравления!")
+	elseif response.status == 409 then 
+		local decodedResponse = json.decode(response.response)
+		local minScore = decodedResponse.current.scores
+		setDescriptionText(self, "Reach "..tostring(minScore+1).."\nfor a new Highscore", true, "Нужно "..tostring(minScore+1).."\nдля рекорда" )
+		setCheeringText(self, "You can do it!", "Ты справишься!")
+	else
+		showSuccessIcon(self,false)
+		setDescriptionText(self, "Connection error!", false, "Ошибка сети")
+	end
 end
 
-local function showInput(self)
-	gui.set_enabled(self.rich_input_parent, true)
-	gui.set_alpha(self.rich_input_parent, 1)
-	gui.set_enabled(self.submitButtonNode, true)
+local function onSubmit(self)
+	--msg.post("soundController", "playSfx", {url="#tick"})
+	setLoadingText(self,"Submitting score...", "Отправка рекорда...")
+	hideDescriptionText(self)
+
+	local playerName = bridge.player.name()
+	local headers = {
+		["Content-Type"] = "application/json"
+	}
+	
+	local body = json.encode({playerName=playerName,scores=gameModel.currentScores})
+	--TESZT
+	--local body = json.encode({playerName="Tenfor Teszt",scores=gameModel.currentScores})
+	http.request("https://tgapi-zhv2.onrender.com/scores", "POST", handle_post_response, headers, body)
+	--http.request("http://localhost:3000", "POST", handle_response, headers, body2)
 end
 
 local function handle_fetch_response(self,id,response)
@@ -109,20 +129,11 @@ local function handle_fetch_response(self,id,response)
 			minScore = decodedResponse[50].scores
 		end
 		if gameModel.currentScores > minScore then
-			setDescriptionText(self, "Congratulation!\nNew Highscore!",false, "Поздравляем!\nНовый рекорд!")
-			self.rich_input:set_placeholder("Enter Your Name")
-			if gameSettings.lang == "ru" then 
-				self.rich_input:set_placeholder("Ваше имя")
-			end
-
-			if gameSettings.playerName ~= "" then
-				self.rich_input:set_placeholder("")
-				self.rich_input.input:set_text(gameSettings.playerName)
-			end
-			
-			showInput(self)
+			setDescriptionText(self, "Congratulation!\nNew Highscore!",false, "Поздравляем!\nНовый рекорд!")			
+			onSubmit(self)
 		else
 			setDescriptionText(self, "Reach "..tostring(minScore+1).."\nfor a new Highscore", true, "Нужно "..tostring(minScore+1).."\nдля рекорда" )
+			setCheeringText(self, "You can do it!", "Ты справишься!")
 		end
 	else
 		showSuccessIcon(self,false)
@@ -130,92 +141,9 @@ local function handle_fetch_response(self,id,response)
 	end
 end
 
-local function handle_post_response(self, id, response)
-	hideLoadingText(self)
-	if response.status == 200 then 
-		showSuccessIcon(self,true)
-		setDescriptionText(self, "Scores submitted!\nCongratulations!", false, "Рекорд Отправлено!\nПоздравления!")
-	else
-		showSuccessIcon(self,false)
-		setDescriptionText(self, "Connection error!", false, "Ошибка сети")
-		timer.delay(3, false, function()
-			hideSuccessIcon(self)
-			setDescriptionText(self, "Congratulation!\nNew Highscore!", false, "Поздравления!\nНовый рекорд!")
-			--hideDescriptionText(self)
-			showInput(self)
-		end)
-	end
-end
-
-local function onSubmit(self)
-	local playerName = self.rich_input:get_text()
-	if #playerName > 0 then
-		msg.post("soundController", "playSfx", {url="#tick"})
-		setLoadingText(self,"Submitting score...", "Отправка рекорда...")
-		hideInput(self)
-		hideDescriptionText(self)
-
-		bridge.storage.set ({ 
-			playerName = playerName
-		},
-		function ()
-			gameSettings.setPlayerName(playerName)
-		end
-		)
-
-		local headers = {
-			["Content-Type"] = "application/json"
-		}
-		--local body = '{"playerName":"Test"}'
-		local body = json.encode({playerName=self.rich_input:get_text(),scores=gameModel.currentScores})
-		http.request("https://tgapi-zhv2.onrender.com/scores", "POST", handle_post_response, headers, body)
-		--http.request("http://localhost:3000", "POST", handle_response, headers, body2)
-	else
-		msg.post("soundController", "playSfx", {url="#lock"})
-	end
-end
-
-local function showAdPanel(self)
-	gui.set_enabled(self.basePanel, false)
-	gui.set_enabled(self.adPanel, true)
-end
-
 local function showFailedPanel(self)
 	gui.set_enabled(self.adPanel, false)
 	gui.set_enabled(self.failedPanel, true)
-end
-
-
-local function showAdBlockPanel(self)
-	gui.set_enabled(self.basePanel, false)
-	gui.set_enabled(self.adPanel, false)
-	gui.set_enabled(self.adBlockerPanel, true)
-end
-
-local function onNoBtn(self)
-	msg.post("main:/loader#loader", "restartGame")
-end
-
-local function onYesBtn(self)
-	if self.adBlocked then
-		showAdBlockPanel(self)
-	else
-		--local placement = "test_placement" -- optional
-		bridge.advertisement.show_rewarded()
-		
-		
-		--bridge.advertisement.show_interstitial()
-
-		--crazygames.show_rewarded_ad(function(self, result)
-		--	if result then
-		--		upgrades.setCoins(upgrades.coins + 50)
-		--		upgrades.saveUpgrades()
-		--		msg.post("main:/loader#loader", "restartGame")
-		--	else
-		--		msg.post("main:/loader#loader", "restartGame")
-		--	end
-	--	end)
-end
 end
 
 local function onContinue(self)
@@ -226,22 +154,51 @@ end
 
 local function fetchHighScores(self)
 	self.isFetching = true
-	hideInput(self)	hideDescriptionText(self)
 	gui.animate(self.loadingTextNode, "color.w", 0, gui.EASING_LINEAR, 1,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
 	http.request("https://tgapi-zhv2.onrender.com/scores", "GET", handle_fetch_response)
 	setLoadingText(self, "Checking Highscores...", "Проверка рекордов...")
 end
 
-local function check_ad_block(self)
-	self.adBlocked = false
-	bridge.advertisement.check_ad_block(function (_, data)
-		self.adBlocked = data
-	end, 
-	function ()
-		-- error
-	end)
+local function checkAuth(self)
+	if not gameSettings.leaderBoardAvaible then 
+		if gameModel.newHighscore then
+			setDescriptionText(self, "New personal best!", true, "Новый личный\nрекорд!")
+			setCheeringText(self, "Congratulations!", "Поздравляю!")
+		else
+			setDescriptionText(self, "Reach "..tostring(gameSettings.highscore+1).."\nfor a new Highscore", true, "Нужно "..tostring(gameSettings.highscore+1).."\nдля рекорда" )
+			setCheeringText(self, "You can do it!", "Ты справишься!")
+		end
+	else 
+		if bridge.player.is_authorized() then 
+			fetchHighScores(self)
+		else 
+			setDescriptionText(self, "Log in to compete\non the leaderboard", true, "Войдите для\nучастия в рейтинге")
+			local btnNode = gui.get_node("login")
+			gui.set_enabled(btnNode, true)
+		end
+	end
 end
 
+local function onLogin(self)
+	local loginBtnNode = gui.get_node("login")
+	gui.set_enabled(loginBtnNode, false)
+	
+	local options = {
+		yandex = {
+			scopes = true
+		}
+	}
+	
+	bridge.player.authorize(
+	options, 
+	function ()		
+		checkAuth(self)
+	end, 
+	function ()
+		setDescriptionText(self,"Login failed\nPlease try again",true,"Ошибка входа\nПовторите попытку")
+		gui.set_enabled(loginBtnNode, true)
+	end)
+end
 
 function init(self)
 	self.druid = druid.new(self)
@@ -268,35 +225,16 @@ function init(self)
 		end
 	end)
 
-	check_ad_block(self)
-
 	self.basePanel = gui.get_node("basePanel")
 	self.adPanel = gui.get_node("adPanel")
-	self.adBlockerPanel = gui.get_node("adBlockerPanel")
 	self.failedPanel = gui.get_node("failedPanel")
-	self.yesBtn = self.druid:new_button("yesBtn", onYesBtn)
-	self.noBtn = self.druid:new_button("noBtn", onNoBtn)
-	self.failedContinueBtn = self.druid:new_button("failedContinueBtn", onNoBtn)
-
-	self.ignoreBtn = self.druid:new_button("ignoreBtn", onNoBtn)
-	self.whiteListedBtn = self.druid:new_button("whiteListedBtn", onNoBtn)
 	
 	self.collectedCoinsText = gui.get_node("text3")
 	gui.set_text(self.collectedCoinsText, "You have collected ".. tostring(gameModel.currentScores) .." coins")
 	
 	self.submitting = false
-
-	self.rich_input = self.druid:new(rich_input, "rich_input")
-	self.rich_input_parent = gui.get_node("rich_input_parent")
-	self.rich_input:set_placeholder("Enter Your Name")
-	self.rich_input.input:set_max_length(11)
-	self.rich_input.input:set_allowed_characters("[A-Za-z0-9А-Яа-я]")
-	--	self.rich_input:set_max_length(self,11)
-
-	self.submitButton = self.druid:new_button("submit", onSubmit)
 	self.continueButton = self.druid:new_button("continue", onContinue)
-	self.submitButtonNode = gui.get_node("submit")
-
+	
 	self.successIcon = gui.get_node("successIcon")
 	
 	gui.set_text(gui.get_node("scores"), tostring(gameModel.currentScores))
@@ -305,20 +243,16 @@ function init(self)
 	self.cheeringTextNode = gui.get_node("cheering")
 	self.isFetching = false
 
-	fetchHighScores(self)
+	self.loginBtn = self.druid:new_button("login", onLogin)
 
 	if gameSettings.lang == "ru" then
 		translateToRussian(self)
 	end
-end
 
-function on_input(self, action_id, action)
-	if action_id == const.ACTION_TEXT or action_id == const.ACTION_MARKED_TEXT then 
-		if action.text == "\n" or action.text == "\r" or action.text == "" then
-			return true
-		end
-	end
-	return self.druid:on_input(action_id, action)
+	checkAuth(self)
+	--setDescriptionText(self, "Log in to compete\non the leaderboard", true, "Войдите для\nучастия в рейтинге")
+	--local btnNode = gui.get_node("login")
+	--gui.set_enabled(btnNode, true)
 end
 
 function update(self, dt)
@@ -327,6 +261,10 @@ end
 
 function on_message(self, message_id, message, sender)
 	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
 end
 
 function final(self)

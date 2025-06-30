@@ -139,6 +139,37 @@ nodes {
 nodes {
   position {
     x: 240.0
+    y: 235.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "menu/btn"
+  id: "login"
+  parent: "basePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    y: 2.0
+  }
+  size {
+    x: 200.0
+    y: 50.0
+  }
+  type: TYPE_TEXT
+  text: "Log in"
+  font: "default"
+  id: "loginBtnText"
+  parent: "login"
+}
+nodes {
+  position {
+    x: 240.0
     y: 55.0
   }
   scale {
@@ -207,104 +238,6 @@ nodes {
   id: "title"
   parent: "basePanel"
   inherit_alpha: true
-}
-nodes {
-  position {
-    x: 243.0
-    y: 367.0
-  }
-  scale {
-    x: 0.4
-    y: 0.4
-  }
-  type: TYPE_BOX
-  texture: "menu/btn"
-  id: "submit"
-  parent: "basePanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 2.0
-  }
-  size {
-    x: 200.0
-    y: 50.0
-  }
-  type: TYPE_TEXT
-  text: "Submit"
-  font: "default"
-  id: "text"
-  parent: "submit"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: -400.0
-    y: 21.0
-  }
-  type: TYPE_BOX
-  id: "rich_input_parent"
-  parent: "basePanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 640.0
-    y: 437.0
-  }
-  type: TYPE_TEMPLATE
-  id: "rich_input"
-  parent: "rich_input_parent"
-  inherit_alpha: true
-  template: "/main/rich_input.gui"
-}
-nodes {
-  type: TYPE_BOX
-  id: "rich_input/root"
-  parent: "rich_input"
-  template_node_child: true
-}
-nodes {
-  type: TYPE_BOX
-  id: "rich_input/button"
-  parent: "rich_input/root"
-  overridden_fields: 30
-  overridden_fields: 46
-  template_node_child: true
-  visible: false
-}
-nodes {
-  type: TYPE_BOX
-  id: "rich_input/bg"
-  parent: "rich_input/button"
-  template_node_child: true
-}
-nodes {
-  type: TYPE_TEXT
-  id: "rich_input/placeholder_text"
-  parent: "rich_input/button"
-  template_node_child: true
-}
-nodes {
-  type: TYPE_TEXT
-  id: "rich_input/input_text"
-  parent: "rich_input/button"
-  template_node_child: true
-}
-nodes {
-  type: TYPE_BOX
-  id: "rich_input/cursor_node"
-  parent: "rich_input/button"
-  template_node_child: true
-}
-nodes {
-  type: TYPE_TEXT
-  id: "rich_input/cursor_text"
-  parent: "rich_input/cursor_node"
-  template_node_child: true
 }
 nodes {
   position {
@@ -446,139 +379,6 @@ nodes {
   parent: "adPanel"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "adBlockerPanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-  visible: false
-}
-nodes {
-  position {
-    x: 240.0
-    y: 426.0
-  }
-  scale {
-    x: 0.4
-    y: 0.4
-  }
-  type: TYPE_BOX
-  texture: "menu/panel2"
-  id: "bg1"
-  parent: "adBlockerPanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 240.0
-    y: 552.0
-  }
-  scale {
-    x: 0.55
-    y: 0.55
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Ad Blocker Detected"
-  font: "default"
-  id: "text5"
-  parent: "adBlockerPanel"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 240.0
-    y: 442.0
-  }
-  scale {
-    x: 0.4
-    y: 0.4
-  }
-  size {
-    x: 900.0
-    y: 500.0
-  }
-  type: TYPE_TEXT
-  text: "Your ad blocker is active. Please disable it or whitelist the website then refresh to recieve the award. "
-  font: "default"
-  id: "text6"
-  line_break: true
-  parent: "adBlockerPanel"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 239.0
-    y: 314.0
-  }
-  scale {
-    x: 0.3
-    y: 0.3
-  }
-  type: TYPE_BOX
-  texture: "menu/btn"
-  id: "ignoreBtn"
-  parent: "adBlockerPanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  scale {
-    x: 0.8
-    y: 0.8
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Ignore Reward"
-  font: "default"
-  id: "text7"
-  parent: "ignoreBtn"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 239.0
-    y: 359.0
-  }
-  scale {
-    x: 0.3
-    y: 0.3
-  }
-  type: TYPE_BOX
-  texture: "menu/btn"
-  id: "whiteListedBtn"
-  parent: "adBlockerPanel"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  scale {
-    x: 0.8
-    y: 0.8
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Whitelisted"
-  font: "default"
-  id: "text8"
-  parent: "whiteListedBtn"
-  inherit_alpha: true
 }
 nodes {
   size {

@@ -1,7 +1,6 @@
 local druid = require("druid.druid")
 local json = require("main/json")
 local gameSettings = require("main/gameSettings")
-
 local dotPositions = {-80, -40, 0, 40, 80}
 
 

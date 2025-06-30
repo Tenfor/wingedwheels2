@@ -153,21 +153,21 @@ local function showFailedPanel(self)
 	gui.set_enabled(self.failedPanel, true)
 end
 
-local function check_ad_block(self)
-	bridge.advertisement.check_ad_block(function (_, data)
-		if data then
-			showAdBlockerPanel(self)
-		else 
-			bridge.advertisement.show_rewarded()
-		end
-	end, 
-	function ()
-		showFailedPanel(self)
-	end)
-end
+--local function check_ad_block(self)
+--	bridge.advertisement.check_ad_block(function (_, data)
+--		if data then
+--			showAdBlockerPanel(self)
+--		else 
+--			bridge.advertisement.show_rewarded()
+--		end
+--	end, 
+--	function ()
+--		showFailedPanel(self)
+--	end)
+--end
 
 local function onAdButton(self)
-	check_ad_block(self)
+	bridge.advertisement.show_rewarded()
 end
 
 local function onPowerupButton(self)
