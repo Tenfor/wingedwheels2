@@ -20,20 +20,35 @@ local function hideScores(self)
 	end
 end
 
+local function autofit_text(node)
+	local text_metrics = gui.get_text_metrics_from_node(node)
+	print(text_metrics.width,gui.get_size(node).x) 
+	local sc = 1
+	while text_metrics.width*sc > 500 do
+		sc = sc-0.1
+	end
+	print(sc,text_metrics.width)
+	gui.set_scale(node, vmath.vector3(0.5*sc,0.5*sc,0.5*sc))
+	
+end
+
 local function showScores(self)
 	if not self.isFailed then
 		for i = 1, 10, 1 do
 			gui.set_alpha(self.scoreBoxNodes[i], 0)
 			gui.animate(self.scoreBoxNodes[i], "color.w", 1, gui.EASING_LINEAR, 0.8,0.1*i)
 
-			gui.set_text(self.rankNodes[i], tostring(i+(self.currentPage - 1)*10))
+			gui.set_text(self.rankNodes[i], tostring(i+(self.currentPage - 1)*10)..".")
 			if self.decodedResponse ~= nil and #self.decodedResponse >= i+(self.currentPage - 1)*10 then
-				gui.set_text(self.nameNodes[i], self.decodedResponse[(i+(self.currentPage - 1)*10)]["playerName"] )
+				local nameText = self.decodedResponse[(i+(self.currentPage - 1)*10)]["playerName"]
+				nameText =  string.sub(nameText,1,22)
+				gui.set_text(self.nameNodes[i], nameText )
 				gui.set_text(self.scoreNodes[i], tostring(self.decodedResponse[(i+(self.currentPage - 1)*10)]["scores"]) )
 			else
 				gui.set_text(self.nameNodes[i], "Player Name" )
 				gui.set_text(self.scoreNodes[i], "0" )
 			end
+			autofit_text(self.nameNodes[i])
 		end
 	end
 end

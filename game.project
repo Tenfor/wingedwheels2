@@ -25,8 +25,8 @@ app_icon_96x96 = /assets/logo/app_logov2.png
 scale_mode = fit
 show_fullscreen_button = 0
 show_made_with_defold = 0
-cssfile = /builtins/manifests/web/dark_theme.css
-htmlfile = /bridge/engine_template.html
+cssfile = /my_dark_theme.css
+htmlfile = /my_engine_template.html
 show_console_banner = 1
 splash_image = /assets/menu/splash.png
 
