@@ -174,7 +174,9 @@ local function checkAuth(self)
 		else 
 			setDescriptionText(self, "Log in to compete\non the leaderboard", true, "Войдите для\nучастия в рейтинге")
 			local btnNode = gui.get_node("login")
-			gui.set_enabled(btnNode, true)
+			if bridge.platform.id() ~= "y8" then 
+				gui.set_enabled(btnNode, true) 
+			end
 		end
 	end
 end
